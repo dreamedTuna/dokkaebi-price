@@ -227,6 +227,22 @@ summary{cursor:pointer;font-weight:500}
 .appver button{font:inherit;font-size:13px;border:0;background:none;color:var(--soul);text-decoration:underline;cursor:pointer}
 .shot-hint{flex-basis:100%}
 /* 미니 창 */
+.mini.fill{position:fixed;inset:0;width:auto;max-width:none;border:0;border-radius:0;box-shadow:none;display:flex;flex-direction:column;z-index:75;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);font-size:clamp(14px,3.8vmin,20px)}
+.mini.fill .mini-bar{cursor:default;padding:8px 10px 8px 14px;font-size:1em}
+.mini.fill .mini-drag{display:none}
+.mini.fill #miniClose{font-size:.85em;font-weight:700;color:var(--soul);border:1px solid var(--soul);border-radius:999px;padding:4px 12px}
+.mini.fill .mini-body{flex:1;overflow:auto;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));align-content:start;gap:12px;padding:12px 14px 16px}
+.mini.fill .mini-col{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.mini.fill .mini-h{font-size:.8em}
+.mini.fill .mini-kpi b{font-size:1.5em}
+.mini.fill .mini-sig .chip{font-size:.78em}
+.mini.fill .mini-row select,.mini.fill .mini-row input{font-size:1em;padding:8px}
+.mini.fill .mini-row input{font-size:1.15em}
+.mini.fill .mini-res{font-size:1em} .mini.fill .mini-res b{font-size:1.35em}
+.mini.fill .mini-top{font-size:1em} .mini.fill .mini-top b{font-size:1.2em}
+body.mini-fill{overflow:hidden}
+body.mini-fill .savebar{display:none}
 .minibtn{border-color:var(--accent)}
 .mini{position:fixed;right:16px;bottom:16px;z-index:70;width:min(900px,calc(100vw - 16px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.35);font-size:14px;line-height:1.45}
 .mini[hidden]{display:none}
@@ -256,14 +272,14 @@ summary{cursor:pointer;font-weight:500}
 @media (max-width:560px){ .mini.in-pip .mini-body{grid-template-columns:1fr} }
 /* ===== 디자인 다듬기 ===== */
 body{background:radial-gradient(1200px 500px at 10% -10%, color-mix(in srgb,var(--soul) 12%,transparent), transparent 60%), radial-gradient(900px 400px at 100% 0%, color-mix(in srgb,var(--gold) 10%,transparent), transparent 60%), var(--bg);background-attachment:fixed}
-.head{padding:14px 16px;border-radius:18px;background:linear-gradient(135deg, color-mix(in srgb,var(--accent) 92%,#000), color-mix(in srgb,var(--soul) 70%,var(--accent)));color:#f3eeff;box-shadow:0 10px 30px rgba(43,35,80,.25)}
+.head{padding:14px 16px;border-radius:18px;background:linear-gradient(135deg,#241c47 0%,#3b2a7a 55%,#5b3fb0 100%);color:#f3eeff;box-shadow:0 10px 30px rgba(20,14,45,.35);border:1px solid rgba(255,255,255,.08)}
 .head h1{display:flex;align-items:center;gap:12px;color:#fff}
 .head .sub{color:rgba(243,238,255,.85)}
 .head .logo{width:48px;height:48px;border-radius:12px;box-shadow:0 0 0 2px rgba(255,255,255,.25)}
 .head .logo-txt{display:inline-grid;place-items:center;font-size:30px;background:rgba(255,255,255,.12)}
 .head .btn2{border-color:rgba(255,255,255,.55);color:#fff;background:rgba(255,255,255,.08)}
-.head .btn2.solid{background:#fff;color:var(--accent);border-color:#fff}
-.head .resetbtn{border-color:#ff9c8a;color:#ffd7cf;background:rgba(212,53,28,.25)}
+.head .btn2.solid{background:#fff;color:#2b2350;border-color:#fff}
+.head .resetbtn{border-color:#ff9c8a;color:#ffe3dc;background:rgba(212,53,28,.3)}
 .head .resetbtn:hover{background:var(--must);color:#fff}
 h2{position:relative;padding-left:14px}
 h2::before{content:"";position:absolute;left:0;top:.18em;bottom:.18em;width:5px;border-radius:3px;background:linear-gradient(var(--gold),var(--soul))}
@@ -607,7 +623,7 @@ body{overflow-x:clip}
       <h1><img class="logo" src="icons/icon-192.png" alt=""><span>영웅장비 분해 시세표</span></h1>
       <p class="sub">도깨비의 세계 — 거래소 시세를 넣으면 요혼석을 어디서 구하는 게 싼지, 영웅장비를 사서 분해하면 얼마나 남는지 계산합니다. 기록은 지금 쓰는 브라우저에 저장돼요.</p>
     </div>
-    <div class="headbtns"><button class="btn2 fbbtn" id="fbOpen">💬 건의하기</button><button class="btn2 minibtn" id="miniOpen" title="게임 화면 위에 작게 띄우기">🗗 미니 창</button><button class="btn2 installbtn" id="installBtn" hidden>📲 앱 설치</button><button class="btn2 resetbtn" id="resetOpen">전체 초기화</button>
+    <div class="headbtns"><button class="btn2 fbbtn" id="fbOpen">💬 건의하기</button><button class="btn2 minibtn fsbtn" id="miniOpen" title="게임 화면 위에 작게 띄우기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="5" rx="1" fill="currentColor"/></svg>미니 창</button><button class="btn2 installbtn" id="installBtn" hidden>📲 앱 설치</button><button class="btn2 resetbtn" id="resetOpen">전체 초기화</button>
     <button class="btn2 solid fsbtn" id="dashOpen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>전체화면</button></div>
   </div>
 
@@ -620,7 +636,7 @@ body{overflow-x:clip}
       <details class="gi"><summary><span class="gi-ic">📈</span><span>기록이 쌓이면 <b>추천 표시</b></span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>시세를 볼 때마다 <b>시세 기록</b>을 누르세요. 직전보다 오른 건 ▲빨강, 내린 건 ▼파랑이에요.</li><li><b>3번 이상</b> 기록하면 평소보다 싼지 비싼지 표시가 나와요. ‘평소’는 최근 7일·10번 기록의 중간값이에요.</li><li><span class="gchip must">강력 추천</span> 평소보다 20% 이상 쌈 · <span class="gchip rec">구매 추천</span> 10% 이상 쌈 · <span class="gchip high">비쌈 · 보류</span> 15% 이상 비쌈</li><li><b>재검증 필요</b>(주황): 넣은 지 하루가 지났거나 평소와 50% 넘게 차이 나서 입력 실수가 의심될 때. 그대로면 <b>확인했어요</b>, 진짜 폭락·폭등이면 <b>진짜 시세예요</b>. 1시간 넘게 비슷한 값이 두 번 기록되면 자동으로 진짜로 인정해요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">💰</span><span>결과 보는 법</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>요혼석 수급처 비교</b>에서 ‘최저가’가 붙은 곳이 지금 요혼석을 가장 싸게 얻는 방법이에요.</li><li><b>영웅장비 분해 가치와 이득</b> 표의 ‘사서 분해하면’이 <b>플러스</b>면 사서 분해할수록 이득, <b>마이너스</b>면 갖고 있는 장비는 파는 게 나아요.</li><li>영웅장비는 수익률 20% 이상이면 강력 추천, 이득이면 이득, 손해면 판매가 유리로 표시돼요.</li><li>맨 위 <b>전체화면</b>을 누르면 입력·추천·이득표·그래프를 한 창에서 볼 수 있어요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">🗡️</span><span>영웅장비 단계·부위는 이렇게 읽어요</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>아이콘 숫자는 게임과 같아요. <b>+10 ~ +50 = 1~5개방</b>, <b>✦+1 ~ ✦+5 = 1~5돌파</b>. 0개방은 분해량 정보가 없어 넣지 않아요.</li><li>부위는 게임 거래소 분류대로 판단해요. <b>무기</b>: 검·도·지팡이·부채·활 / <b>방어구</b>: 투구·갑옷·신발·각반·장갑·허리띠 / <b>장신구</b>: 목걸이·반지·팔찌·귀걸이</li><li>파란 테두리 장비는 희귀아이템, 보라 테두리이거나 ‘N돌파’ 표기가 있으면 영웅장비예요.</li><li>조각·가호·비법서·멤버십처럼 장비가 아닌 건 자동으로 제외해요. 한 번 고친 부위는 이름을 기억해요.</li></ul></div></details>
-      <details class="gi"><summary><span class="gi-ic">🗗</span><span>게임 위에 작게 띄우기 (미니 창)</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>🗗 미니 창</b>을 누르면 지금 시세·구매 신호·<b>빠른 이득 계산</b>·남는 장비 TOP 3만 담은 작은 창이 떠요.</li><li><b>PC 크롬·엣지</b>: 게임 위에 항상 떠 있는 별도 창으로 열리고, 크기와 위치를 자유롭게 바꿀 수 있어요.</li><li><b>폰</b>: 페이지 안에 작게 떠요. 위쪽 막대를 잡고 옮기세요. 안드로이드는 앱을 <b>팝업 보기·분할 화면</b>으로 열면 게임과 같이 볼 수 있어요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">🪟</span><span>게임 위에 작게 띄우기 (미니 창)</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>미니 창</b>을 누르면 지금 시세·구매 신호·<b>빠른 이득 계산</b>·남는 장비 TOP 3만 담은 작은 창이 떠요.</li><li><b>PC 크롬·엣지</b>: 게임 위에 항상 떠 있는 별도 창으로 열리고, 크기와 위치를 자유롭게 바꿀 수 있어요.</li><li><b>폰</b>: 안드로이드에서 앱을 <b>팝업 보기</b>나 <b>분할 화면</b>으로 열면 창이 작아지는 순간 <b>자동으로 미니 화면이 창을 꽉 채워요.</b> 창을 다시 크게 하면 원래 화면으로 돌아오고, <b>큰 화면으로</b>를 눌러도 돼요. (팝업 보기: 최근 앱 화면에서 앱 아이콘을 길게 누르기)</li><li>일반 폰 화면에서 <b>미니 창</b>을 누르면 미니 화면이 전체를 채워서 크게 보여요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">📲</span><span>앱으로 설치·업데이트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>PC(크롬·엣지)</b>: 맨 위 <b>📲 앱 설치</b> 또는 주소창 오른쪽 설치 아이콘</li><li><b>안드로이드</b>: <b>📲 앱 설치</b> 또는 ⋮ → ‘앱 설치’ · <b>아이폰</b>: 사파리 공유 버튼 → ‘홈 화면에 추가’</li><li>카톡에서 열었다면 ⋮ → <b>다른 브라우저로 열기</b>를 해야 설치할 수 있어요.</li><li>새 버전이 나오면 맨 위에 알림이 뜨고, <b>지금 업데이트</b>를 누르면 기록은 그대로 두고 최신으로 바뀌어요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">💬</span><span>건의·오류 알려주기</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>💬 건의하기</b>에서 종류를 고르고 내용을 적어 <b>보내기</b> → 열린 페이지에서 <b>Create</b>.</li><li>잘 안 읽힌 스크린샷은 그 페이지에 끌어다 놓으면 같이 보낼 수 있어요.</li><li>GitHub 계정이 없다면 <b>내용 복사</b>로 단톡방에 보내 주세요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">📦</span><span>분해량·환산 기준</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>개방</b>(요혼석만): 무기 135·335·635·1,035·1,535 / 방어구 55·95·155·235·335 / 장신구 65·115·195·294·425</li><li><b>돌파</b>(천요석/요혼석): 무기 18/1,595 ~ 270/1,835 · 방어구 7/359 ~ 105/455 · 장신구 10/457 ~ 137/585</li><li>모든 분해량은 여러 번 분해했을 때의 <b>평균값(중간값)</b>이라 실제와 조금 다를 수 있어요.</li><li>요혼석 환산: 희귀아이템 1~3개(평균 2개), 만귀령패 4인 품앗이 쉬움 600개·보통 1,200개, 가루 100개 = 요혼석 1개.</li></ul></div></details>
@@ -761,7 +777,7 @@ body{overflow-x:clip}
 </div>
 
 <div id="mini" class="mini" hidden role="dialog" aria-label="미니 시세 창">
-  <div class="mini-bar" id="miniBar"><b>🪙 도깨비 시세 미니</b><span class="small mini-drag">여기를 잡고 옮기세요</span><span style="flex:1"></span><button id="miniClose" aria-label="미니 창 닫기">✕</button></div>
+  <div class="mini-bar" id="miniBar"><b>도깨비 시세 미니</b><span class="small mini-drag">여기를 잡고 옮기세요</span><span style="flex:1"></span><button id="miniClose" aria-label="미니 창 닫기">✕</button></div>
   <div class="mini-hint small" id="miniHint" hidden>이 브라우저에서는 페이지 안에만 띄워져요. 게임 위에 띄우려면 PC는 <b>크롬·엣지</b>에서 열고, 안드로이드는 앱을 <b>팝업 보기·분할 화면</b>으로 여세요.</div>
   <div class="mini-body">
     <div class="mini-col"><div class="mini-h">지금 시세</div><div class="mini-kpi" id="miniKpi"></div><div class="mini-sig" id="miniSig"></div></div>
