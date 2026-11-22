@@ -5,7 +5,8 @@ const LIB = "dokkaebi-lib-1";
 const SHELL = ["./", "./index.html", "./config.js", "./app.js", "./manifest.webmanifest", "./vendor/fonts/fonts.css",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png", "./icons/apple-touch-icon.png"];
 
-self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL))); });
+// 설치할 때 브라우저에 남은 예전 파일이 아니라 서버의 새 파일을 받아 둠
+self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL.map(u => new Request(u, { cache: "reload" }))))); });
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith("dokkaebi-app-") && k !== CACHE).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
@@ -23,6 +24,6 @@ self.addEventListener("fetch", e => {
     return;
   }
   // 앱 파일: 인터넷이 되면 최신, 안 되면 저장해 둔 파일
-  e.respondWith(fetch(req).then(res => { if (res.ok) { const cp = res.clone(); caches.open(CACHE).then(c => c.put(req, cp)); } return res; })
+  e.respondWith(fetch(req.url, { cache: "no-cache", credentials: "same-origin" }).then(res => { if (res.ok) { const cp = res.clone(); caches.open(CACHE).then(c => c.put(req, cp)); } return res; })
     .catch(() => caches.match(req).then(r => r || caches.match("./index.html"))));
 });
