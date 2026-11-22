@@ -4,7 +4,11 @@
  * 고친 뒤에는 아래 version과 version.json의 version을 같은 숫자로 올려 주세요.
  */
 var APP_CONFIG = {
-  version: "1.1.3",
+  version: "1.3.0",
+
+  // 건의하기 버튼이 여는 주소 (GitHub 저장소 Settings → Features에서 Issues를 켜 두세요)
+  // 구글 설문지 등 다른 주소를 넣으면, 적은 내용을 복사해 둔 뒤 그 주소를 열어요.
+  feedbackUrl: "https://github.com/dreamedTuna/dokkaebi-price/issues/new",
 
   // 돌파 분해량 [천요석, 요혼석] — 1돌파 ~ 5돌파 (평균값=중간값)
   breakthrough: {
