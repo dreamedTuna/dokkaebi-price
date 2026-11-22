@@ -1,0 +1,16 @@
+{
+  "name": "도깨비의 세계 영웅장비 분해 시세표",
+  "short_name": "도깨비 시세표",
+  "description": "거래소 시세로 요혼석 최저가 수급처와 영웅장비 분해 이득을 계산해요.",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#16132a",
+  "theme_color": "#2b2350",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
