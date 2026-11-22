@@ -225,6 +225,7 @@ summary{cursor:pointer;font-weight:500}
 .installbtn{border-color:var(--soul);color:var(--soul)}
 .appver{margin-top:28px;text-align:center;font-size:13px;color:var(--muted)}
 .appver button{font:inherit;font-size:13px;border:0;background:none;color:var(--soul);text-decoration:underline;cursor:pointer}
+.shot-hint{flex-basis:100%}
 /* 초기화 */
 .headbtns{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .resetbtn{border:2px solid var(--must);color:var(--must);background:var(--must-soft);font-weight:700}
@@ -524,7 +525,7 @@ body{overflow-x:clip}
       <ul>
         <li><b>재료</b>: 천요석, 만귀령패 쉬움·보통, 요혼석 가루 꾸러미(100·500·1,000개)는 이름으로 찾아요.</li>
         <li><b>희귀아이템</b>: <b>파란 테두리</b> 장비. 이 중 가장 싼 값이 요혼석 수급처 ‘희귀아이템’에 들어가요.</li>
-        <li><b>영웅장비</b>: <b>보라 테두리</b> 장비, 또는 ‘N돌파’ 표기가 있는 장비. 단계는 ‘N개방’, ‘N돌파’로 읽고, 부위는 이름으로 추정해요(단도·지팡이·은장·선·궁 → 무기, 전립·구군복·갑옷·장갑 → 방어구, 목걸이·반지·각대 → 장신구). 한 번 고른 부위는 이름을 기억해서 다음부터 자동으로 맞춰요.</li>
+        <li><b>영웅장비</b>: <b>보라 테두리</b> 장비, 또는 ‘N돌파’ 표기가 있는 장비. 단계는 ‘N개방’, ‘N돌파’로 읽고, 부위는 게임 거래소 분류대로 이름으로 판단해요. <b>무기</b>: 검·도·지팡이·부채·활(예: 단도, 은장, 은선, 흑각궁) / <b>방어구</b>: 투구·갑옷·신발·각반·장갑·허리띠(예: 전립, 구군복, 다리보호구, 각대) / <b>장신구</b>: 목걸이·반지·팔찌·귀걸이. 한 번 고른 부위는 이름을 기억해서 다음부터 자동으로 맞춰요.</li>
         <li><b>0개방</b> 영웅장비는 분해량 정보가 없어서 표에 넣지 않아요.</li>
         <li><b>제외</b>: 조각·가호·도술·비법서·상자·주문서·멤버십 등 장비가 아닌 것, [기동]처럼 [ ]로 시작하는 이름, 파랑·보라가 아닌 장비. 검토 표에 제외 이유가 함께 보여요.</li>
       </ul>
@@ -582,6 +583,7 @@ body{overflow-x:clip}
       <div class="shotbar">
         <button class="btn2 solid" id="readBtn" disabled>시세 읽기</button>
         <span id="shotStatus" role="status"></span>
+        <span class="small shot-hint">잘 안 보이는 부분은 자동으로 한 번 더 읽어요. 그래도 빠진 항목이 있으면 시세 읽기를 한 번 더 눌러 주세요.</span>
       </div>
       <div id="review"></div>
     </div>

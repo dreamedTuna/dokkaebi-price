@@ -4,7 +4,7 @@
  * 고친 뒤에는 아래 version과 version.json의 version을 같은 숫자로 올려 주세요.
  */
 var APP_CONFIG = {
-  version: "1.1.0",
+  version: "1.1.2",
 
   // 돌파 분해량 [천요석, 요혼석] — 1돌파 ~ 5돌파 (평균값=중간값)
   breakthrough: {
