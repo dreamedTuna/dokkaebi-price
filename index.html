@@ -229,6 +229,11 @@ summary{cursor:pointer;font-weight:500}
 .shot-hint{flex-basis:100%}
 .d-chart-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .dseg button{font-size:.62em !important;padding:.3em .8em !important}
+.hero-tools{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:10px 0 2px}
+.herorst{font-size:14px;padding:6px 14px;border-color:color-mix(in srgb,var(--must) 55%,var(--line));color:var(--must);background:var(--surface);font-weight:700}
+.herorst:hover{border-color:var(--must)}
+.herorst.armed{background:var(--must);color:#fff;border-color:var(--must)}
+#dash .herorst{font-size:.85em;padding:.45em .9em}
 /* 미니 창 */
 .mini-hrow{display:flex;align-items:center;justify-content:space-between;gap:6px}
 .mini-hrow select{font:inherit;font-size:11.5px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);padding:1px 6px;max-width:62%}
@@ -658,7 +663,7 @@ body{overflow-x:clip}
       <details class="gi"><summary><span class="gi-ic">📲</span><span>앱으로 설치·업데이트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>PC(크롬·엣지)</b>: 맨 위 <b>📲 앱 설치</b> 또는 주소창 오른쪽 설치 아이콘</li><li><b>안드로이드</b>: <b>📲 앱 설치</b> 또는 ⋮ → ‘앱 설치’ · <b>아이폰</b>: 사파리 공유 버튼 → ‘홈 화면에 추가’</li><li>카톡에서 열었다면 ⋮ → <b>다른 브라우저로 열기</b>를 해야 설치할 수 있어요.</li><li>새 버전이 나오면 맨 위에 알림이 뜨고, <b>지금 업데이트</b>를 누르면 기록은 그대로 두고 최신으로 바뀌어요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">💬</span><span>건의·오류 알려주기</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>💬 건의하기</b>에서 종류를 고르고 내용을 적어 <b>보내기</b> → 열린 페이지에서 <b>Create</b>.</li><li>잘 안 읽힌 스크린샷은 그 페이지에 끌어다 놓으면 같이 보낼 수 있어요.</li><li>GitHub 계정이 없다면 <b>내용 복사</b>로 단톡방에 보내 주세요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">📦</span><span>분해량·환산 기준</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>개방</b>(요혼석만): 무기 135·335·635·1,035·1,535 / 방어구 55·95·155·235·335 / 장신구 65·115·195·294·425</li><li><b>돌파</b>(천요석/요혼석): 무기 18/1,595 ~ 270/1,835 · 방어구 7/359 ~ 105/455 · 장신구 10/457 ~ 137/585</li><li>모든 분해량은 여러 번 분해했을 때의 <b>평균값(중간값)</b>이라 실제와 조금 다를 수 있어요.</li><li>요혼석 환산: 희귀아이템 1~3개(평균 2개), 만귀령패 4인 품앗이 쉬움 600개·보통 1,200개, 가루 100개 = 요혼석 1개.</li></ul></div></details>
-      <details class="gi"><summary><span class="gi-ic">ℹ️</span><span>알아두면 좋은 것</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>패치로 분해량·환산 기준이 바뀌면 관리자가 업데이트로 반영해요.</li><li>거래소 수수료는 계산에 들어가 있지 않아요.</li><li>잘못 넣은 기록은 ‘기록’ 목록에서 ×로 지울 수 있고, 처음부터 다시 하려면 <b>전체 초기화</b>를 누르세요.</li><li>기록은 이 기기의 앱(브라우저) 안에 저장돼요. 다른 기기에서는 빈 시세표로 시작하고, 사이트 데이터를 지우면 기록도 지워져요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">ℹ️</span><span>알아두면 좋은 것</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>패치로 분해량·환산 기준이 바뀌면 관리자가 업데이트로 반영해요.</li><li>거래소 수수료는 계산에 들어가 있지 않아요.</li><li>잘못 넣은 기록은 ‘기록’ 목록에서 ×로 지울 수 있어요. 영웅장비 시세 칸만 다시 채우고 싶으면 <b>영웅장비 시세만 비우기</b>(두 번 누르기), 처음부터 다시 하려면 <b>전체 초기화</b>를 누르세요.</li><li>기록은 이 기기의 앱(브라우저) 안에 저장돼요. 다른 기기에서는 빈 시세표로 시작하고, 사이트 데이터를 지우면 기록도 지워져요.</li></ul></div></details>
     </div>
   </details>
 
@@ -717,6 +722,7 @@ body{overflow-x:clip}
   <section aria-labelledby="h-hero">
     <h2 id="h-hero">영웅장비 거래소 시세</h2>
     <p class="small" style="margin:0">지금 거래소에 올라온 영웅장비 최저가를 1~5개방, 1~5돌파 단계별로 넣으면, 사서 분해했을 때 얼마나 남는지 아래 표에 계산돼요. 분해량은 평균값(중간값) 기준이에요. 모르는 칸은 비워 두세요. <b>주황 점선 칸</b>은 하루 이상 지난 시세라 다시 확인이 필요해요.</p>
+    <div class="hero-tools"><button class="btn2 herorst" id="heroClear">영웅장비 시세만 비우기</button><span class="small" id="heroClearMsg" role="status"></span></div>
     <div class="guide-lv small">아이콘의 숫자는 게임과 같아요 · <span><b>+10 ~ +50</b> = 1~5개방</span><span><b>✦+1 ~ ✦+5</b> = 1~5돌파</span></div>
     <div class="age" id="heroAge" style="margin-top:6px"></div>
     <div class="hero-grid" id="heroGrid"></div>
@@ -824,7 +830,7 @@ body{overflow-x:clip}
       <div class="d-panel"><h3>스크린샷으로 시세 넣기</h3><div id="dShotSlot"></div></div>
       <div class="d-panel"><h3>영웅장비 거래소 시세</h3>
         <table class="d-hero"><thead><tr><th></th><th>무기</th><th>방어구</th><th>장신구</th></tr></thead><tbody id="dHero"></tbody></table>
-        <div class="shotbar"><button class="btn2 solid" id="dSave">시세 기록</button><span class="d-empty" id="dSaveMsg"></span></div>
+        <div class="shotbar"><button class="btn2 solid" id="dSave">시세 기록</button><button class="btn2 herorst" id="dHeroClear">영웅장비만 비우기</button><span class="d-empty" id="dSaveMsg"></span></div>
       </div>
     </div>
     <div class="d-col mid-left">
