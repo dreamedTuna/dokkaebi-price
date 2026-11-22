@@ -4,7 +4,7 @@
  * 고친 뒤에는 아래 version과 version.json의 version을 같은 숫자로 올려 주세요.
  */
 var APP_CONFIG = {
-  version: "1.4.0",
+  version: "1.4.1",
 
   // 건의하기 버튼이 여는 주소 (GitHub 저장소 Settings → Features에서 Issues를 켜 두세요)
   // 구글 설문지 등 다른 주소를 넣으면, 적은 내용을 복사해 둔 뒤 그 주소를 열어요.

@@ -229,7 +229,8 @@ summary{cursor:pointer;font-weight:500}
 /* 미니 창 */
 .mini.fill{position:fixed;inset:0;width:auto;max-width:none;border:0;border-radius:0;box-shadow:none;display:flex;flex-direction:column;z-index:75;
   padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);font-size:clamp(14px,3.8vmin,20px)}
-.mini.fill .mini-bar{cursor:default;padding:8px 10px 8px 14px;font-size:1em}
+.mini.fill{left:0 !important;top:0 !important;right:0 !important;bottom:0 !important}
+.mini.fill .mini-bar{cursor:default;padding:8px 10px 8px 14px;font-size:1em;touch-action:auto;user-select:auto}
 .mini.fill .mini-drag{display:none}
 .mini.fill #miniClose{font-size:.85em;font-weight:700;color:var(--soul);border:1px solid var(--soul);border-radius:999px;padding:4px 12px}
 .mini.fill .mini-body{flex:1;overflow:auto;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));align-content:start;gap:12px;padding:12px 14px 16px}
