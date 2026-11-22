@@ -4,7 +4,7 @@
  * 고친 뒤에는 아래 version과 version.json의 version을 같은 숫자로 올려 주세요.
  */
 var APP_CONFIG = {
-  version: "1.5.2",
+  version: "1.6.0",
 
   // 앱 맨 아래에 표시할 제작자 닉네임
   maker: "참치",
