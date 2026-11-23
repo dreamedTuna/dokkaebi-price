@@ -4,7 +4,11 @@
  * 고친 뒤에는 아래 version과 version.json의 version을 같은 숫자로 올려 주세요.
  */
 var APP_CONFIG = {
-  version: "1.6.5",
+  version: "2.1.0",
+
+  // 꺼진 상태 알림 서버 주소 (Cloudflare Worker 주소, 예: https://kkaebi-push.내아이디.workers.dev)
+  // 비워 두면 '앱이 꺼져 있어도 알림 받기' 버튼이 '준비 중'으로 보여요.
+  pushServer: "https://kkaebi-push.dreamedtuna.workers.dev",
 
   // 앱 맨 아래에 표시할 제작자 닉네임
   maker: "참치",
@@ -25,6 +29,24 @@ var APP_CONFIG = {
     "무기":   [135,335,635,1035,1535],
     "방어구": [55,95,155,235,335],
     "장신구": [65,115,195,294,425]
+  },
+
+  // 알리미 고정 일정 (days: 0=일 1=월 2=화 3=수 4=목 5=금 6=토) · 문파 컨텐츠 종류
+  alarm: {
+    fixed: [
+      { id: "fieldBoss", name: "필드보스",        time: "21:00", days: [0,1,2,3,4,5,6], icon: "👹" },
+      { id: "nakhwa",    name: "낙화의 전장 보스", time: "22:00", days: [0,1,2,3,4,5,6], icon: "🌸" },
+      { id: "dimension", name: "차원점령전",       time: "21:30", days: [2],             icon: "🌀" }
+    ],
+    guild: ["요신 토벌령", "결계지 방어", "미혹의 정원", "신기 쟁탈전"]
+  },
+
+  // 숙제 체크리스트 (초기화: 매일 오전 5시 / 주간은 수요일 오전 5시)
+  todo: {
+    resetHour: 5, weeklyResetDay: 3,
+    daily:  [ {id:"dq", name:"일일 퀘스트"}, {id:"shop_soul", name:"단상점 교환 · 요혼석 100개"}, {id:"shop_coin", name:"단상점 교환 · 엽전 100만"}, {id:"dungeon_d", name:"일일 비경 (1시간)"} ],
+    weekly: [ {id:"wq", name:"주간 퀘스트"}, {id:"dungeon_w", name:"주간 비경 (5시간)"}, {id:"tower", name:"승천의 탑"}, {id:"craft", name:"천요석 제작"},
+              {id:"bokbun", name:"복분이 상점 · 천요석 10개"}, {id:"member", name:"멤버십 잡화상점 · 천요석 10개"} ]
   },
 
   // 요혼석 환산 기준

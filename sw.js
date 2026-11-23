@@ -27,3 +27,24 @@ self.addEventListener("fetch", e => {
   e.respondWith(fetch(req.url, { cache: "no-cache", credentials: "same-origin" }).then(res => { if (res.ok) { const cp = res.clone(); caches.open(CACHE).then(c => c.put(req, cp)); } return res; })
     .catch(() => caches.match(req).then(r => r || caches.match("./index.html"))));
 });
+
+// 꺼진 상태 알림: 서버가 깨우면 보여줄 문구를 받아와서 알림을 띄움
+self.addEventListener("push", e => {
+  e.waitUntil((async () => {
+    const API = String((self.APP_CONFIG && self.APP_CONFIG.pushServer) || "").replace(/\/+$/, "");
+    let items = [];
+    try {
+      const sub = await self.registration.pushManager.getSubscription();
+      if (API && sub) { const r = await fetch(API + "/pending", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ endpoint: sub.endpoint }) }); items = ((await r.json()) || {}).items || []; }
+    } catch (err) {}
+    const ua = self.navigator.userAgent || "", safari = /Safari/.test(ua) && !/Chrome|CriOS|Edg|Android/.test(ua);
+    const cs = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    if (!safari && cs.some(c => c.visibilityState === "visible")) return;   // 앱을 보고 있으면 앱 화면 안내로 충분
+    if (!items.length) items = [{ title: "깨비시세 알림", body: "곧 일정이 시작돼요", tag: "kkaebi" }];
+    for (const m of items.slice(0, 3)) await self.registration.showNotification(m.title, { body: m.body, tag: m.tag, renotify: true, icon: "icons/icon-192.png", badge: "icons/icon-192.png", vibrate: [250, 120, 250] });
+  })());
+});
+self.addEventListener("notificationclick", e => {
+  e.notification.close();
+  e.waitUntil(self.clients.matchAll({ type: "window", includeUncontrolled: true }).then(cs => { const c = cs.find(x => "focus" in x); return c ? c.focus() : self.clients.openWindow("./"); }));
+});

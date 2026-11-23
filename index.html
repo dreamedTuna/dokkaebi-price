@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>깨비시세 · 도깨비의 세계 영웅장비 분해 시세표</title>
@@ -270,6 +270,84 @@ summary{cursor:pointer;font-weight:500}
 .d-tabs .slotico{--s:20px !important;border-radius:5px}
 .d-tabn{display:inline-grid;place-items:center;min-width:1.5em;height:1.5em;border-radius:999px;background:var(--rec);color:#fff;font-size:.85em}
 .d-table tbody tr{height:2.6em}
+.al-push{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,color-mix(in srgb,var(--soul) 14%,var(--surface)),var(--surface));border:1.5px solid var(--soul);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.al-push-t{flex:1;display:flex;flex-direction:column;gap:2px}
+.al-push-t b{font-size:16px}
+.al-push .btn2{min-width:72px}
+/* ===== 탭 ===== */
+.tabbar{display:flex;gap:6px;margin:14px 0 4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:16px;position:sticky;top:6px;z-index:30;box-shadow:0 4px 14px rgba(43,35,80,.08)}
+.tabbar button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:700;font-size:16px;border:0;border-radius:12px;padding:10px 6px;background:transparent;color:var(--muted);cursor:pointer}
+.tabbar button[aria-selected="true"]{background:linear-gradient(135deg,#3b2a7a,#5b3fb0);color:#fff}
+.tabpane[hidden]{display:none !important}
+/* 알리미 */
+.al-settings{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-bottom:10px}
+.al-settings .btn2{padding:7px 12px;font-size:14px}
+.al-warn{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 50%,transparent);border-radius:12px;padding:10px 12px;margin-bottom:14px;line-height:1.6;color:var(--ink)}
+.al-h{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:20px;margin:16px 0 8px}
+.al-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(43,35,80,.06)}
+.al-card.off{opacity:.62}
+.al-top{display:flex;align-items:center;gap:12px}
+.al-ic{font-size:26px}
+.al-tt{flex:1;display:flex;flex-direction:column}
+.al-tt b{font-size:17px}
+.al-sw{position:relative;display:inline-block;width:46px;height:26px;flex:none}
+.al-sw input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1}
+.al-sw span{position:absolute;inset:0;border-radius:999px;background:var(--line);transition:.2s}
+.al-sw span::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:.2s}
+.al-sw input:checked+span{background:var(--rec)}
+.al-sw input:checked+span::after{transform:translateX(20px)}
+.al-sw input:focus-visible+span{outline:2px solid var(--soul);outline-offset:2px}
+.al-swrow{display:inline-flex;align-items:center;gap:8px;font-weight:700}
+.al-offs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
+.al-chip,.al-day{font:inherit;font-size:13.5px;font-weight:700;border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:999px;padding:5px 12px;cursor:pointer}
+.al-chip.on,.al-day.on{background:var(--soul-soft);border-color:var(--soul);color:var(--soul)}
+.al-next{margin-left:auto}
+.al-guild{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:10px}
+.al-guild label{display:inline-flex;align-items:center;gap:8px;font-size:15px}
+.al-guild input[type=time],.td-remind input[type=time]{font:inherit;font-size:16px;font-weight:700;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:5px 8px}
+.al-days{display:flex;gap:4px;flex-wrap:wrap}
+.al-day{padding:5px 9px}
+.alarm-live{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:14px;padding:10px 20px;border-radius:999px;background:linear-gradient(135deg,#3b2a7a,#c2365a);color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35);font-weight:700}
+.alarm-live b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:30px;font-variant-numeric:tabular-nums}
+.alarm-live{max-width:calc(100vw - 24px);white-space:nowrap}
+.alarm-live span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+body.mini-fill .alarm-live{display:none !important}
+@media (max-width:720px){ .alarm-live{padding:8px 16px;gap:10px;font-size:14px} .alarm-live b{font-size:26px} }
+.alarm-live.go{background:linear-gradient(135deg,#d4351c,#f0a020)}
+@media (prefers-reduced-motion:no-preference){ .alarm-live{animation:alpulse 1s ease-in-out infinite} @keyframes alpulse{50%{transform:translateX(-50%) scale(1.04)}} }
+.al-toasts{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 70px);z-index:95;display:flex;flex-direction:column;gap:8px;max-width:min(360px,calc(100vw - 28px))}
+.al-toast{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:12px 14px;border-radius:14px;background:var(--surface);color:var(--ink);border:1px solid var(--soul);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.al-toast b{font-size:16px}
+.al-toast span{grid-column:1;font-size:14px;color:var(--muted)}
+.al-toast button{grid-row:1/3;grid-column:2;border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer}
+.al-toast.start{border-color:var(--must);background:var(--must-soft)}
+/* 숙제 */
+.td-group{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px;box-shadow:0 2px 10px rgba(43,35,80,.06)}
+.td-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.td-h b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:20px}
+.td-prog{font-weight:700;color:var(--soul);background:var(--soul-soft);border-radius:999px;padding:1px 10px;font-size:14px}
+.td-prog.full{color:#fff;background:var(--rec)}
+.td-reset{margin-left:auto}
+.td-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:8px 0 6px}
+.td-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--soul),var(--rec));border-radius:3px;transition:width .3s}
+.td-item{display:flex;align-items:center;gap:12px;padding:10px 4px;border-top:1px solid var(--line);cursor:pointer;font-size:16px}
+.td-item:first-of-type{border-top:0}
+.td-item input{position:absolute;opacity:0;width:1px;height:1px}
+.td-box{width:24px;height:24px;border-radius:7px;border:2px solid color-mix(in srgb,var(--muted) 60%,var(--line));flex:none;display:grid;place-items:center;transition:.15s}
+.td-item input:checked+.td-box{background:var(--rec);border-color:var(--rec)}
+.td-item input:checked+.td-box::after{content:"✓";color:#fff;font-weight:900;font-size:15px}
+.td-item input:focus-visible+.td-box{outline:2px solid var(--soul);outline-offset:2px}
+.td-item.done .td-name{color:var(--muted);text-decoration:line-through}
+.td-notice{background:var(--warn-soft);border:1px solid var(--warn);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-weight:700;color:var(--ink)}
+.td-remind{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;font-size:15px}
+.td-remind .btn2{margin-left:auto;padding:6px 12px;font-size:14px}
+/* 미니 창 알람 줄 */
+.mini-alarm{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;padding:6px 10px;border-radius:10px;background:var(--soul-soft);font-size:13.5px}
+.mini-alarm.off{background:var(--bg);color:var(--muted)}
+.mini-alarm b{font-weight:700}
+.mini-alarm.live{background:linear-gradient(135deg,#3b2a7a,#c2365a);color:#fff;font-size:15px}
+.mini-alarm.live b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:22px}
+@media (max-width:720px){ .tabbar{top:4px} .tabbar button{font-size:15px;padding:9px 4px} .al-next{margin-left:0;width:100%} .td-reset{margin-left:0;width:100%} .td-remind .btn2{margin-left:0} }
 /* 미니 창 */
 .mini-hrow{display:flex;align-items:center;justify-content:space-between;gap:6px}
 .mini-hrow select{font:inherit;font-size:11.5px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);padding:1px 6px;max-width:62%}
@@ -685,6 +763,12 @@ body{overflow-x:clip}
     <div class="headbtns"><button class="btn2 fbbtn" id="fbOpen">💬 건의하기</button><button class="btn2 minibtn fsbtn" id="miniOpen" title="게임 화면 위에 작게 띄우기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="5" rx="1" fill="currentColor"/></svg>미니 창</button><button class="btn2 installbtn" id="installBtn" hidden>📲 앱 설치</button><button class="btn2 resetbtn" id="resetOpen">전체 초기화</button>
     <button class="btn2 solid fsbtn" id="dashOpen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>전체화면</button></div>
   </div>
+  <nav class="tabbar" role="tablist" aria-label="메뉴">
+    <button role="tab" data-tab="price" aria-selected="true"><span>💰</span>시세</button>
+    <button role="tab" data-tab="alarm" aria-selected="false"><span>⏰</span>알리미</button>
+    <button role="tab" data-tab="todo" aria-selected="false"><span>✅</span>숙제</button>
+  </nav>
+  <div id="tab-price" class="tabpane">
 
   <details class="guide" id="guide">
     <summary>처음이라면? 사용법 보기</summary>
@@ -697,6 +781,7 @@ body{overflow-x:clip}
       <details class="gi"><summary><span class="gi-ic">🗡️</span><span>영웅장비 단계·부위는 이렇게 읽어요</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>아이콘 숫자는 게임과 같아요. <b>+10 ~ +50 = 1~5개방</b>, <b>✦+1 ~ ✦+5 = 1~5돌파</b>. 0개방은 분해량 정보가 없어 넣지 않아요.</li><li>부위는 게임 거래소 분류대로 판단해요. <b>무기</b>: 검·도·지팡이·부채·활 / <b>방어구</b>: 투구·갑옷·신발·각반·장갑·허리띠 / <b>장신구</b>: 목걸이·반지·팔찌·귀걸이</li><li>파란 테두리 장비는 희귀아이템, 보라 테두리이거나 ‘N돌파’ 표기가 있으면 영웅장비예요.</li><li>조각·가호·비법서·멤버십처럼 장비가 아닌 건 자동으로 제외해요. 한 번 고친 부위는 이름을 기억해요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">🪟</span><span>게임 위에 작게 띄우기 (미니 창)</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>미니 창</b>을 누르면 지금 시세·구매 신호·<b>요혼석 수급처 비교 그래프</b>·<b>빠른 이득 계산</b>·남는 장비 TOP 3만 담은 작은 창이 떠요.</li><li>미니 창의 ‘지금 시세’ 옆 선택칸으로 <b>요혼석 단가 기준</b>(가장 싼 곳 자동 / 수급처 지정)을 바로 바꿀 수 있어요. 큰 화면 기준도 같이 바뀌어요.</li><li><b>PC 크롬·엣지</b>: 게임 위에 항상 떠 있는 별도 창으로 열리고, 크기와 위치를 자유롭게 바꿀 수 있어요.</li><li><b>폰</b>: 안드로이드에서 앱을 <b>팝업 보기</b>나 <b>분할 화면</b>으로 열면 창이 작아지는 순간 <b>자동으로 미니 화면이 창을 꽉 채워요.</b> 창을 다시 크게 하면 원래 화면으로 돌아오고, <b>큰 화면으로</b>를 눌러도 돼요. (팝업 보기: 최근 앱 화면에서 앱 아이콘을 길게 누르기)</li><li>일반 폰 화면에서 <b>미니 창</b>을 누르면 미니 화면이 전체를 채워서 크게 보여요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">📲</span><span>앱으로 설치·업데이트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>PC(크롬·엣지)</b>: 맨 위 <b>📲 앱 설치</b> 또는 주소창 오른쪽 설치 아이콘</li><li><b>안드로이드</b>: <b>📲 앱 설치</b> 또는 ⋮ → ‘앱 설치’ · <b>아이폰</b>: 사파리 공유 버튼 → ‘홈 화면에 추가’</li><li>카톡에서 열었다면 ⋮ → <b>다른 브라우저로 열기</b>를 해야 설치할 수 있어요.</li><li>새 버전이 나오면 맨 위에 알림이 뜨고, <b>지금 업데이트</b>를 누르면 기록은 그대로 두고 최신으로 바뀌어요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">⏰</span><span>알리미 · 숙제 체크리스트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>⏰ 알리미</b> 탭: 필드보스(매일 21시), 낙화의 전장 보스(매일 22시), 차원점령전(화요일 21시 30분)을 켜면 <b>10분·5분·1분 전</b>에 알려주고, 1분 전부터 화면 위에 초 단위 타이머가 떠요. 시간마다 따로 켜고 끌 수 있어요.</li><li>문파 컨텐츠(요신 토벌령·결계지 방어·미혹의 정원·신기 쟁탈전)는 우리 문파 시간과 요일을 직접 넣으면 같은 방식으로 알려줘요.</li><li><b>📱 앱이 꺼져 있어도 알림 받기</b>를 켜면 앱을 닫아도 알림이 와요. 안드로이드는 크롬에서, 아이폰은 사파리 → 홈 화면에 추가한 앱을 홈 화면 아이콘으로 열어서 켜야 해요(iOS 16.4 이상).</li><li>앱을 열어두면 <b>미니 창</b>이나 <b>팝업 보기</b>에서 다음 일정과 1분 타이머도 볼 수 있어요.</li><li>처음 한 번 <b>시스템 알림 허용</b>을 누르면 다른 창을 보고 있어도 알림이 떠요.</li><li><b>✅ 숙제</b> 탭: 일일(일일 퀘스트·단상점 교환·일일 비경 1시간, 매일 오전 5시 초기화)·주간(주간 퀘스트·주간 비경 5시간·승천의 탑·천요석 제작·상점 구매, 수요일 오전 5시 초기화) 숙제를 체크해요. 화요일 정한 시간에 안 한 주간 숙제를 알려줘요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">💬</span><span>건의·오류 알려주기</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>💬 건의하기</b>에서 종류를 고르고 내용을 적어 <b>보내기</b> → 열린 페이지에서 <b>Create</b>.</li><li>잘 안 읽힌 스크린샷은 그 페이지에 끌어다 놓으면 같이 보낼 수 있어요.</li><li>GitHub 계정이 없다면 <b>내용 복사</b>로 단톡방에 보내 주세요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">📦</span><span>분해량·환산 기준</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>개방</b>(요혼석만): 무기 135·335·635·1,035·1,535 / 방어구 55·95·155·235·335 / 장신구 65·115·195·294·425</li><li><b>돌파</b>(천요석/요혼석): 무기 18/1,595 ~ 270/1,835 · 방어구 7/359 ~ 105/455 · 장신구 10/457 ~ 137/585</li><li>모든 분해량은 여러 번 분해했을 때의 <b>평균값(중간값)</b>이라 실제와 조금 다를 수 있어요.</li><li>요혼석 환산: 희귀아이템 1~3개(평균 2개), 만귀령패 4인 품앗이 쉬움 600개·보통 1,200개, 가루 100개 = 요혼석 1개.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">ℹ️</span><span>알아두면 좋은 것</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>패치로 분해량·환산 기준이 바뀌면 관리자가 업데이트로 반영해요.</li><li>거래소 수수료는 계산에 들어가 있지 않아요.</li><li>잘못 넣은 기록은 ‘기록’ 목록에서 ×로 지울 수 있어요. 영웅장비 시세 칸만 다시 채우고 싶으면 <b>영웅장비 시세만 비우기</b>(두 번 누르기), 처음부터 다시 하려면 <b>전체 초기화</b>를 누르세요.</li><li>기록은 이 기기의 앱(브라우저) 안에 저장돼요. 다른 기기에서는 빈 시세표로 시작하고, 사이트 데이터를 지우면 기록도 지워져요.</li></ul></div></details>
@@ -818,9 +903,43 @@ body{overflow-x:clip}
   
   
   
+  </div><!-- /tab-price -->
+
+  <section id="tab-alarm" class="tabpane" hidden aria-labelledby="h-alarm">
+    <h2 id="h-alarm">보스·컨텐츠 알리미</h2>
+    <p class="small" style="margin:0 0 12px">켜 둔 일정은 <b>10분 전·5분 전·1분 전</b>에 알려주고, <b>1분 전부터는 화면 위에 초 단위 타이머</b>가 떠요. 시간마다 따로 켜고 끌 수 있어요.</p>
+    <div class="al-settings">
+      <label class="al-swrow"><span class="al-sw"><input type="checkbox" id="alSound" aria-label="알림 소리"><span></span></span>소리</label>
+      <span class="small" id="alNotifyState"></span>
+      <button class="btn2" id="alNotifyBtn">시스템 알림 허용</button>
+      <button class="btn2" id="alTest">테스트 알림</button>
+      <button class="btn2" id="alMini">미니 창으로 띄우기</button>
+      <button class="btn2" id="alIcs">📅 휴대폰 캘린더에 추가</button>
+    </div>
+    <div class="al-push" id="alPushBox">
+      <div class="al-push-t"><b>📱 앱이 꺼져 있어도 알림 받기</b><span class="small" id="alPushState"></span></div>
+      <button class="btn2 solid" id="alPushBtn">켜기</button>
+    </div>
+    <div class="al-warn small">💡 위 <b>📱 앱이 꺼져 있어도 알림 받기</b>를 켜면 앱을 닫아도 알림이 와요(안드로이드 크롬, 아이폰은 홈 화면에 추가한 앱). 켜지 않으면 깨비시세가 열려 있을 때만 울려요. 휴대폰 캘린더에 넣어 두고 싶으면 <b>📅 휴대폰 캘린더에 추가</b>를 쓰세요.</div>
+    <div id="alarmList"></div>
+  </section>
+
+  <section id="tab-todo" class="tabpane" hidden aria-labelledby="h-todo">
+    <h2 id="h-todo">숙제 체크리스트</h2>
+    <p class="small" style="margin:0 0 12px">체크는 이 기기에 저장돼요. <b>일일</b>은 매일 오전 5시, <b>주간</b>은 수요일 오전 5시에 자동으로 초기화돼요.</p>
+    <div class="td-notice" id="tdNotice" hidden></div>
+    <div id="todoBox"></div>
+    <div class="td-remind"><label class="al-swrow"><span class="al-sw"><input type="checkbox" id="tdRemindOn" aria-label="주간 숙제 알림"><span></span></span>화요일</label>
+      <input type="time" id="tdRemindTime" value="10:00" aria-label="알림 시간"><span>에 주간 숙제 남은 것 알려주기</span>
+      <button class="btn2" id="tdClear">체크 모두 해제</button></div>
+  </section>
+
   <p class="appver">버전 <span id="appVer"></span> · <button id="checkUpd">업데이트 확인</button> <span id="updState"></span></p>
   <p class="appver credit">제작: <b id="makerName">참치</b> · 비공식 팬 제작 도구예요. 게임 명칭과 화면의 권리는 각 권리자(카카오게임즈·슈퍼캣)에게 있어요.</p>
 </div>
+
+<div id="alarmLive" class="alarm-live" hidden role="timer" aria-live="polite"></div>
+<div id="alToast" class="al-toasts" aria-live="assertive"></div>
 
 <div id="fbModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="fbTitle" hidden>
   <div class="modal-card">
@@ -846,6 +965,7 @@ body{overflow-x:clip}
   <div class="mini-bar" id="miniBar"><b>깨비시세 미니</b><span class="small mini-drag">여기를 잡고 옮기세요</span><span style="flex:1"></span><button id="miniClose" aria-label="미니 창 닫기">✕</button></div>
   <div class="mini-hint small" id="miniHint" hidden>이 브라우저에서는 페이지 안에만 띄워져요. 게임 위에 띄우려면 PC는 <b>크롬·엣지</b>에서 열고, 안드로이드는 앱을 <b>팝업 보기·분할 화면</b>으로 여세요.</div>
   <div class="mini-body">
+    <div class="mini-alarm" id="miniAlarm"></div>
     <div class="mini-col"><div class="mini-h mini-hrow">지금 시세 <select id="miniBasis" aria-label="요혼석 단가 기준" title="요혼석 단가 기준"></select></div><div class="mini-kpi" id="miniKpi"></div><div class="mini-sig" id="miniSig"></div></div>
     <div class="mini-col"><div class="mini-h">요혼석 1개당 · 수급처 비교</div><div class="mini-src" id="miniSrc"></div></div>
     <div class="mini-col"><div class="mini-h">빠른 이득 계산</div>
