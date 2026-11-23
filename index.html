@@ -471,6 +471,57 @@ body.tabfs .pt-me,body.tabfs .pt-new{max-width:1100px}
 .tt-mini .tt-time{font-size:46px}
 .tt-mini .tt-kk{width:54px;height:54px}
 .mini.fill .tt-mini .tt-time{font-size:64px}
+/* ===== 깨비 미니: 둥글고 귀엽게 ===== */
+.mini{--mk-bg1:#fffaf6;--mk-bg2:#f6f0ff;--mk-line:#ece2ff;--mk-card:#ffffff;--mk-head:#5b3fb0;--mk-sub:#8a72c9;--mk-pill:#ffffff;--mk-hot1:#ff8a7a;--mk-hot2:#ef5b4c;
+  font-family:"Jua","Do Hyeon",system-ui,sans-serif;border-radius:26px;border:2.5px solid var(--mk-line);background:linear-gradient(160deg,var(--mk-bg1),var(--mk-bg2));box-shadow:0 16px 44px rgba(91,63,176,.28);overflow:hidden}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .mini{--mk-bg1:#2b2440;--mk-bg2:#1f1a33;--mk-line:#463a72;--mk-card:#2f2849;--mk-head:#d9ccff;--mk-sub:#a998e0;--mk-pill:#2a2342} }
+.mini.in-pip,.mini.fill{border-radius:0;border:0;box-shadow:none}
+.mini *{font-family:inherit}
+.mini .mini-bar{border-bottom:0;padding:10px 12px 4px;gap:8px}
+.mini-kk{width:32px;height:32px}
+.mini .mini-bar>b{font-size:18px;font-weight:400;color:var(--mk-head);letter-spacing:.3px}
+.mini .mini-bar .mini-mods{background:var(--mk-pill);border:2px solid var(--mk-line);padding:3px;border-radius:999px;gap:2px}
+.mini .mini-bar .mini-mods button{font-size:13.5px;font-weight:400;padding:5px 11px;color:var(--mk-sub);transition:transform .12s}
+.mini .mini-bar .mini-mods button:active{transform:scale(.94)}
+.mini .mini-bar .mini-mods button[aria-pressed="true"],.mini .mini-bar .mini-mods button[aria-pressed="true"]:hover{background:linear-gradient(135deg,var(--mk-hot1),var(--mk-hot2));color:#fff;box-shadow:0 3px 8px rgba(239,91,76,.35)}
+.mini #miniClose{border-radius:999px;min-width:32px;height:32px;background:var(--mk-pill);border:2px solid var(--mk-line);color:var(--mk-sub);font-size:15px;padding:0 10px}
+.mini.fill #miniClose{color:var(--mk-hot2);border-color:#ffc4bb;font-size:.82em}
+.mini .mini-body{gap:10px;padding:6px 12px 14px}
+.mini .mini-col{background:var(--mk-card);border:2px solid var(--mk-line);border-radius:20px;padding:10px 13px;box-shadow:0 4px 0 var(--mk-line)}
+.mini .mm-price{gap:10px}
+.mini .mini-h{font-size:14px;color:var(--mk-sub);margin-bottom:6px}
+.mini .mini-alarm{border-radius:18px;background:#fff1e6;border:2px dashed #ffbf99;color:#7a3a1a;font-size:14.5px;padding:7px 12px}
+.mini .mini-alarm b{font-weight:400;color:#d0452f}
+.mini .mini-alarm.off{background:var(--mk-card);border-color:var(--mk-line);color:var(--mk-sub)}
+.mini .mini-alarm.live{background:linear-gradient(135deg,#ff8a7a,#ef5b4c);border:0;color:#fff}
+.mini .mini-alarm.live b{color:#fff}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .mini .mini-alarm:not(.live):not(.off){background:#3d2a26;border-color:#7a4a33;color:#ffd7c4} }
+.mini .mini-kpi b,.mini .mini-res b,.mini .mbar b,.mini .mini-top b,.mini .tt-time,.mini .mm-al .left{font-family:"Jua","Do Hyeon",sans-serif;font-weight:400}
+.mini .mini-kpi b{font-size:22px;color:var(--mk-head)}
+.mini .chip{border-radius:999px;font-weight:400}
+.mini .mini-row select,.mini .mini-row input,.mini .mini-hrow select,.mini .tt-stage select{border-radius:14px;border:2px solid var(--mk-line);background:var(--mk-pill);color:var(--ink)}
+.mini .btn2{border-radius:999px;font-weight:400;border-width:2px}
+.mini .btn2.solid{background:linear-gradient(135deg,#6b4fd0,#5b3fb0);border-color:transparent;box-shadow:0 3px 0 #3b2a7a}
+.mini .btn2.solid:active{transform:translateY(2px);box-shadow:0 1px 0 #3b2a7a}
+.mini .mbar{border-radius:10px;font-size:13.5px}
+.mini .mbar.on{background:color-mix(in srgb,var(--mk-hot1) 16%,transparent)}
+.mini .mbar-t{height:10px;border-radius:999px}
+.mini .mbar-f{border-radius:999px}
+.mini .mbar-best{background:linear-gradient(135deg,#3ec27f,#1f9d5c);border-radius:999px}
+.mini .mm-al{border-top:2px dotted var(--mk-line)}
+.mini .mm-al:first-child{border-top:0}
+.mini .mm-td{border-radius:12px;padding:5px 6px}
+.mini .mm-td:hover{background:color-mix(in srgb,var(--mk-sub) 10%,transparent)}
+.mini .mm-td input{width:19px;height:19px;accent-color:#ef5b4c}
+.mini .mmp-row{border-top:2px dotted var(--mk-line)}
+.mini .mmp-mine,.mini .mmp-j{border-radius:16px}
+.mini .tt-segs{height:18px;border-radius:999px}
+.mini .tt-mark{border-radius:999px;width:6px;margin-left:-3px}
+.mini .tt-death .btn2{width:34px;height:34px;padding:0;font-size:18px}
+.mini .slotico{border-radius:9px}
+.mini .mbar-best{white-space:nowrap}
+@media (max-width:460px){ .mini.fill .mini-bar .mini-mods button span{display:none} .mini.fill .mini-bar .mini-mods button{font-size:16px !important;padding:5px 9px !important} .mini.fill #miniClose{font-size:.78em} }
+body.mini-fill .al-toasts{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);right:10px;left:10px;max-width:none}
 /* ===== 탭 ===== */
 .tabbar{display:flex;gap:6px;margin:14px 0 4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:16px;position:sticky;top:6px;z-index:30;box-shadow:0 4px 14px rgba(43,35,80,.08)}
 .tabbar button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:700;font-size:16px;border:0;border-radius:12px;padding:10px 6px;background:transparent;color:var(--muted);cursor:pointer}
@@ -1288,7 +1339,7 @@ body{overflow-x:clip}
 </div>
 
 <div id="mini" class="mini" hidden role="dialog" aria-label="미니 시세 창">
-  <div class="mini-bar" id="miniBar"><b>깨비시세 미니</b><div class="mini-mods" id="miniMods" role="group" aria-label="미니 창에 보일 것"><button data-mm="price">💰 시세</button><button data-mm="alarm">⏰ 알리미</button><button data-mm="todo">✅ 숙제</button><button data-mm="party">⚔️ 파티</button><button data-mm="timer">⏱ 타이머</button></div><span class="small mini-drag">여기를 잡고 옮기세요</span><span style="flex:1"></span><button id="miniClose" aria-label="미니 창 닫기">✕</button></div>
+  <div class="mini-bar" id="miniBar"><span class="kk mini-kk" id="miniKk"></span><b>깨비 미니</b><div class="mini-mods" id="miniMods" role="group" aria-label="미니 창에 보일 것"><button data-mm="price" title="시세">💰<span> 시세</span></button><button data-mm="alarm" title="알리미">⏰<span> 알리미</span></button><button data-mm="todo" title="숙제">✅<span> 숙제</span></button><button data-mm="party" title="파티">⚔️<span> 파티</span></button><button data-mm="timer" title="타이머">⏱<span> 타이머</span></button></div><span class="small mini-drag">여기를 잡고 옮기세요</span><span style="flex:1"></span><button id="miniClose" aria-label="미니 창 닫기">✕</button></div>
   <div class="mini-hint small" id="miniHint" hidden>이 브라우저에서는 페이지 안에만 띄워져요. 게임 위에 띄우려면 PC는 <b>크롬·엣지</b>에서 열고, 안드로이드는 앱을 <b>팝업 보기·분할 화면</b>으로 여세요.</div>
   <div class="mini-body">
     <div class="mini-alarm" id="miniAlarm"></div>
