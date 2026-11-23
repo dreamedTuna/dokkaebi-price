@@ -394,6 +394,34 @@ body.tabfs .pt-me,body.tabfs .pt-new{max-width:1100px}
 .pt-hint b{text-decoration:underline}
 .pt-auto{color:var(--muted)}
 .pt-ord{display:inline-grid;place-items:center;min-width:1.6em;height:1.6em;border-radius:50%;background:var(--accent);color:var(--bg);font-size:12.5px;font-weight:700}
+/* 등급컷·단계 정보 */
+.pt-info-box summary{font-size:16px}
+.pi-sec{margin-top:12px}
+.pi-h{font-weight:700;font-size:15.5px;margin-bottom:8px;display:flex;align-items:baseline;gap:8px}
+.pi-bar{display:flex;height:34px;border-radius:10px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.pi-seg{display:grid;place-items:center;color:#fff;font-family:"Do Hyeon",sans-serif;font-size:19px;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.pi-fail{flex:0 0 13%;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--line) 0 6px,transparent 6px 12px);color:var(--muted);font-size:13px;font-weight:700}
+.pi-ticks{position:relative;height:20px;margin-right:13%;font-size:12.5px;color:var(--muted)}
+.pi-ticks span{position:absolute;top:3px;transform:translateX(-50%);white-space:nowrap}
+.pi-ticks span:first-child{transform:none}
+.pi-grades{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.pi-g{display:flex;gap:10px;align-items:center;border:1.5px solid var(--c);border-radius:12px;padding:8px 10px;background:color-mix(in srgb,var(--c) 10%,var(--surface))}
+.pi-g>b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:30px;color:var(--c);line-height:1}
+.pi-g p{margin:0;font-size:14px;line-height:1.5}
+.pi-g strong{font-weight:700}
+.pi-note{margin:8px 0 0}
+.pi-stages{display:grid;gap:8px}
+.pi-st{display:grid;grid-template-columns:4.2em 1fr 1.6fr 1.2fr;gap:6px 12px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.pi-stn{font-family:"Do Hyeon",sans-serif;font-size:19px;color:var(--soul)}
+.pi-st em{display:block;font-style:normal;font-size:12px;color:var(--muted)}
+.pi-st b{font-size:16px}
+.pi-hp i{display:block;height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:4px}
+.pi-hp u{display:block;height:100%;background:linear-gradient(90deg,#e0443a,#f0a020)}
+.pi-dps b{color:var(--must)}
+.pi-notes{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pi-notes span{font-size:13.5px;border:1px dashed var(--line);border-radius:999px;padding:4px 10px;background:var(--surface)}
+.pt-hint2{font-size:12.5px;color:var(--soul);font-weight:700}
+@media (max-width:640px){ .pi-st{grid-template-columns:4.2em 1fr} .pi-hp,.pi-dps{grid-column:2} .pi-ticks{font-size:11px} .pi-seg{font-size:15px} }
 /* ===== 탭 ===== */
 .tabbar{display:flex;gap:6px;margin:14px 0 4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:16px;position:sticky;top:6px;z-index:30;box-shadow:0 4px 14px rgba(43,35,80,.08)}
 .tabbar button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:700;font-size:16px;border:0;border-radius:12px;padding:10px 6px;background:transparent;color:var(--muted);cursor:pointer}
@@ -944,7 +972,7 @@ body{overflow-x:clip}
       <details class="gi"><summary><span class="gi-ic">🪟</span><span>게임 위에 작게 띄우기 (미니 창)</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>미니 창</b>을 누르면 지금 시세·구매 신호·<b>요혼석 수급처 비교 그래프</b>·<b>빠른 이득 계산</b>·남는 장비 TOP 3만 담은 작은 창이 떠요.</li><li>미니 창 위쪽 <b>💰 시세 · ⏰ 알리미 · ✅ 숙제 · ⚔️ 파티</b> 버튼으로 보일 내용을 골라요. <b>PC</b>는 여러 개를 함께 켜서 한 창에 위아래로 볼 수 있고, <b>폰</b>은 하나씩 바꿔 봐요. 각 탭의 ‘미니 창’ 버튼을 누르면 그 탭 내용으로 열려요. (브라우저가 게임 위 창을 하나만 허용해서, 여러 내용을 한 창에 모아 보여줘요.)</li><li>미니 창의 ‘지금 시세’ 옆 선택칸으로 <b>요혼석 단가 기준</b>(가장 싼 곳 자동 / 수급처 지정)을 바로 바꿀 수 있어요. 큰 화면 기준도 같이 바뀌어요.</li><li><b>PC 크롬·엣지</b>: 게임 위에 항상 떠 있는 별도 창으로 열리고, 크기와 위치를 자유롭게 바꿀 수 있어요.</li><li><b>폰</b>: 안드로이드에서 앱을 <b>팝업 보기</b>나 <b>분할 화면</b>으로 열면 창이 작아지는 순간 <b>자동으로 미니 화면이 창을 꽉 채워요.</b> 창을 다시 크게 하면 원래 화면으로 돌아오고, <b>큰 화면으로</b>를 눌러도 돼요. (팝업 보기: 최근 앱 화면에서 앱 아이콘을 길게 누르기)</li><li>일반 폰 화면에서 <b>미니 창</b>을 누르면 미니 화면이 전체를 채워서 크게 보여요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">📲</span><span>앱으로 설치·업데이트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>PC(크롬·엣지)</b>: 맨 위 <b>📲 앱 설치</b> 또는 주소창 오른쪽 설치 아이콘</li><li><b>안드로이드</b>: <b>📲 앱 설치</b> 또는 ⋮ → ‘앱 설치’ · <b>아이폰</b>: 사파리 공유 버튼 → ‘홈 화면에 추가’</li><li>카톡에서 열었다면 ⋮ → <b>다른 브라우저로 열기</b>를 해야 설치할 수 있어요.</li><li>새 버전이 나오면 맨 위에 알림이 뜨고, <b>지금 업데이트</b>를 누르면 기록은 그대로 두고 최신으로 바뀌어요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">⏰</span><span>알리미 · 숙제 체크리스트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>⏰ 알리미</b> 탭: 필드보스(매일 21시), 낙화의 전장 보스(매일 22시), 차원점령전(화요일 21시 30분)을 켜면 <b>10분·5분·1분 전</b>에 알려주고, 1분 전부터 화면 위에 초 단위 타이머가 떠요. 시작 후 <b>10분 동안은 ‘진행 중’</b>으로 보이다가 자동으로 꺼지고 다음 일정으로 넘어가요(✕로 먼저 닫을 수도 있어요). 시간마다 따로 켜고 끌 수 있어요.</li><li>문파 컨텐츠(요신 토벌령·결계지 방어·미혹의 정원·신기 쟁탈전)는 우리 문파 시간과 요일을 직접 넣으면 같은 방식으로 알려줘요. 처음엔 <b>매일</b>로 되어 있고, 요일을 누르면 <b>그 요일만</b> 남아요. 다른 요일을 더 누르면 추가되고, 다시 매일로 하려면 <b>매일</b>을 누르세요.</li><li><b>📱 앱이 꺼져 있어도 알림 받기</b>를 켜면 앱을 닫아도 알림이 와요. 안드로이드는 크롬에서, 아이폰은 사파리 → 홈 화면에 추가한 앱을 홈 화면 아이콘으로 열어서 켜야 해요(iOS 16.4 이상).</li><li>앱을 열어두면 <b>미니 창</b>이나 <b>팝업 보기</b>에서 다음 일정과 1분 타이머도 볼 수 있어요.</li><li>알림 소리는 <b>띠링 · 징 · 절 종소리 · 북 둥둥 · 방울 · 전자 알람 · 경보</b> 중에 고르고 크기도 조절할 수 있어요(▶ 미리 듣기). 앱이 꺼져 있을 때 오는 알림은 폰에 설정된 기본 알림음으로 울려요.</li><li>처음 한 번 <b>시스템 알림 허용</b>을 누르면 다른 창을 보고 있어도 알림이 떠요.</li><li><b>✅ 숙제</b> 탭: 일일(일일 퀘스트·단상점 교환·일일 비경 1시간, 매일 오전 5시 초기화)·주간(주간 퀘스트·주간 비경 5시간·승천의 탑·천요석 제작·상점 구매, 수요일 오전 5시 초기화) 숙제를 체크해요. 화요일 정한 시간에 안 한 주간 숙제를 알려줘요.</li></ul></div></details>
-      <details class="gi"><summary><span class="gi-ic">⚔️</span><span>레이드 파티 모집</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>⚔️ 파티</b> 탭에서 먼저 <b>내 캐릭터</b>(닉네임·서버·공격력·저격/절명·도술 강화·용맹 장착·디버프 세팅)를 저장해요. 게임에서 찾아 초대할 수 있게 <b>닉네임은 정확히</b> 입력해 주세요.</li><li><b>+ 파티 만들기</b>: 레이드(악몽의 요람)·단계(1~5)·목표 등급(상관없음·D~S)·출발 시간·최소 조건을 정하면 목록에 올라가요. 파티는 <b>4인 고정</b>이에요.</li><li>내 캐릭터에 <b>레이드 패턴 숙련도</b>(미숙·숙지·빡숙)도 넣어요. 파티장은 ‘숙지 이상’처럼 조건을 걸 수 있어요.</li><li>서버는 게임 서버 15개 이름 × 1·2·3 = <b>45개</b> 중에 골라요(몽련·해월·괴량·아산·공월아·홍미희·강이태·소운·무이·묘롱·해일·백운·비영·복분·유희). 목록에 없는 새 서버는 ‘직접 입력’을 고르세요.</li><li>목록은 <b>서버별</b>로 나뉘어 보여요. 위쪽 서버 버튼으로 골라 보세요.</li><li>파티 카드는 인원에 따라 색이 바뀌어요. <b>2명 초록 · 3명 노랑 · 4명(마감) 빨강</b>. 맨 위 <b>전체화면</b>을 누르면 알리미·숙제·파티도 넓은 화면으로 볼 수 있어요(시세 탭은 기존 전체화면).</li><li>출발은 <b>모이면 바로 출발</b> 또는 <b>시간 정하기</b> 중에 골라요. 출발할 때 파티장이 <b>🚀 출발</b>을 누르면 파티원에게 알림이 가고 목록에서 사라져요.</li><li>구인할 땐 파티장으로 직접 파티를 만들고, 구직할 땐 지원하기 전에 게임에서 기존 파티를 미리 탈퇴해 주세요.</li><li>올라온 파티에서 <b>지원하기</b>를 누르면 내 스펙이 그대로 전달되고, 파티장이 <b>수락/거절</b>해요. 조건이 모자라면 ‘공격력 0.3만 부족’처럼 알려줘요.</li><li>여러 명이 한꺼번에 지원해도 모두 지원자 목록에 <b>먼저 지원한 순서</b>대로 쌓이고, 파티장이 고르면 돼요. 4명이 다 차면 남은 지원자에게는 ‘모집이 마감됐어요’ 알림이 가고 목록이 정리돼요. 동시에 수락을 눌러도 4명을 넘지 않아요.</li><li>파티장은 파티원 옆 <b>🚫 추방</b>을 두 번 눌러 내보낼 수 있어요. 추방된 사람은 그 파티에 다시 지원할 수 없고, 추방됐다는 알림이 가요. 미니 창에서도 추방할 수 있어요.</li><li>꺼진 상태 알림을 켜 두면 지원이 오거나 수락됐을 때 앱이 꺼져 있어도 알려줘요.</li><li>목록은 파티 탭이나 미니 창(파티)을 볼 때만 10~30초마다 새로 고쳐지고, 3분간 손대지 않으면(내 파티·지원 중이면 10분) 자동으로 멈춰요. 화면을 누르면 다시 켜져요. 무료 서버를 아끼려고 기기당 하루 새로 고침 횟수에 여유 있는 한도가 있어요.</li><li>파티는 출발 2시간 뒤 자동으로 사라지고, 한 기기에서 한 번에 하나의 파티만 만들 수 있어요. 아래 <b>디버프 세팅 도술 순서</b>도 참고하세요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">⚔️</span><span>레이드 파티 모집</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>⚔️ 파티</b> 탭에서 먼저 <b>내 캐릭터</b>(닉네임·서버·공격력·저격/절명·도술 강화·용맹 장착·디버프 세팅)를 저장해요. 게임에서 찾아 초대할 수 있게 <b>닉네임은 정확히</b> 입력해 주세요.</li><li><b>+ 파티 만들기</b>: 레이드(악몽의 요람)·단계(1~5)·목표 등급(상관없음·D~S)·출발 시간·최소 조건을 정하면 목록에 올라가요. 파티는 <b>4인 고정</b>이에요.</li><li>내 캐릭터에 <b>레이드 패턴 숙련도</b>(미숙·숙지·빡숙)도 넣어요. 파티장은 ‘숙지 이상’처럼 조건을 걸 수 있어요.</li><li>서버는 게임 서버 15개 이름 × 1·2·3 = <b>45개</b> 중에 골라요(몽련·해월·괴량·아산·공월아·홍미희·강이태·소운·무이·묘롱·해일·백운·비영·복분·유희). 목록에 없는 새 서버는 ‘직접 입력’을 고르세요.</li><li>목록은 <b>서버별</b>로 나뉘어 보여요. 위쪽 서버 버튼으로 골라 보세요.</li><li>파티 카드는 인원에 따라 색이 바뀌어요. <b>2명 초록 · 3명 노랑 · 4명(마감) 빨강</b>. 맨 위 <b>전체화면</b>을 누르면 알리미·숙제·파티도 넓은 화면으로 볼 수 있어요(시세 탭은 기존 전체화면).</li><li>출발은 <b>모이면 바로 출발</b> 또는 <b>시간 정하기</b> 중에 골라요. 출발할 때 파티장이 <b>🚀 출발</b>을 누르면 파티원에게 알림이 가고 목록에서 사라져요.</li><li>구인할 땐 파티장으로 직접 파티를 만들고, 구직할 땐 지원하기 전에 게임에서 기존 파티를 미리 탈퇴해 주세요.</li><li>올라온 파티에서 <b>지원하기</b>를 누르면 내 스펙이 그대로 전달되고, 파티장이 <b>수락/거절</b>해요. 조건이 모자라면 ‘공격력 0.3만 부족’처럼 알려줘요.</li><li>여러 명이 한꺼번에 지원해도 모두 지원자 목록에 <b>먼저 지원한 순서</b>대로 쌓이고, 파티장이 고르면 돼요. 4명이 다 차면 남은 지원자에게는 ‘모집이 마감됐어요’ 알림이 가고 목록이 정리돼요. 동시에 수락을 눌러도 4명을 넘지 않아요.</li><li>파티장은 파티원 옆 <b>🚫 추방</b>을 두 번 눌러 내보낼 수 있어요. 추방된 사람은 그 파티에 다시 지원할 수 없고, 추방됐다는 알림이 가요. 미니 창에서도 추방할 수 있어요.</li><li>파티 탭 아래 <b>📊 등급컷과 단계 정보</b>에서 클리어 시간별 등급(S 4분·A 6분·B 9분·C 12분·D 15분), 단계별 입장 전투력과 보스 체력, S등급을 위한 파티 초당 피해를 볼 수 있어요.</li><li>꺼진 상태 알림을 켜 두면 지원이 오거나 수락됐을 때 앱이 꺼져 있어도 알려줘요.</li><li>목록은 파티 탭이나 미니 창(파티)을 볼 때만 10~30초마다 새로 고쳐지고, 3분간 손대지 않으면(내 파티·지원 중이면 10분) 자동으로 멈춰요. 화면을 누르면 다시 켜져요. 무료 서버를 아끼려고 기기당 하루 새로 고침 횟수에 여유 있는 한도가 있어요.</li><li>파티는 출발 2시간 뒤 자동으로 사라지고, 한 기기에서 한 번에 하나의 파티만 만들 수 있어요. 아래 <b>디버프 세팅 도술 순서</b>도 참고하세요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">💬</span><span>건의·오류 알려주기</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>💬 건의하기</b>에서 종류를 고르고 내용을 적어 <b>보내기</b> → 열린 페이지에서 <b>Create</b>.</li><li>잘 안 읽힌 스크린샷은 그 페이지에 끌어다 놓으면 같이 보낼 수 있어요.</li><li>GitHub 계정이 없다면 <b>내용 복사</b>로 단톡방에 보내 주세요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">📦</span><span>분해량·환산 기준</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>개방</b>(요혼석만): 무기 135·335·635·1,035·1,535 / 방어구 55·95·155·235·335 / 장신구 65·115·195·294·425</li><li><b>돌파</b>(천요석/요혼석): 무기 18/1,595 ~ 270/1,835 · 방어구 7/359 ~ 105/455 · 장신구 10/457 ~ 137/585</li><li>모든 분해량은 여러 번 분해했을 때의 <b>평균값(중간값)</b>이라 실제와 조금 다를 수 있어요.</li><li>요혼석 환산: 희귀아이템 1~3개(평균 2개), 만귀령패 4인 품앗이 쉬움 600개·보통 1,200개, 가루 100개 = 요혼석 1개.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">ℹ️</span><span>알아두면 좋은 것</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>패치로 분해량·환산 기준이 바뀌면 관리자가 업데이트로 반영해요.</li><li>거래소 수수료는 계산에 들어가 있지 않아요.</li><li>잘못 넣은 기록은 ‘기록’ 목록에서 ×로 지울 수 있어요. 영웅장비 시세 칸만 다시 채우고 싶으면 <b>영웅장비 시세만 비우기</b>(두 번 누르기), 처음부터 다시 하려면 <b>전체 초기화</b>를 누르세요.</li><li>기록은 이 기기의 앱(브라우저) 안에 저장돼요. 다른 기기에서는 빈 시세표로 시작하고, 사이트 데이터를 지우면 기록도 지워져요.</li></ul></div></details>
@@ -1137,7 +1165,7 @@ body{overflow-x:clip}
       <div class="pt-new" id="ptNew" hidden>
         <div class="pt-form">
           <label>레이드<select id="ptRaid"></select></label>
-          <label>단계<select id="ptStage"></select></label>
+          <label>단계<select id="ptStage"></select><span class="pt-hint2" id="ptStageHint"></span></label>
           <label>목표 등급<select id="ptGoal"></select></label>
           <div class="pt-fl"><span>인원</span><b style="color:var(--ink);font-size:15px;padding:8px 0">4명 고정 (나 포함)</b></div>
           <div class="pt-fl pt-wide"><span>출발</span><span class="pt-when"><label><input type="radio" name="ptWhen" value="now" checked>모이면 바로 출발</label><label><input type="radio" name="ptWhen" value="time">시간 정하기 <input type="time" id="ptTime" disabled></label></span></div>
@@ -1152,6 +1180,10 @@ body{overflow-x:clip}
       </div>
       <div id="ptList"></div>
     </div>
+    <details class="pt-ref pt-info-box" open>
+      <summary>📊 악몽의 요람 · 등급컷과 단계 정보</summary>
+      <div id="ptInfo"></div>
+    </details>
     <details class="pt-ref">
       <summary>📖 디버프 세팅 도술 순서 (참고)</summary>
       <div class="pt-skills">
