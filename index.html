@@ -277,6 +277,80 @@ summary{cursor:pointer;font-weight:500}
 .al-snd{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
 .al-snd select{font:inherit;font-size:14px;font-weight:700;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:6px 8px}
 .al-snd input[type=range]{width:110px;accent-color:var(--soul)}
+/* ===== 파티 ===== */
+.pt-me{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:12px}
+.pt-me>summary{cursor:pointer;display:flex;align-items:center;gap:10px;flex-wrap:wrap;list-style:none}
+.pt-me>summary::-webkit-details-marker{display:none}
+.pt-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 14px;margin-top:12px;align-items:end}
+.pt-form label,.pt-fl{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);font-weight:700}
+.pt-form input,.pt-form select,.pt-bar input,.pt-bar select{font:inherit;font-size:15px;color:var(--ink);border:1.5px solid var(--line);border-radius:10px;background:var(--surface);padding:7px 9px;min-width:0}
+.pt-form .al-swrow,.pt-form .pt-chk{flex-direction:row;align-items:center;color:var(--ink)}
+.pt-unit{display:flex;align-items:center;gap:6px}.pt-unit input{flex:1;width:100%}.pt-unit em{font-style:normal;color:var(--ink)}
+.pt-seg{display:inline-flex}
+.pt-when{display:flex;gap:12px;align-items:center;flex-wrap:wrap;color:var(--ink);font-weight:500}
+.pt-when label{flex-direction:row;align-items:center;gap:5px;color:var(--ink)}
+.pt-wide{grid-column:1/-1}
+.pt-chk{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--ink)}
+.pt-chk input{width:17px;height:17px;accent-color:var(--soul)}
+.pt-bar{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-bottom:12px}
+.pt-bar label{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700}
+.pt-bar #ptFServer{width:8em}
+.pt-new{background:var(--soul-soft);border:1.5px solid var(--soul);border-radius:14px;padding:4px 14px 14px;margin-bottom:12px}
+.pt-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(43,35,80,.06)}
+.pt-card.mine{border:2px solid var(--gold)}
+.pt-card.full{opacity:.75}
+.pt-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pt-title{font-size:17px}
+.pt-stage{font-family:"Do Hyeon",sans-serif;font-size:19px;color:var(--soul)}
+.pt-goal{font-size:13px;font-weight:700;border-radius:999px;padding:1px 8px;background:color-mix(in srgb,var(--gold) 18%,transparent);color:var(--gold)}
+.pt-st{font-size:12.5px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--rec);color:#fff;white-space:nowrap}
+.pt-st.done{background:var(--muted)}
+.pt-meta{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:6px;font-size:14px}
+.pt-slots{display:inline-flex;align-items:center;gap:3px}
+.pt-slot{width:20px;height:20px;border-radius:6px;border:1.5px dashed var(--line);display:inline-grid;place-items:center;font-size:11px}
+.pt-slot.on{background:var(--rec);border:0;color:#fff}.pt-slot.lead{border:0;background:color-mix(in srgb,var(--gold) 18%,transparent)}
+.pt-slots b{margin-left:4px}
+.pt-conds{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.pt-conds span{font-size:12.5px;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:2px 9px;background:var(--bg)}
+.pt-mem{margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.pt-row,.pt-app{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:4px 0;font-size:14px}
+.pt-nick{font-weight:700;min-width:5.5em}
+.pt-spec{display:inline-flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.pt-ty{font-size:12px;font-weight:700;border-radius:6px;padding:0 6px}
+.pt-ty.jg{background:#dcecff;color:#1f5fa8}.pt-ty.jm{background:#ffe2e2;color:#b3261e}
+.pt-tag{font-size:12px;font-weight:700;border-radius:6px;padding:0 6px;background:color-mix(in srgb,var(--gold) 18%,transparent);color:var(--gold)}
+.pt-tag.db{background:var(--soul-soft);color:var(--soul)}
+.pt-memo{margin-top:6px;font-size:14px;color:var(--ink)}
+.pt-own{margin-top:10px;background:var(--bg);border-radius:10px;padding:8px 10px}
+.pt-h{font-size:13px;font-weight:700;color:var(--muted)}
+.pt-acts{margin-left:auto;display:flex;gap:6px}
+.pt-btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px}
+.pt-btns .btn2,.pt-acts .btn2{padding:6px 14px;font-size:14px}
+.pt-kick{margin-left:auto;padding:3px 10px !important;font-size:12.5px !important}
+.pt-danger{border-color:var(--must);color:var(--must)}
+.pt-lack{font-size:13px;color:var(--must);font-weight:700;margin-right:auto}
+.pt-ok{color:var(--rec);font-weight:700;margin-right:auto}.pt-wait{color:var(--soul);font-weight:700;margin-right:auto}
+.pt-empty{text-align:center;color:var(--muted);padding:30px 10px;border:1.5px dashed var(--line);border-radius:14px}
+.pt-ref{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+.pt-ref summary{cursor:pointer;font-weight:700}
+.pt-skills{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
+.pt-skills span{font-size:13.5px;border:1px solid var(--line);border-radius:10px;padding:4px 9px;background:var(--bg)}
+.pt-skills b{color:var(--soul)}.pt-skills i{font-style:normal;color:var(--muted)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pt-ty.jg{background:#1d3550;color:#9cc8ff} :root:not([data-theme="light"]) .pt-ty.jm{background:#4a1f22;color:#ffaaa5} }
+.pt-notice{background:var(--soul-soft);border:1px solid color-mix(in srgb,var(--soul) 40%,transparent);border-radius:12px;padding:8px 12px;margin-bottom:12px;font-size:14px;line-height:1.7}
+.pt-notice p{margin:0}
+.pt-servers{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.pt-servers button{font:inherit;font-size:14px;font-weight:700;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+.pt-servers button[aria-pressed="true"]{background:linear-gradient(135deg,#3b2a7a,#5b3fb0);border-color:transparent;color:#fff}
+.pt-servers button em{font-style:normal;font-size:12px;opacity:.8;margin-left:4px}
+.pt-sv-h{font-family:"Do Hyeon",sans-serif;font-size:19px;margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.pt-sv-h span{font-family:inherit;font-size:13px;color:var(--muted)}
+.pt-sk{font-size:12px;font-weight:700;border-radius:6px;padding:0 6px}
+.pt-sk.s0{background:var(--bg);color:var(--muted);border:1px solid var(--line)}.pt-sk.s1{background:#dff3e8;color:#1e7a46}.pt-sk.s2{background:#fff0c8;color:#9a6a00}
+.pt-skillhelp{margin:0}
+.pt-ready{color:var(--rec);font-weight:700;margin-right:auto}
+.pt-go{background:linear-gradient(135deg,#d4351c,#f0a020) !important;border-color:transparent !important;color:#fff !important}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pt-sk.s1{background:#1d3d2b;color:#8fe0b0} :root:not([data-theme="light"]) .pt-sk.s2{background:#4a3a10;color:#ffd77a} }
 /* ===== 탭 ===== */
 .tabbar{display:flex;gap:6px;margin:14px 0 4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:16px;position:sticky;top:6px;z-index:30;box-shadow:0 4px 14px rgba(43,35,80,.08)}
 .tabbar button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:700;font-size:16px;border:0;border-radius:12px;padding:10px 6px;background:transparent;color:var(--muted);cursor:pointer}
@@ -310,6 +384,7 @@ summary{cursor:pointer;font-weight:500}
 .al-guild input[type=time],.td-remind input[type=time]{font:inherit;font-size:16px;font-weight:700;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:5px 8px}
 .al-days{display:flex;gap:4px;flex-wrap:wrap}
 .al-day{padding:5px 9px}
+.al-every{margin-right:4px}
 .alarm-live{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:14px;padding:10px 20px;border-radius:999px;background:linear-gradient(135deg,#3b2a7a,#c2365a);color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35);font-weight:700}
 .alarm-live b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:30px;font-variant-numeric:tabular-nums}
 .alarm-live{max-width:calc(100vw - 24px);white-space:nowrap}
@@ -799,6 +874,7 @@ body{overflow-x:clip}
     <button role="tab" data-tab="price" aria-selected="true"><span>💰</span>시세</button>
     <button role="tab" data-tab="alarm" aria-selected="false"><span>⏰</span>알리미</button>
     <button role="tab" data-tab="todo" aria-selected="false"><span>✅</span>숙제</button>
+    <button role="tab" data-tab="party" aria-selected="false"><span>⚔️</span>파티</button>
   </nav>
   <div id="tab-price" class="tabpane">
 
@@ -813,7 +889,8 @@ body{overflow-x:clip}
       <details class="gi"><summary><span class="gi-ic">🗡️</span><span>영웅장비 단계·부위는 이렇게 읽어요</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>아이콘 숫자는 게임과 같아요. <b>+10 ~ +50 = 1~5개방</b>, <b>✦+1 ~ ✦+5 = 1~5돌파</b>. 0개방은 분해량 정보가 없어 넣지 않아요.</li><li>부위는 게임 거래소 분류대로 판단해요. <b>무기</b>: 검·도·지팡이·부채·활 / <b>방어구</b>: 투구·갑옷·신발·각반·장갑·허리띠 / <b>장신구</b>: 목걸이·반지·팔찌·귀걸이</li><li>파란 테두리 장비는 희귀아이템, 보라 테두리이거나 ‘N돌파’ 표기가 있으면 영웅장비예요.</li><li>조각·가호·비법서·멤버십처럼 장비가 아닌 건 자동으로 제외해요. 한 번 고친 부위는 이름을 기억해요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">🪟</span><span>게임 위에 작게 띄우기 (미니 창)</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>미니 창</b>을 누르면 지금 시세·구매 신호·<b>요혼석 수급처 비교 그래프</b>·<b>빠른 이득 계산</b>·남는 장비 TOP 3만 담은 작은 창이 떠요.</li><li>미니 창 위쪽 <b>💰 시세 · ⏰ 알리미 · ✅ 숙제</b> 버튼으로 보일 내용을 골라요. <b>PC</b>는 여러 개를 함께 켜서 한 창에 위아래로 볼 수 있고, <b>폰</b>은 하나씩 바꿔 봐요. 각 탭의 ‘미니 창’ 버튼을 누르면 그 탭 내용으로 열려요. (브라우저가 게임 위 창을 하나만 허용해서, 여러 내용을 한 창에 모아 보여줘요.)</li><li>미니 창의 ‘지금 시세’ 옆 선택칸으로 <b>요혼석 단가 기준</b>(가장 싼 곳 자동 / 수급처 지정)을 바로 바꿀 수 있어요. 큰 화면 기준도 같이 바뀌어요.</li><li><b>PC 크롬·엣지</b>: 게임 위에 항상 떠 있는 별도 창으로 열리고, 크기와 위치를 자유롭게 바꿀 수 있어요.</li><li><b>폰</b>: 안드로이드에서 앱을 <b>팝업 보기</b>나 <b>분할 화면</b>으로 열면 창이 작아지는 순간 <b>자동으로 미니 화면이 창을 꽉 채워요.</b> 창을 다시 크게 하면 원래 화면으로 돌아오고, <b>큰 화면으로</b>를 눌러도 돼요. (팝업 보기: 최근 앱 화면에서 앱 아이콘을 길게 누르기)</li><li>일반 폰 화면에서 <b>미니 창</b>을 누르면 미니 화면이 전체를 채워서 크게 보여요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">📲</span><span>앱으로 설치·업데이트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>PC(크롬·엣지)</b>: 맨 위 <b>📲 앱 설치</b> 또는 주소창 오른쪽 설치 아이콘</li><li><b>안드로이드</b>: <b>📲 앱 설치</b> 또는 ⋮ → ‘앱 설치’ · <b>아이폰</b>: 사파리 공유 버튼 → ‘홈 화면에 추가’</li><li>카톡에서 열었다면 ⋮ → <b>다른 브라우저로 열기</b>를 해야 설치할 수 있어요.</li><li>새 버전이 나오면 맨 위에 알림이 뜨고, <b>지금 업데이트</b>를 누르면 기록은 그대로 두고 최신으로 바뀌어요.</li></ul></div></details>
-      <details class="gi"><summary><span class="gi-ic">⏰</span><span>알리미 · 숙제 체크리스트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>⏰ 알리미</b> 탭: 필드보스(매일 21시), 낙화의 전장 보스(매일 22시), 차원점령전(화요일 21시 30분)을 켜면 <b>10분·5분·1분 전</b>에 알려주고, 1분 전부터 화면 위에 초 단위 타이머가 떠요. 시작 후 <b>10분 동안은 ‘진행 중’</b>으로 보이다가 자동으로 꺼지고 다음 일정으로 넘어가요(✕로 먼저 닫을 수도 있어요). 시간마다 따로 켜고 끌 수 있어요.</li><li>문파 컨텐츠(요신 토벌령·결계지 방어·미혹의 정원·신기 쟁탈전)는 우리 문파 시간과 요일을 직접 넣으면 같은 방식으로 알려줘요.</li><li><b>📱 앱이 꺼져 있어도 알림 받기</b>를 켜면 앱을 닫아도 알림이 와요. 안드로이드는 크롬에서, 아이폰은 사파리 → 홈 화면에 추가한 앱을 홈 화면 아이콘으로 열어서 켜야 해요(iOS 16.4 이상).</li><li>앱을 열어두면 <b>미니 창</b>이나 <b>팝업 보기</b>에서 다음 일정과 1분 타이머도 볼 수 있어요.</li><li>알림 소리는 <b>띠링 · 징 · 절 종소리 · 북 둥둥 · 방울 · 전자 알람 · 경보</b> 중에 고르고 크기도 조절할 수 있어요(▶ 미리 듣기). 앱이 꺼져 있을 때 오는 알림은 폰에 설정된 기본 알림음으로 울려요.</li><li>처음 한 번 <b>시스템 알림 허용</b>을 누르면 다른 창을 보고 있어도 알림이 떠요.</li><li><b>✅ 숙제</b> 탭: 일일(일일 퀘스트·단상점 교환·일일 비경 1시간, 매일 오전 5시 초기화)·주간(주간 퀘스트·주간 비경 5시간·승천의 탑·천요석 제작·상점 구매, 수요일 오전 5시 초기화) 숙제를 체크해요. 화요일 정한 시간에 안 한 주간 숙제를 알려줘요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">⏰</span><span>알리미 · 숙제 체크리스트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>⏰ 알리미</b> 탭: 필드보스(매일 21시), 낙화의 전장 보스(매일 22시), 차원점령전(화요일 21시 30분)을 켜면 <b>10분·5분·1분 전</b>에 알려주고, 1분 전부터 화면 위에 초 단위 타이머가 떠요. 시작 후 <b>10분 동안은 ‘진행 중’</b>으로 보이다가 자동으로 꺼지고 다음 일정으로 넘어가요(✕로 먼저 닫을 수도 있어요). 시간마다 따로 켜고 끌 수 있어요.</li><li>문파 컨텐츠(요신 토벌령·결계지 방어·미혹의 정원·신기 쟁탈전)는 우리 문파 시간과 요일을 직접 넣으면 같은 방식으로 알려줘요. 처음엔 <b>매일</b>로 되어 있고, 요일을 누르면 <b>그 요일만</b> 남아요. 다른 요일을 더 누르면 추가되고, 다시 매일로 하려면 <b>매일</b>을 누르세요.</li><li><b>📱 앱이 꺼져 있어도 알림 받기</b>를 켜면 앱을 닫아도 알림이 와요. 안드로이드는 크롬에서, 아이폰은 사파리 → 홈 화면에 추가한 앱을 홈 화면 아이콘으로 열어서 켜야 해요(iOS 16.4 이상).</li><li>앱을 열어두면 <b>미니 창</b>이나 <b>팝업 보기</b>에서 다음 일정과 1분 타이머도 볼 수 있어요.</li><li>알림 소리는 <b>띠링 · 징 · 절 종소리 · 북 둥둥 · 방울 · 전자 알람 · 경보</b> 중에 고르고 크기도 조절할 수 있어요(▶ 미리 듣기). 앱이 꺼져 있을 때 오는 알림은 폰에 설정된 기본 알림음으로 울려요.</li><li>처음 한 번 <b>시스템 알림 허용</b>을 누르면 다른 창을 보고 있어도 알림이 떠요.</li><li><b>✅ 숙제</b> 탭: 일일(일일 퀘스트·단상점 교환·일일 비경 1시간, 매일 오전 5시 초기화)·주간(주간 퀘스트·주간 비경 5시간·승천의 탑·천요석 제작·상점 구매, 수요일 오전 5시 초기화) 숙제를 체크해요. 화요일 정한 시간에 안 한 주간 숙제를 알려줘요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">⚔️</span><span>레이드 파티 모집</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>⚔️ 파티</b> 탭에서 먼저 <b>내 캐릭터</b>(닉네임·서버·공격력·저격/절명·도술 강화·용맹 장착·디버프 세팅)를 저장해요.</li><li><b>+ 파티 만들기</b>: 레이드(악몽의 요람)·단계(1~5)·목표 등급(상관없음·D~S)·인원·출발 시간·최소 조건을 정하면 목록에 올라가요.</li><li>내 캐릭터에 <b>레이드 패턴 숙련도</b>(미숙·숙지·빡숙)도 넣어요. 파티장은 ‘숙지 이상’처럼 조건을 걸 수 있어요.</li><li>서버는 게임 서버 15개 이름 × 1·2·3 = <b>45개</b> 중에 골라요(몽련·해월·괴량·아산·공월아·홍미희·강이태·소운·무이·묘롱·해일·백운·비영·복분·유희). 목록에 없는 새 서버는 ‘직접 입력’을 고르세요.</li><li>목록은 <b>서버별</b>로 나뉘어 보여요. 위쪽 서버 버튼으로 골라 보세요.</li><li>출발은 <b>모이면 바로 출발</b> 또는 <b>시간 정하기</b> 중에 골라요. 출발할 때 파티장이 <b>🚀 출발</b>을 누르면 파티원에게 알림이 가고 목록에서 사라져요.</li><li>구인할 땐 파티장으로 직접 파티를 만들고, 구직할 땐 지원하기 전에 게임에서 기존 파티를 미리 탈퇴해 주세요.</li><li>올라온 파티에서 <b>지원하기</b>를 누르면 내 스펙이 그대로 전달되고, 파티장이 <b>수락/거절</b>해요. 조건이 모자라면 ‘공격력 0.3만 부족’처럼 알려줘요.</li><li>꺼진 상태 알림을 켜 두면 지원이 오거나 수락됐을 때 앱이 꺼져 있어도 알려줘요.</li><li>파티는 출발 2시간 뒤 자동으로 사라지고, 한 기기에서 한 번에 하나의 파티만 만들 수 있어요. 아래 <b>디버프 세팅 도술 순서</b>도 참고하세요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">💬</span><span>건의·오류 알려주기</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>💬 건의하기</b>에서 종류를 고르고 내용을 적어 <b>보내기</b> → 열린 페이지에서 <b>Create</b>.</li><li>잘 안 읽힌 스크린샷은 그 페이지에 끌어다 놓으면 같이 보낼 수 있어요.</li><li>GitHub 계정이 없다면 <b>내용 복사</b>로 단톡방에 보내 주세요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">📦</span><span>분해량·환산 기준</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>개방</b>(요혼석만): 무기 135·335·635·1,035·1,535 / 방어구 55·95·155·235·335 / 장신구 65·115·195·294·425</li><li><b>돌파</b>(천요석/요혼석): 무기 18/1,595 ~ 270/1,835 · 방어구 7/359 ~ 105/455 · 장신구 10/457 ~ 137/585</li><li>모든 분해량은 여러 번 분해했을 때의 <b>평균값(중간값)</b>이라 실제와 조금 다를 수 있어요.</li><li>요혼석 환산: 희귀아이템 1~3개(평균 2개), 만귀령패 4인 품앗이 쉬움 600개·보통 1,200개, 가루 100개 = 요혼석 1개.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">ℹ️</span><span>알아두면 좋은 것</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>패치로 분해량·환산 기준이 바뀌면 관리자가 업데이트로 반영해요.</li><li>거래소 수수료는 계산에 들어가 있지 않아요.</li><li>잘못 넣은 기록은 ‘기록’ 목록에서 ×로 지울 수 있어요. 영웅장비 시세 칸만 다시 채우고 싶으면 <b>영웅장비 시세만 비우기</b>(두 번 누르기), 처음부터 다시 하려면 <b>전체 초기화</b>를 누르세요.</li><li>기록은 이 기기의 앱(브라우저) 안에 저장돼요. 다른 기기에서는 빈 시세표로 시작하고, 사이트 데이터를 지우면 기록도 지워져요.</li></ul></div></details>
@@ -965,6 +1042,66 @@ body{overflow-x:clip}
     <div class="td-remind"><label class="al-swrow"><span class="al-sw"><input type="checkbox" id="tdRemindOn" aria-label="주간 숙제 알림"><span></span></span>화요일</label>
       <input type="time" id="tdRemindTime" value="10:00" aria-label="알림 시간"><span>에 주간 숙제 남은 것 알려주기</span>
       <button class="btn2" id="tdMini">미니 창으로 띄우기</button><button class="btn2" id="tdClear">체크 모두 해제</button></div>
+  </section>
+
+  <section id="tab-party" class="tabpane" hidden aria-labelledby="h-party">
+    <h2 id="h-party">레이드 파티 모집</h2>
+    <p class="small" style="margin:0 0 12px">파티를 만들거나 올라온 파티에 내 스펙으로 지원해요. 목록은 몇 초마다 자동으로 새로 고쳐지고, 파티는 출발 2시간 뒤 자동으로 사라져요.</p>
+    <div class="al-warn small" id="ptOff" hidden>관리자가 서버를 연결하면 쓸 수 있어요.</div>
+    <div id="ptMain">
+      <details class="pt-me" id="ptMeBox">
+        <summary><b>👤 내 캐릭터</b><span id="ptMeSum"></span></summary>
+        <div class="pt-form">
+          <label>닉네임<input id="ptNick" maxlength="12" autocomplete="off" placeholder="게임 닉네임"></label>
+          <label>서버<select id="ptServerSel"></select><input id="ptServer" maxlength="16" autocomplete="off" placeholder="서버 이름 직접 입력" hidden></label>
+          <label>공격력<span class="pt-unit"><input id="ptAtk" type="number" inputmode="decimal" step="0.1" min="0" placeholder="4.5"><em>만</em></span></label>
+          <label>도술 강화<select id="ptEnh"></select></label>
+          <div class="pt-fl"><span>저격 / 절명</span><span class="seg pt-seg"><button type="button" data-pt-type="저격" aria-pressed="true">저격</button><button type="button" data-pt-type="절명" aria-pressed="false">절명</button></span></div>
+          <div class="pt-fl"><span>레이드 패턴 숙련도</span><span class="seg pt-seg"><button type="button" data-pt-skill="미숙" aria-pressed="false">미숙</button><button type="button" data-pt-skill="숙지" aria-pressed="true">숙지</button><button type="button" data-pt-skill="빡숙" aria-pressed="false">빡숙</button></span></div>
+          <p class="small pt-wide pt-skillhelp"><b>미숙</b> 패턴을 배우는 중이에요 · <b>숙지</b> 패턴을 알고 맞춰 움직일 수 있어요 · <b>빡숙</b> 패턴을 완벽히 알고 공략을 이끌 수 있어요</p>
+          <label class="al-swrow"><span class="al-sw"><input type="checkbox" id="ptBrave"><span></span></span>용맹 장착</label>
+          <label class="al-swrow"><span class="al-sw"><input type="checkbox" id="ptDebuff"><span></span></span>디버프 세팅</label>
+          <button class="btn2 solid" id="ptSaveMe">저장</button>
+        </div>
+      </details>
+      <div class="pt-notice">
+        <p>📢 <b>구인할 때</b>는 파티장으로 직접 <b>파티를 만들어</b> 주세요.</p>
+        <p>📢 <b>구직할 때</b>는 지원하기 전에 게임에서 <b>기존 파티를 미리 탈퇴</b>해 주세요.</p>
+        <p>🚀 파티가 출발하면 파티장이 <b>출발</b>을 눌러 목록에서 내려 주세요.</p>
+      </div>
+      <div class="pt-servers" id="ptServers" role="group" aria-label="서버"></div>
+      <div class="pt-bar">
+        <select id="ptFStage" aria-label="단계"></select>
+        <label class="pt-chk"><input type="checkbox" id="ptFit">내 스펙으로 지원 가능한 것만</label>
+        <button class="btn2" id="ptRefresh" title="새로 고침">↻</button>
+        <button class="btn2 solid" id="ptNewBtn">+ 파티 만들기</button>
+        <span class="small" id="ptState" role="status"></span>
+      </div>
+      <div class="pt-new" id="ptNew" hidden>
+        <div class="pt-form">
+          <label>레이드<select id="ptRaid"></select></label>
+          <label>단계<select id="ptStage"></select></label>
+          <label>목표 등급<select id="ptGoal"></select></label>
+          <label>인원 (나 포함)<select id="ptSize"></select></label>
+          <div class="pt-fl pt-wide"><span>출발</span><span class="pt-when"><label><input type="radio" name="ptWhen" value="now" checked>모이면 바로 출발</label><label><input type="radio" name="ptWhen" value="time">시간 정하기 <input type="time" id="ptTime" disabled></label></span></div>
+          <label>최소 공격력<span class="pt-unit"><input id="ptMinAtk" type="number" inputmode="decimal" step="0.1" min="0" placeholder="상관없음"><em>만</em></span></label>
+          <label>최소 도술 강화<select id="ptMinEnh"></select></label>
+          <label>패턴 숙련도<select id="ptMinSkill"><option value="">상관없음</option><option value="숙지">숙지 이상</option><option value="빡숙">빡숙만</option></select></label>
+          <label class="pt-chk"><input type="checkbox" id="ptNeedBrave">용맹 장착 필수</label>
+          <label class="pt-chk"><input type="checkbox" id="ptNeedDebuff">디버프 세팅 필요</label>
+          <label class="pt-wide">한 줄 메모<input id="ptMemo" maxlength="60" placeholder="예: 디버프 1명 구해요, 디코 없음"></label>
+          <div class="pt-btns pt-wide"><button class="btn2" id="ptCancel">취소</button><button class="btn2 solid" id="ptCreate">파티 만들기</button></div>
+        </div>
+      </div>
+      <div id="ptList"></div>
+    </div>
+    <details class="pt-ref">
+      <summary>📖 디버프 세팅 도술 순서 (참고)</summary>
+      <div class="pt-skills">
+        <span>신내림 <b>+13</b></span><i>›</i><span>크게 베기 <b>+12</b></span><i>›</i><span>살 날리기 <b>+13</b></span><i>›</i><span>연쇄 타격 <b>+5</b></span><i>›</i><span>휘둘러 내려치기 <b>+5</b></span><i>›</i><span>요혼격 <b>+34</b></span><i>›</i><span>영혼 소용돌이 <b>+13</b></span><i>›</i><span>연쇄 번개 <b>+34</b></span><i>›</i><span>부적 던지기 <b>+13</b></span>
+      </div>
+      <p class="small">게임의 ‘사용 순서 설정’ 예시예요. 숫자는 도술 강화 수치예요.</p>
+    </details>
   </section>
 
   <p class="appver">버전 <span id="appVer"></span> · <button id="checkUpd">업데이트 확인</button> <span id="updState"></span></p>
