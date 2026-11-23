@@ -6,7 +6,9 @@ const SHELL = ["./", "./index.html", "./config.js", "./app.js", "./manifest.webm
   "./icons/icon-192.png", "./icons/slot-weapon.svg", "./icons/slot-armor.svg", "./icons/slot-acc.svg", "./img/example-capture.jpg", "./icons/icon-512.png", "./icons/icon-maskable-512.png", "./icons/apple-touch-icon.png"];
 
 // 설치할 때 브라우저에 남은 예전 파일이 아니라 서버의 새 파일을 받아 둠
-self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL.map(u => new Request(u, { cache: "reload" }))))); });
+self.addEventListener("install", e => {
+  e.waitUntil(caches.open(CACHE).then(c => Promise.allSettled(SHELL.map(u => c.add(new Request(u, { cache: "reload" }))))).then(() => self.skipWaiting()));
+});
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith("dokkaebi-app-") && k !== CACHE).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
