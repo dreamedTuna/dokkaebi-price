@@ -5,14 +5,14 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>깨비시세 · 도깨비의 세계 영웅장비 분해 시세표</title>
+<title>깨비알람 · 도깨비의 세계 길드 알람·숙제·파티 도우미</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#2b2350">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="깨비시세">
+<meta name="apple-mobile-web-app-title" content="깨비알람">
 <link rel="stylesheet" href="vendor/fonts/fonts.css">
 <style>
 :root{
@@ -532,6 +532,25 @@ body.tabfs .pt-me,body.tabfs .pt-new{max-width:1100px}
 .mini .mbar-best{white-space:nowrap}
 @media (max-width:460px){ .mini.fill .mini-bar .mini-mods button span{display:none} .mini.fill .mini-bar .mini-mods button{font-size:16px !important;padding:5px 9px !important} .mini.fill #miniClose{font-size:.78em} }
 body.mini-fill .al-toasts{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);right:10px;left:10px;max-width:none}
+/* ===== 영웅장비 거래 불가: 관련 칸 숨김 ===== */
+.no-hero .hero-only{display:none !important}
+body.no-hero .d-body{grid-template-columns:minmax(340px,30%) minmax(260px,26%) 1fr !important}
+.mini.no-hero .mm-price{grid-template-columns:1fr 1.3fr}
+@media (max-width:1100px){ body.no-hero .d-body{grid-template-columns:1fr !important} }
+@media (max-width:640px){ .mini.no-hero .mm-price{grid-template-columns:1fr} }
+.tabbar button{position:relative}
+.tab-new{position:absolute;top:4px;right:8px;background:#ef5b4c;color:#fff;font-size:10.5px;border-radius:999px;padding:1px 5px;line-height:1.3}
+@media (max-width:720px){ .tabbar button{font-size:13.5px;gap:3px} .tabbar button span{font-size:15px} }
+/* 공지 */
+.nt-card{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px;box-shadow:0 2px 10px rgba(43,35,80,.06)}
+.nt-card.pin{border-color:#ef5b4c;background:color-mix(in srgb,#ef5b4c 6%,var(--surface))}
+.nt-card.new{box-shadow:0 0 0 3px color-mix(in srgb,#ef5b4c 30%,transparent)}
+.nt-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nt-top b{font-size:17px}
+.nt-tag{font-size:12px;font-weight:700;border-radius:999px;padding:1px 8px;background:#ef5b4c;color:#fff}
+.nt-tag.n{background:var(--soul)}
+.nt-date{margin-left:auto;font-size:13px;color:var(--muted)}
+.nt-body{margin:8px 0 0;font-size:15px;line-height:1.7;white-space:pre-line}
 /* ===== 탭 ===== */
 .tabbar{display:flex;gap:6px;margin:14px 0 4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:16px;position:sticky;top:6px;z-index:30;box-shadow:0 4px 14px rgba(43,35,80,.08)}
 .tabbar button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:700;font-size:16px;border:0;border-radius:12px;padding:10px 6px;background:transparent;color:var(--muted);cursor:pointer}
@@ -1056,36 +1075,37 @@ body{overflow-x:clip}
   <div class="head">
     <div>
       <div class="kk-head" id="kkHead"></div>
-      <h1><img class="logo" src="icons/icon-192.png" alt=""><span>깨비시세</span></h1>
-      <p class="sub"><b>도깨비의 세계 영웅장비 분해 시세표</b> — 거래소 시세를 넣으면 요혼석을 어디서 구하는 게 싼지, 영웅장비를 사서 분해하면 얼마나 남는지 계산합니다. 기록은 지금 쓰는 브라우저에 저장돼요.</p>
+      <h1><img class="logo" src="icons/icon-192.png" alt=""><span>깨비알람</span></h1>
+      <p class="sub"><b>도깨비의 세계 길드 도우미</b> — 보스·컨텐츠 알림, 숙제 체크, 레이드 파티, 요혼석 시세까지 깨비가 챙겨줘요. 기록은 지금 쓰는 브라우저에 저장돼요.</p>
     </div>
     <div class="headbtns"><button class="btn2 fbbtn" id="fbOpen">💬 건의하기</button><button class="btn2 minibtn fsbtn" id="miniOpen" title="게임 화면 위에 작게 띄우기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="5" rx="1" fill="currentColor"/></svg>미니 창</button><button class="btn2 installbtn" id="installBtn" hidden>📲 앱 설치</button><button class="btn2 resetbtn" id="resetOpen">전체 초기화</button>
     <button class="btn2 solid fsbtn" id="dashOpen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>전체화면</button></div>
   </div>
   <div id="tabFsBar" class="tabfs-bar" hidden><b id="tabFsTitle">전체화면</b><span style="flex:1"></span><button class="btn2" id="tabFsClose">닫기 (Esc)</button></div>
   <nav class="tabbar" role="tablist" aria-label="메뉴">
-    <button role="tab" data-tab="price" aria-selected="true"><span>💰</span>시세</button>
-    <button role="tab" data-tab="alarm" aria-selected="false"><span>⏰</span>알리미</button>
+    <button role="tab" data-tab="alarm" aria-selected="true"><span>⏰</span>알리미</button>
     <button role="tab" data-tab="todo" aria-selected="false"><span>✅</span>숙제</button>
     <button role="tab" data-tab="party" aria-selected="false"><span>⚔️</span>파티</button>
+    <button role="tab" data-tab="price" aria-selected="false"><span>💎</span>요혼석</button>
+    <button role="tab" data-tab="notice" aria-selected="false"><span>📢</span>공지<b class="tab-new" id="noticeNew" hidden>N</b></button>
   </nav>
   <div id="tab-price" class="tabpane">
 
   <details class="guide" id="guide">
     <summary>처음이라면? 사용법 보기</summary>
-    <p class="guide-lead">거래소 캡처만 올리면 <b>① 요혼석을 가장 싸게 얻는 방법</b>, <b>② 영웅장비를 사서 분해하면 남는지</b>, <b>③ 지금 시세가 평소보다 싼지</b>를 알려줘요. 궁금한 항목을 눌러 자세히 보세요.</p>
+    <p class="guide-lead">보스·컨텐츠 <b>알림</b>, <b>숙제</b> 체크, 레이드 <b>파티</b> 모집, <b>요혼석</b>을 가장 싸게 얻는 방법까지 깨비가 챙겨줘요. 궁금한 항목을 눌러 자세히 보세요.</p>
     <div class="gq">
       <details class="gi"><summary><span class="gi-ic">📸</span><span>거래소 캡처를 올리고 <b>시세 읽기</b></span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>PC는 캡처 후 이 페이지에서 <b>Ctrl/⌘+V</b>(또는 끌어다 놓기), 폰은 스크린샷 칸을 눌러 <b>사진첩에서 고르기</b>.</li><li>여러 장을 한 번에 올려도 되고, 게임 전체 화면을 찍어도 돼요.</li><li>재료·희귀아이템·영웅장비가 섞여 있어도 따로 고를 필요 없이 한 번에 분류해요.</li><li>스크린샷 칸 아래 <b>예시 보기</b>에서 어떻게 찍으면 좋은지 볼 수 있어요.</li></ul><p><b>시세 읽기</b>를 누르면 무료 글자 인식이 내 기기 안에서 읽어요. 이미지는 어디에도 올라가지 않아요. 처음 한 번은 인식 도구를 받느라 조금 걸리고, 흐린 부분은 자동으로 한 번 더 읽어요.</p></div></details>
       <details class="gi"><summary><span class="gi-ic">✅</span><span>검토 표 확인 → <b>채우고 기록</b></span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>항목마다 가장 싼 줄에 <b>최저가</b> 표시가 붙어요. 같은 아이템이 여러 개면 가장 싼 값만 칸에 들어가요.</li><li>틀린 건 검토 표에서 <b>가격·분류·영웅장비 부위/단계·가루 묶음 크기</b>를 고칠 수 있어요.</li><li><b>채우고 기록</b>은 바로 저장, <b>칸에 채우기</b>는 값만 채워요.</li><li>스크린샷 없이 칸에 직접 입력해도 돼요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">📈</span><span>기록이 쌓이면 <b>추천 표시</b></span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>시세를 볼 때마다 <b>시세 기록</b>을 누르세요. 직전보다 오른 건 ▲빨강, 내린 건 ▼파랑이에요.</li><li><b>3번 이상</b> 기록하면 평소보다 싼지 비싼지 표시가 나와요. ‘평소’는 최근 7일·10번 기록의 중간값이에요.</li><li><span class="gchip must">강력 추천</span> 평소보다 20% 이상 쌈 · <span class="gchip rec">구매 추천</span> 10% 이상 쌈 · <span class="gchip high">비쌈 · 보류</span> 15% 이상 비쌈</li><li><b>재검증 필요</b>(주황): 넣은 지 하루가 지났거나 평소와 50% 넘게 차이 나서 입력 실수가 의심될 때. 그대로면 <b>확인했어요</b>, 진짜 폭락·폭등이면 <b>진짜 시세예요</b>. 1시간 넘게 비슷한 값이 두 번 기록되면 자동으로 진짜로 인정해요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">💰</span><span>결과 보는 법</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>요혼석 수급처 비교</b>에서 ‘최저가’가 붙은 곳이 지금 요혼석을 가장 싸게 얻는 방법이에요.</li><li><b>영웅장비 분해 가치와 이득</b> 표의 ‘사서 분해하면’이 <b>플러스</b>면 사서 분해할수록 이득, <b>마이너스</b>면 갖고 있는 장비는 파는 게 나아요.</li><li>영웅장비는 수익률 20% 이상이면 강력 추천, 이득이면 이득, 손해면 판매가 유리로 표시돼요.</li><li>아래쪽 <b>요혼석 단가 흐름</b>·<b>천요석 시세 흐름</b> 그래프로 기록이 쌓일수록 오르내림을 볼 수 있어요. 천요석 그래프 밑에는 최근 최저·최고·평균도 나와요.</li><li>전체화면 표는 <b>무기·방어구·장신구 탭</b>으로 나눠서 스크롤 없이 한 부위씩 봐요. 탭 옆 초록 숫자는 지금 사서 분해하면 남는 단계 수예요.</li><li>전체화면 표에는 단계별 <b>천요석 : 요혼석 개수</b>와 <b>가치 비중</b>(금색 = 천요석 몫, 보라 = 요혼석 몫)도 보여요. 천요석이 비싸지면 돌파 장비, 요혼석이 비싸지면 개방 장비가 유리해지는 걸 한눈에 볼 수 있어요.</li><li>맨 위 <b>전체화면</b>을 누르면 입력·추천·이득표·그래프를 한 창에서 볼 수 있어요. 그래프는 요혼석·천요석 버튼으로 바꿔 볼 수 있어요.</li></ul></div></details>
-      <details class="gi"><summary><span class="gi-ic">🗡️</span><span>영웅장비 단계·부위는 이렇게 읽어요</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>아이콘 숫자는 게임과 같아요. <b>+10 ~ +50 = 1~5개방</b>, <b>✦+1 ~ ✦+5 = 1~5돌파</b>. 0개방은 분해량 정보가 없어 넣지 않아요.</li><li>부위는 게임 거래소 분류대로 판단해요. <b>무기</b>: 검·도·지팡이·부채·활 / <b>방어구</b>: 투구·갑옷·신발·각반·장갑·허리띠 / <b>장신구</b>: 목걸이·반지·팔찌·귀걸이</li><li>파란 테두리 장비는 희귀아이템, 보라 테두리이거나 ‘N돌파’ 표기가 있으면 영웅장비예요.</li><li>조각·가호·비법서·멤버십처럼 장비가 아닌 건 자동으로 제외해요. 한 번 고친 부위는 이름을 기억해요.</li></ul></div></details>
+      <details class="gi hero-only"><summary><span class="gi-ic">🗡️</span><span>영웅장비 단계·부위는 이렇게 읽어요</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>아이콘 숫자는 게임과 같아요. <b>+10 ~ +50 = 1~5개방</b>, <b>✦+1 ~ ✦+5 = 1~5돌파</b>. 0개방은 분해량 정보가 없어 넣지 않아요.</li><li>부위는 게임 거래소 분류대로 판단해요. <b>무기</b>: 검·도·지팡이·부채·활 / <b>방어구</b>: 투구·갑옷·신발·각반·장갑·허리띠 / <b>장신구</b>: 목걸이·반지·팔찌·귀걸이</li><li>파란 테두리 장비는 희귀아이템, 보라 테두리이거나 ‘N돌파’ 표기가 있으면 영웅장비예요.</li><li>조각·가호·비법서·멤버십처럼 장비가 아닌 건 자동으로 제외해요. 한 번 고친 부위는 이름을 기억해요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">🪟</span><span>게임 위에 작게 띄우기 (미니 창)</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>미니 창</b>을 누르면 지금 시세·구매 신호·<b>요혼석 수급처 비교 그래프</b>·<b>빠른 이득 계산</b>·남는 장비 TOP 3만 담은 작은 창이 떠요.</li><li>미니 창 💰 시세 맨 위 <b>📷 캡처 넣기</b> 칸에 거래소 캡처를 넣으면(사진 고르기·끌어다 놓기·Ctrl+V) 깨비가 바로 읽고, <b>✅ 채우고 기록</b>을 누르면 큰 화면에도 반영돼요. 자세히 고치고 싶으면 큰 화면 검토 표에서 확인하세요.</li><li>미니 창 위쪽 <b>💰 시세 · ⏰ 알리미 · ✅ 숙제 · ⚔️ 파티</b> 버튼으로 보일 내용을 골라요. <b>PC</b>는 여러 개를 함께 켜서 한 창에 위아래로 볼 수 있고, <b>폰</b>은 하나씩 바꿔 봐요. 각 탭의 ‘미니 창’ 버튼을 누르면 그 탭 내용으로 열려요. (브라우저가 게임 위 창을 하나만 허용해서, 여러 내용을 한 창에 모아 보여줘요.)</li><li>미니 창의 ‘지금 시세’ 옆 선택칸으로 <b>요혼석 단가 기준</b>(가장 싼 곳 자동 / 수급처 지정)을 바로 바꿀 수 있어요. 큰 화면 기준도 같이 바뀌어요.</li><li><b>PC 크롬·엣지</b>: 게임 위에 항상 떠 있는 별도 창으로 열리고, 크기와 위치를 자유롭게 바꿀 수 있어요.</li><li><b>폰</b>: 안드로이드에서 앱을 <b>팝업 보기</b>나 <b>분할 화면</b>으로 열면 창이 작아지는 순간 <b>자동으로 미니 화면이 창을 꽉 채워요.</b> 창을 다시 크게 하면 원래 화면으로 돌아오고, <b>큰 화면으로</b>를 눌러도 돼요. (팝업 보기: 최근 앱 화면에서 앱 아이콘을 길게 누르기)</li><li>일반 폰 화면에서 <b>미니 창</b>을 누르면 미니 화면이 전체를 채워서 크게 보여요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">📲</span><span>앱으로 설치·업데이트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>PC(크롬·엣지)</b>: 맨 위 <b>📲 앱 설치</b> 또는 주소창 오른쪽 설치 아이콘</li><li><b>안드로이드</b>: <b>📲 앱 설치</b> 또는 ⋮ → ‘앱 설치’ · <b>아이폰</b>: 사파리 공유 버튼 → ‘홈 화면에 추가’</li><li>카톡에서 열었다면 ⋮ → <b>다른 브라우저로 열기</b>를 해야 설치할 수 있어요.</li><li>새 버전이 나오면 맨 위에 알림이 뜨고, <b>지금 업데이트</b>를 누르면 기록은 그대로 두고 최신으로 바뀌어요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">⏰</span><span>알리미 · 숙제 체크리스트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>⏰ 알리미</b> 탭: 필드보스(매일 21시), 낙화의 전장 보스(매일 22시), 차원점령전(화요일 21시 30분)을 켜면 <b>10분·5분·1분 전</b>에 알려주고, 1분 전부터 화면 위에 초 단위 타이머가 떠요. 시작 후 <b>10분 동안은 ‘진행 중’</b>으로 보이다가 자동으로 꺼지고 다음 일정으로 넘어가요(✕로 먼저 닫을 수도 있어요). 시간마다 따로 켜고 끌 수 있어요.</li><li>문파 컨텐츠(요신 토벌령·결계지 방어·미혹의 정원·신기 쟁탈전)는 우리 문파 시간과 요일을 직접 넣으면 같은 방식으로 알려줘요. 처음엔 <b>매일</b>로 되어 있고, 요일을 누르면 <b>그 요일만</b> 남아요. 다른 요일을 더 누르면 추가되고, 다시 매일로 하려면 <b>매일</b>을 누르세요.</li><li><b>📱 앱이 꺼져 있어도 알림 받기</b>를 켜면 앱을 닫아도 알림이 와요. 안드로이드는 크롬에서, 아이폰은 사파리 → 홈 화면에 추가한 앱을 홈 화면 아이콘으로 열어서 켜야 해요(iOS 16.4 이상).</li><li>앱을 열어두면 <b>미니 창</b>이나 <b>팝업 보기</b>에서 다음 일정과 1분 타이머도 볼 수 있어요.</li><li>알림 소리는 <b>띠링 · 징 · 절 종소리 · 북 둥둥 · 방울 · 전자 알람 · 경보</b> 중에 고르고 크기도 조절할 수 있어요(▶ 미리 듣기). 앱이 꺼져 있을 때 오는 알림은 폰에 설정된 기본 알림음으로 울려요.</li><li>처음 한 번 <b>시스템 알림 허용</b>을 누르면 다른 창을 보고 있어도 알림이 떠요.</li><li><b>✅ 숙제</b> 탭: 일일(일일 퀘스트·단상점 교환·일일 비경 1시간, 매일 오전 5시 초기화)·주간(주간 퀘스트·주간 비경 5시간·승천의 탑·천요석 제작·상점 구매, 수요일 오전 5시 초기화) 숙제를 체크해요. 화요일 정한 시간에 안 한 주간 숙제를 알려줘요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">⚔️</span><span>레이드 파티 모집</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>⚔️ 파티</b> 탭에서 먼저 <b>내 캐릭터</b>(닉네임·서버·공격력·저격/절명·도술 강화·용맹 장착·디버프 세팅)를 저장해요. 게임에서 찾아 초대할 수 있게 <b>닉네임은 정확히</b> 입력해 주세요.</li><li><b>+ 파티 만들기</b>: 레이드(악몽의 요람)·단계(1~5)·목표 등급(상관없음·D~S)·출발 시간·최소 조건을 정하면 목록에 올라가요. 파티는 <b>4인 고정</b>이에요.</li><li>내 캐릭터에 <b>레이드 패턴 숙련도</b>(미숙·숙지·빡숙)도 넣어요. 파티장은 ‘숙지 이상’처럼 조건을 걸 수 있어요.</li><li>서버는 게임 서버 15개 이름 × 1·2·3 = <b>45개</b> 중에 골라요(몽련·해월·괴량·아산·공월아·홍미희·강이태·소운·무이·묘롱·해일·백운·비영·복분·유희). 목록에 없는 새 서버는 ‘직접 입력’을 고르세요.</li><li>목록은 <b>서버별</b>로 나뉘어 보여요. 위쪽 서버 버튼으로 골라 보세요.</li><li>파티 카드는 인원에 따라 색이 바뀌어요. <b>2명 초록 · 3명 노랑 · 4명(마감) 빨강</b>. 맨 위 <b>전체화면</b>을 누르면 알리미·숙제·파티도 넓은 화면으로 볼 수 있어요(시세 탭은 기존 전체화면).</li><li>출발은 <b>모이면 바로 출발</b> 또는 <b>시간 정하기</b> 중에 골라요. 출발할 때 파티장이 <b>🚀 출발</b>을 누르면 파티원에게 알림이 가고 목록에서 사라져요.</li><li>구인할 땐 파티장으로 직접 파티를 만들고, 구직할 땐 지원하기 전에 게임에서 기존 파티를 미리 탈퇴해 주세요.</li><li>올라온 파티에서 <b>지원하기</b>를 누르면 내 스펙이 그대로 전달되고, 파티장이 <b>수락/거절</b>해요. 조건이 모자라면 ‘공격력 0.3만 부족’처럼 알려줘요.</li><li>여러 명이 한꺼번에 지원해도 모두 지원자 목록에 <b>먼저 지원한 순서</b>대로 쌓이고, 파티장이 고르면 돼요. 4명이 다 차면 남은 지원자에게는 ‘모집이 마감됐어요’ 알림이 가고 목록이 정리돼요. 동시에 수락을 눌러도 4명을 넘지 않아요.</li><li>파티장은 파티원 옆 <b>🚫 추방</b>을 두 번 눌러 내보낼 수 있어요. 추방된 사람은 그 파티에 다시 지원할 수 없고, 추방됐다는 알림이 가요. 미니 창에서도 추방할 수 있어요.</li><li><b>⏱ 레이드 타임어택 타이머</b>: 레이드에 들어가면 시작, 쓰러지면 사망 +. 지금 끝내면 받을 등급과 다음 컷까지 남은 시간이 보이고, 컷 30초·10초 전에 소리·진동으로 알려줘요. 클리어를 누르면 단계별 최고 기록이 남아요. 미니 창 ⏱ 타이머로 게임 위에 띄울 수 있어요.</li><li>파티 탭 아래 <b>📊 등급컷과 단계 정보</b>에서 클리어 시간별 등급(S 4분·A 6분·B 9분·C 12분·D 15분), 단계별 입장 전투력과 보스 체력, S등급을 위한 파티 초당 피해를 볼 수 있어요.</li><li>꺼진 상태 알림을 켜 두면 지원이 오거나 수락됐을 때 앱이 꺼져 있어도 알려줘요.</li><li>목록은 파티 탭이나 미니 창(파티)을 볼 때만 10~30초마다 새로 고쳐지고, 3분간 손대지 않으면(내 파티·지원 중이면 10분) 자동으로 멈춰요. 화면을 누르면 다시 켜져요. 무료 서버를 아끼려고 기기당 하루 새로 고침 횟수에 여유 있는 한도가 있어요.</li><li>파티 모집과 꺼진 상태 알림은 <b>길드원 전용</b>일 수 있어요. ‘길드 코드를 입력해 주세요’가 뜨면 단톡방에 공유된 코드를 넣으세요. 코드가 바뀌면 다시 물어봐요(🔑 길드 코드 버튼으로 언제든 바꿀 수 있어요).</li><li>파티는 출발 2시간 뒤 자동으로 사라지고, 한 기기에서 한 번에 하나의 파티만 만들 수 있어요. 아래 <b>디버프 세팅 도술 순서</b>도 참고하세요.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">💬</span><span>건의·오류 알려주기</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>💬 건의하기</b>에서 종류를 고르고 내용을 적어 <b>보내기</b> → 열린 페이지에서 <b>Create</b>.</li><li>잘 안 읽힌 스크린샷은 그 페이지에 끌어다 놓으면 같이 보낼 수 있어요.</li><li>GitHub 계정이 없다면 <b>내용 복사</b>로 단톡방에 보내 주세요.</li></ul></div></details>
-      <details class="gi"><summary><span class="gi-ic">📦</span><span>분해량·환산 기준</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>개방</b>(요혼석만): 무기 135·335·635·1,035·1,535 / 방어구 55·95·155·235·335 / 장신구 65·115·195·294·425</li><li><b>돌파</b>(천요석/요혼석): 무기 18/1,595 ~ 270/1,835 · 방어구 7/359 ~ 105/455 · 장신구 10/457 ~ 137/585</li><li>모든 분해량은 여러 번 분해했을 때의 <b>평균값(중간값)</b>이라 실제와 조금 다를 수 있어요.</li><li>요혼석 환산: 희귀아이템 1~3개(평균 2개), 만귀령패 4인 품앗이 쉬움 600개·보통 1,200개, 가루 100개 = 요혼석 1개.</li></ul></div></details>
+      <details class="gi hero-only"><summary><span class="gi-ic">📦</span><span>분해량·환산 기준</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>개방</b>(요혼석만): 무기 135·335·635·1,035·1,535 / 방어구 55·95·155·235·335 / 장신구 65·115·195·294·425</li><li><b>돌파</b>(천요석/요혼석): 무기 18/1,595 ~ 270/1,835 · 방어구 7/359 ~ 105/455 · 장신구 10/457 ~ 137/585</li><li>모든 분해량은 여러 번 분해했을 때의 <b>평균값(중간값)</b>이라 실제와 조금 다를 수 있어요.</li><li>요혼석 환산: 희귀아이템 1~3개(평균 2개), 만귀령패 4인 품앗이 쉬움 600개·보통 1,200개, 가루 100개 = 요혼석 1개.</li></ul></div></details>
       <details class="gi"><summary><span class="gi-ic">ℹ️</span><span>알아두면 좋은 것</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>패치로 분해량·환산 기준이 바뀌면 관리자가 업데이트로 반영해요.</li><li>거래소 수수료는 계산에 들어가 있지 않아요.</li><li>잘못 넣은 기록은 ‘기록’ 목록에서 ×로 지울 수 있어요. 영웅장비 시세 칸만 다시 채우고 싶으면 <b>영웅장비 시세만 비우기</b>(두 번 누르기), 처음부터 다시 하려면 <b>전체 초기화</b>를 누르세요.</li><li>기록은 이 기기의 앱(브라우저) 안에 저장돼요. 다른 기기에서는 빈 시세표로 시작하고, 사이트 데이터를 지우면 기록도 지워져요.</li></ul></div></details>
     </div>
   </details>
@@ -1122,7 +1142,7 @@ body{overflow-x:clip}
     <div class="signals" id="signals"></div>
   </section>
 
-  <section aria-labelledby="h-chun">
+  <section class="hero-only" aria-labelledby="h-chun">
     <h2 id="h-chun">천요석</h2>
     <div class="grid g1" style="margin-top:8px">
       <div class="card gold" id="card-chun">
@@ -1142,7 +1162,7 @@ body{overflow-x:clip}
     <div class="savebar2"><button class="save" id="saveBtn2">시세 기록</button><span class="meta" id="status2" role="status">천요석·수급처 시세만 넣었다면 여기서 바로 기록하세요</span></div>
   </section>
 
-  <section aria-labelledby="h-hero">
+  <section class="hero-only" aria-labelledby="h-hero">
     <h2 id="h-hero">영웅장비 거래소 시세</h2>
     <p class="small" style="margin:0">지금 거래소에 올라온 영웅장비 최저가를 1~5개방, 1~5돌파 단계별로 넣으면, 사서 분해했을 때 얼마나 남는지 아래 표에 계산돼요. 분해량은 평균값(중간값) 기준이에요. 모르는 칸은 비워 두세요. <b>주황 점선 칸</b>은 하루 이상 지난 시세라 다시 확인이 필요해요.</p>
     <div class="hero-tools"><button class="btn2 herorst" id="heroClear">영웅장비 시세만 비우기</button><span class="small" id="heroClearMsg" role="status"></span></div>
@@ -1157,7 +1177,7 @@ body{overflow-x:clip}
     <span id="status" role="status"></span>
   </div>
 
-  <section aria-labelledby="h-table">
+  <section class="hero-only" aria-labelledby="h-table">
     <h2 id="h-table">영웅장비 분해 가치와 이득 <span class="small" style="font-family:system-ui,sans-serif">· 분해량은 평균값(중간값) 기준</span></h2>
     <div class="controls" style="margin-top:8px">
       <label class="basis">요혼석 단가 기준 <select id="basis"></select></label>
@@ -1191,7 +1211,7 @@ body{overflow-x:clip}
       <div class="legend" id="legend"></div>
       <div id="chart"></div>
     </div>
-    <div class="panel">
+    <div class="panel hero-only">
       <h2>천요석 시세 흐름</h2>
       <div class="legend"><span><span class="dot" style="background:var(--gold)"></span>천요석 1개 거래소 시세</span></div>
       <div id="chunChart"></div>
@@ -1224,7 +1244,7 @@ body{overflow-x:clip}
       <button class="btn2" data-gc-open title="길드 코드 입력·변경">🔑 길드 코드</button>
       <button class="btn2 solid" id="alPushBtn">켜기</button>
     </div>
-    <div class="al-warn small">💡 위 <b>📱 앱이 꺼져 있어도 알림 받기</b>를 켜면 앱을 닫아도 알림이 와요(안드로이드 크롬, 아이폰은 홈 화면에 추가한 앱). 켜지 않으면 깨비시세가 열려 있을 때만 울려요. 휴대폰 캘린더에 넣어 두고 싶으면 <b>📅 휴대폰 캘린더에 추가</b>를 쓰세요.</div>
+    <div class="al-warn small">💡 위 <b>📱 앱이 꺼져 있어도 알림 받기</b>를 켜면 앱을 닫아도 알림이 와요(안드로이드 크롬, 아이폰은 홈 화면에 추가한 앱). 켜지 않으면 깨비알람가 열려 있을 때만 울려요. 휴대폰 캘린더에 넣어 두고 싶으면 <b>📅 휴대폰 캘린더에 추가</b>를 쓰세요.</div>
     <div id="alarmList"></div>
   </section>
 
@@ -1311,6 +1331,11 @@ body{overflow-x:clip}
     </details>
   </section>
 
+  <section id="tab-notice" class="tabpane" hidden aria-labelledby="h-notice">
+    <h2 id="h-notice">공지사항</h2>
+    <div id="noticeList"></div>
+  </section>
+
   <p class="appver">버전 <span id="appVer"></span> · <button id="checkUpd">업데이트 확인</button> <span id="updState"></span></p>
   <p class="appver credit">제작: <b id="makerName">참치</b> · 비공식 팬 제작 도구예요. 게임 명칭과 화면의 권리는 각 권리자(카카오게임즈·슈퍼캣)에게 있어요.</p>
 </div>
@@ -1358,10 +1383,10 @@ body{overflow-x:clip}
       <span class="mini-shot-state" id="miniShotState">여기에 끌어다 놓거나 <b>Ctrl+V</b>로 붙여넣으면 깨비가 바로 읽어요</span><button class="btn2 mini-shot-fill" id="miniShotFill" hidden>✅ 채우고 기록</button></div>
     <div class="mini-col"><div class="mini-h mini-hrow">지금 시세 <select id="miniBasis" aria-label="요혼석 단가 기준" title="요혼석 단가 기준"></select></div><div class="mini-kpi" id="miniKpi"></div><div class="mini-sig" id="miniSig"></div></div>
     <div class="mini-col"><div class="mini-h">요혼석 1개당 · 수급처 비교</div><div class="mini-src" id="miniSrc"></div></div>
-    <div class="mini-col"><div class="mini-h">빠른 이득 계산</div>
+    <div class="mini-col hero-only"><div class="mini-h">빠른 이득 계산</div>
       <div class="mini-row"><select id="miniSlot" aria-label="부위"></select><select id="miniLv" aria-label="단계"></select><input id="miniPrice" class="num" type="number" inputmode="numeric" min="0" placeholder="거래소 가격" aria-label="거래소 가격"></div>
       <div class="mini-res" id="miniRes"></div></div>
-    <div class="mini-col"><div class="mini-h">사서 분해하면 남는 장비</div><div id="miniTop"></div></div>
+    <div class="mini-col hero-only"><div class="mini-h">사서 분해하면 남는 장비</div><div id="miniTop"></div></div>
     </div>
     <div class="mm-pane" data-pane="alarm" hidden><div class="mini-col"><div class="mini-h">다가오는 일정 (켜 둔 알람)</div><div id="miniAlarmList"></div></div></div>
     <div class="mm-pane" data-pane="todo" hidden><div class="mini-col"><div id="miniTodo"></div></div></div>
@@ -1372,14 +1397,14 @@ body{overflow-x:clip}
 
 <div id="dash" role="dialog" aria-modal="true" aria-labelledby="d-title">
   <div class="d-head">
-    <h2 id="d-title">깨비시세</h2>
+    <h2 id="d-title">깨비알람 · 요혼석 시세</h2>
     <div class="d-kpi num" id="dKpi"></div>
     <button class="btn2 d-close" id="dashClose">닫기 (Esc)</button>
   </div>
   <div class="d-body">
     <div class="d-col inputs">
       <div class="d-panel"><h3>스크린샷으로 시세 넣기</h3><div id="dShotSlot"></div></div>
-      <div class="d-panel"><h3>영웅장비 거래소 시세</h3>
+      <div class="d-panel hero-only"><h3>영웅장비 거래소 시세</h3>
         <table class="d-hero"><thead><tr><th></th><th>무기</th><th>방어구</th><th>장신구</th></tr></thead><tbody id="dHero"></tbody></table>
         <div class="shotbar"><button class="btn2 solid" id="dSave">시세 기록</button><button class="btn2 herorst" id="dHeroClear">영웅장비만 비우기</button><span class="d-empty" id="dSaveMsg"></span></div>
       </div>
@@ -1388,12 +1413,12 @@ body{overflow-x:clip}
       <div class="d-panel"><h3>구매 신호</h3><div id="dSig"></div></div>
       <div class="d-panel"><h3>요혼석 1개당 단가</h3><div id="dSrc"></div></div>
     </div>
-    <div class="d-col table">
+    <div class="d-col table hero-only">
       <div class="d-panel d-grow"><h3 class="d-chart-h">분해 가치와 이득 <span class="d-tabs" id="dTabs" role="group" aria-label="부위"></span></h3><div class="d-legend-mix"><span><i style="background:var(--gold)"></i>천요석</span><span><i style="background:var(--soul)"></i>요혼석</span><span>가치 비중 = 분해 가치 중 각각의 몫</span></div><div class="d-table" id="dTable"></div></div>
     </div>
     <div class="d-col right">
-      <div class="d-panel"><h3>사서 분해하면 남는 장비</h3><div class="d-top" id="dTop"></div></div>
-      <div class="d-panel d-grow"><h3 class="d-chart-h">시세 흐름 <span class="seg dseg" role="group" aria-label="그래프 종류"><button data-dc="soul" aria-pressed="true">요혼석</button><button data-dc="chun" aria-pressed="false">천요석</button></span></h3><div class="legend" id="dLegend"></div><div class="d-chart" id="dChart"></div></div>
+      <div class="d-panel hero-only"><h3>사서 분해하면 남는 장비</h3><div class="d-top" id="dTop"></div></div>
+      <div class="d-panel d-grow"><h3 class="d-chart-h">시세 흐름 <span class="seg dseg" role="group" aria-label="그래프 종류"><button data-dc="soul" aria-pressed="true">요혼석</button><button data-dc="chun" aria-pressed="false" class="hero-only">천요석</button></span></h3><div class="legend" id="dLegend"></div><div class="d-chart" id="dChart"></div></div>
     </div>
   </div>
 </div>

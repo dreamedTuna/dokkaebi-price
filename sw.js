@@ -42,7 +42,7 @@ self.addEventListener("push", e => {
     const ua = self.navigator.userAgent || "", safari = /Safari/.test(ua) && !/Chrome|CriOS|Edg|Android/.test(ua);
     const cs = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
     if (!safari && cs.some(c => c.visibilityState === "visible")) return;   // 앱을 보고 있으면 앱 화면 안내로 충분
-    if (!items.length) items = [{ title: "깨비시세 알림", body: "곧 일정이 시작돼요", tag: "kkaebi" }];
+    if (!items.length) items = [{ title: "깨비알람 알림", body: "곧 일정이 시작돼요", tag: "kkaebi" }];
     for (const m of items.slice(0, 3)) await self.registration.showNotification(m.title, { body: m.body, tag: m.tag, renotify: true, icon: "icons/icon-192.png", badge: "icons/icon-192.png", vibrate: [250, 120, 250] });
   })());
 });
