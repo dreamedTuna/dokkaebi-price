@@ -1,0 +1,16 @@
+{
+  "name": "깨비알람 · 도깨비의 세계 길드 알람·숙제·파티 도우미",
+  "short_name": "깨비알람",
+  "description": "보스·컨텐츠 알림, 숙제 체크, 레이드 파티, 요혼석 시세를 깨비가 챙겨줘요.",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#16132a",
+  "theme_color": "#2b2350",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

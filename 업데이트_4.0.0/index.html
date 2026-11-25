@@ -1,0 +1,1429 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>깨비알람 · 도깨비의 세계 길드 알람·숙제·파티 도우미</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2b2350">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="깨비알람">
+<link rel="stylesheet" href="vendor/fonts/fonts.css">
+<style>
+:root{
+  --bg:#f3f1fa; --surface:#ffffff; --line:#dcd7ec; --ink:#1f1a33; --muted:#6b6487;
+  --gold:#b07d0c; --soul:#6c3fd1; --soul-soft:#e5dbfb;
+  --up:#c23b3b; --down:#2463c9; --accent:#2b2350; --best:#1f8a5b; --best-soft:#d8f1e4;
+  --c1:#d0498a; --c2:#e08a1e; --c3:#a8601a; --c4:#1f8a9b;
+  --must:#d4351c; --must-soft:#fde2db; --rec:#1f8a5b; --rec-soft:#d8f1e4; --high:#5a6b8c; --high-soft:#e4e8f0;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16132a; --surface:#211d3b; --line:#38325c; --ink:#ece8ff; --muted:#a59fc6;
+    --gold:#f0c24e; --soul:#b495ff; --soul-soft:#3a2d66;
+    --up:#ff7b7b; --down:#7fb0ff; --accent:#d9d2ff; --best:#5fd6a0; --best-soft:#1d3d33;
+    --c1:#ff86bf; --c2:#ffb357; --c3:#e0a060; --c4:#5fd0e0;
+    --must:#ff7a5c; --must-soft:#4a2219; --rec:#5fd6a0; --rec-soft:#1d3d33; --high:#9fb0d0; --high-soft:#2a3146;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16132a; --surface:#211d3b; --line:#38325c; --ink:#ece8ff; --muted:#a59fc6;
+  --gold:#f0c24e; --soul:#b495ff; --soul-soft:#3a2d66;
+  --up:#ff7b7b; --down:#7fb0ff; --accent:#d9d2ff; --best:#5fd6a0; --best-soft:#1d3d33;
+  --c1:#ff86bf; --c2:#ffb357; --c3:#e0a060; --c4:#5fd0e0;
+  --must:#ff7a5c; --must-soft:#4a2219; --rec:#5fd6a0; --rec-soft:#1d3d33; --high:#9fb0d0; --high-soft:#2a3146;
+  color-scheme: dark;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;font-size:17px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 18px 60px}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+h1{font-family:"Do Hyeon","Noto Sans KR",sans-serif;font-weight:400;font-size:clamp(30px,5vw,42px);line-height:1.1;margin:0}
+h2{font-family:"Do Hyeon","Noto Sans KR",sans-serif;font-weight:400;font-size:25px;margin:0 0 4px}
+.sub{color:var(--muted);margin:6px 0 0;font-size:16px}
+.num{font-variant-numeric:tabular-nums}
+.small{font-size:14px;color:var(--muted)}
+section{margin-top:30px}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--soul);outline-offset:2px}
+.btn2{font:inherit;font-weight:700;border:1px solid var(--accent);border-radius:12px;padding:9px 18px;background:transparent;color:var(--ink);cursor:pointer}
+.btn2.solid{background:var(--accent);color:var(--bg)}
+.btn2:disabled{opacity:.45;cursor:not-allowed}
+.fsbtn{display:inline-flex;gap:8px;align-items:center}
+.fsbtn svg{width:18px;height:18px}
+
+/* 입력 카드 */
+.grid{display:grid;gap:10px}
+.g1{grid-template-columns:minmax(220px,320px)}
+.g5{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;position:relative}
+.card.gold{border-left:6px solid var(--gold)}
+.card label{font-size:15px;color:var(--muted);font-weight:500}
+.card input{font:inherit;font-family:"Do Hyeon",sans-serif;font-size:32px;width:100%;border:0;background:transparent;color:var(--ink);padding:0;outline:none}
+.card:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.card .formula,.card .delta{font-size:13.5px;color:var(--muted);min-height:1.1em}
+.card .unitprice{margin-top:6px;padding-top:8px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.card .unitprice b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:23px}
+.card.best{border-color:var(--best);box-shadow:0 0 0 1px var(--best) inset}
+.tag{position:absolute;top:-10px;right:10px;background:var(--best);color:var(--surface);font-size:13px;font-weight:700;padding:1px 8px;border-radius:999px}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:0}
+.savebar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:16px}
+.save{font:inherit;font-weight:700;border:0;border-radius:12px;padding:11px 26px;background:var(--accent);color:var(--bg);cursor:pointer}
+.meta{color:var(--muted);font-size:14.5px}
+.meta input{font:inherit;width:70px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);padding:3px 8px}
+#status,#shotStatus{color:var(--soul);font-size:14.5px}
+
+/* 영웅장비 시세 입력 */
+.hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-top:12px}
+.hero-col{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.hero-col h3{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:20px;margin:0 0 6px}
+.hero-row{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;padding:4px 0}
+.hero-row label{font-size:14.5px;color:var(--muted);white-space:nowrap}
+.hero-row input{font:inherit;font-family:"Do Hyeon",sans-serif;font-size:22px;width:100%;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);padding:2px 10px;text-align:right}
+
+/* 비교 막대 */
+.compare{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-top:12px}
+.crow{display:grid;grid-template-columns:170px 1fr 200px;gap:10px;align-items:center;padding:6px 0}
+.crow .nm{font-size:16px;min-width:0;overflow-wrap:anywhere}
+.crow .track{height:14px;background:var(--bg);border-radius:7px;overflow:hidden}
+.crow .fill{height:100%;border-radius:7px}
+.crow .vv{text-align:right;font-size:15.5px}
+.crow.na{color:var(--muted)}
+.crow .diff{font-size:13.5px;color:var(--muted);display:block}
+
+/* 컨트롤 */
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{font:inherit;font-size:15.5px;border:0;background:transparent;color:var(--muted);padding:7px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--bg)}
+.basis{font-size:15.5px;display:flex;gap:6px;align-items:center}
+.basis select{font:inherit;font-size:15.5px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);padding:6px 12px}
+
+/* 표 */
+.tablebox{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:720px}
+th,td{padding:10px 12px;text-align:right;white-space:nowrap}
+th{font-size:14px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+tbody tr+tr td{border-top:1px solid var(--line)}
+tr.group td{background:var(--bg);font-family:"Do Hyeon",sans-serif;font-size:18px;text-align:left;padding:8px 12px}
+.cat{color:var(--muted);font-size:14.5px}
+.stars{letter-spacing:1px;color:var(--gold)}
+.stars i{color:var(--line);font-style:normal}
+.g{color:var(--gold)} .s{color:var(--soul)}
+.value{font-family:"Do Hyeon",sans-serif;font-size:23px}
+.mix{width:90px}
+.bar{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--line)}
+.bar span:first-child{background:var(--gold)} .bar span:last-child{background:var(--soul)}
+.chg{font-size:14.5px;color:var(--muted)} .chg.up{color:var(--up)} .chg.down{color:var(--down)}
+.rank{display:inline-block;min-width:22px;color:var(--muted);font-size:14px}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.profit{font-weight:700}
+.chip{display:inline-block;font-size:12.5px;font-weight:700;padding:1px 8px;border-radius:999px;margin-left:6px;vertical-align:2px}
+.chip.sg-must{background:var(--must);color:var(--surface)} .chip.sg-rec{background:var(--rec);color:var(--surface)} .chip.sg-high{background:var(--high-soft);color:var(--high)}
+.crow.r-must{background:var(--must-soft);border-radius:10px;padding-left:8px;padding-right:8px} .crow.r-rec{background:var(--rec-soft);border-radius:10px;padding-left:8px;padding-right:8px}
+.crow .chip{margin:2px 0 0;display:table}
+.p-must{color:var(--must)} .p-must .chip{background:var(--must);color:var(--surface)}
+.p-rec{color:var(--rec)} .p-rec .chip{background:var(--rec);color:var(--surface)}
+.p-high{color:var(--high)} .p-high .chip{background:var(--high-soft);color:var(--high)}
+tr.row-must td{background:var(--must-soft)}
+tr.row-rec td{background:var(--rec-soft)}
+
+/* 기록 */
+.history{display:grid;grid-template-columns:1fr;gap:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:15px;color:var(--muted);margin:4px 0 6px}
+#chart{overflow-x:auto}
+svg{display:block}
+.log{max-height:340px;overflow:auto;margin:0;padding:0;list-style:none;font-size:15px}
+.log li{padding:8px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:2px 8px}
+.log li:first-child{border-top:0}
+.log .t{color:var(--muted)}
+.log .vals{grid-column:1/2;color:var(--muted);font-size:13.5px}
+.log button{grid-row:1/3;grid-column:2;border:0;background:none;color:var(--muted);cursor:pointer;font:inherit;padding:0 4px}
+.log button:hover{color:var(--up)}
+
+details{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 16px}
+summary{cursor:pointer;font-weight:500}
+.edit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:12px}
+.edit-grid div{display:flex;gap:6px;align-items:center;font-size:15px}
+.edit-grid span{min-width:100px;color:var(--muted)}
+.edit-grid input{width:80px;font:inherit;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);padding:3px 6px}
+.linkbtn{font:inherit;font-size:14px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:8px;padding:4px 10px;cursor:pointer;margin-top:10px}
+
+/* 구매 신호 */
+.signals{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:10px}
+.sig{border-radius:14px;padding:12px 14px;border:1px solid var(--line);background:var(--surface)}
+.sig .nm{font-size:15px;color:var(--muted)}
+.sig .lv{font-family:"Do Hyeon",sans-serif;font-size:26px;line-height:1.2;margin:2px 0}
+.sig .why{font-size:14px;color:var(--muted)}
+.sig.must{background:var(--must);border-color:var(--must);color:var(--surface)}
+.sig.must .nm,.sig.must .why{color:var(--surface);opacity:.92}
+.sig.rec{background:var(--rec-soft);border-color:var(--rec)} .sig.rec .lv{color:var(--rec)}
+.sig.high{background:var(--high-soft);border-color:var(--high)} .sig.high .lv{color:var(--high)}
+.sig.wait .lv{color:var(--muted);font-size:20px}
+:root{--warn:#b86e00;--warn-soft:#fdf0d5}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--warn:#ffc061;--warn-soft:#3d3016}}
+:root[data-theme="dark"]{--warn:#ffc061;--warn-soft:#3d3016}
+.sig.check{background:var(--warn-soft);border-color:var(--warn);border-style:dashed} .sig.check .lv{color:var(--warn)}
+.sigtag.check{background:var(--warn)} .card.c-check{background:var(--warn-soft)}
+.chip.sg-check{background:var(--warn);color:var(--surface)}
+.chip.sg-norm,.chip.sg-wait{background:var(--bg);color:var(--muted);border:1px solid var(--line);font-weight:500}
+.crow.r-check{background:var(--warn-soft);border-radius:10px;padding-left:8px;padding-right:8px}
+.age{font-size:13px;color:var(--muted);margin-top:4px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.age .st{font-weight:700;font-size:12.5px;padding:1px 8px;border-radius:999px}
+.age .st.warn{background:var(--warn-soft);color:var(--warn)}
+.age .st.stale{background:var(--warn);color:var(--surface)}
+.vbtn{font:inherit;font-size:12.5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:1px 10px;cursor:pointer}
+.vbtn:hover{border-color:var(--warn)}
+.realbtn{display:inline-block;margin-top:6px;font-weight:700;border-color:var(--warn);color:var(--warn)}
+.crow .realbtn{display:table;margin-top:4px}
+.d-sig .realbtn{grid-column:1/-1;justify-self:start;margin-top:.2em}
+.hero-row input.warn,.d-hero input.warn{border-color:var(--warn)}
+.hero-row input.stale,.d-hero input.stale{border:2px dashed var(--warn);background:var(--warn-soft)}
+.d-topc .chk{display:inline-block;margin-top:4px;font-size:.78em;font-weight:700;background:var(--warn);color:var(--surface);border-radius:999px;padding:0 .6em}
+.sigtag{position:absolute;top:-10px;left:10px;font-size:13px;font-weight:700;padding:1px 8px;border-radius:999px;color:var(--surface)}
+.sigtag.must{background:var(--must)} .sigtag.rec{background:var(--rec)} .sigtag.high{background:var(--high)}
+.card.c-must{background:var(--must-soft)} .card.c-rec{background:var(--rec-soft)} .card.c-high{background:var(--high-soft)}
+@media (prefers-reduced-motion:no-preference){.sig.must{animation:pulse 1.6s ease-in-out 2}@keyframes pulse{50%{transform:scale(1.03)}}}
+
+/* 스크린샷 */
+.shot{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:10px}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:22px 14px;text-align:center;color:var(--muted);cursor:pointer}
+.drop:hover,.drop.over{border-color:var(--soul);color:var(--ink)}
+.drop b{color:var(--ink)}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.thumbs figure{margin:0;position:relative}
+.thumbs img{height:84px;border-radius:8px;border:1px solid var(--line);display:block}
+.thumbs button{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;border:0;background:var(--accent);color:var(--bg);cursor:pointer;font-size:13px;line-height:1}
+.shotbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.review{margin-top:14px}
+.review table{min-width:560px}
+.review td,.review th{padding:7px 10px}
+.review select{font:inherit;font-size:15px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);padding:3px 6px}
+.review tr.pick td{background:var(--best-soft)}
+.review tr.pick td:first-child::after{content:" 최저가";font-size:12px;font-weight:700;color:var(--best)}
+.applysum{margin:10px 0 0;font-size:15px}
+.lvl{display:inline-block;font-size:13px;font-weight:700;padding:1px 9px;border-radius:999px;white-space:nowrap}
+.lvl.op{background:var(--soul-soft);color:var(--soul)}
+.lvl.br{background:color-mix(in srgb,var(--gold) 20%,transparent);color:var(--gold)}
+.hero-row label .lvl{min-width:4.6em;text-align:center}
+.savebar2{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-top:12px}
+@media (max-width:720px){ .savebar2{display:none} }
+.updbar{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:center;padding:10px 14px;background:var(--soul);color:var(--surface);font-weight:700}
+.updbar[hidden]{display:none}
+.updbar .btn2{padding:6px 14px;min-height:0;border-color:var(--surface);color:var(--surface);background:transparent}
+.updbar .btn2.solid{background:var(--surface);color:var(--soul)}
+.installbtn{border-color:var(--soul);color:var(--soul)}
+.credit{margin-top:6px !important;line-height:1.6}
+.appver{margin-top:28px;text-align:center;font-size:13px;color:var(--muted)}
+.appver button{font:inherit;font-size:13px;border:0;background:none;color:var(--soul);text-decoration:underline;cursor:pointer}
+.shot-hint{flex-basis:100%}
+.d-chart-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.dseg button{font-size:.62em !important;padding:.3em .8em !important}
+.hero-tools{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:10px 0 2px}
+.herorst{font-size:14px;padding:6px 14px;border-color:color-mix(in srgb,var(--must) 55%,var(--line));color:var(--must);background:var(--surface);font-weight:700}
+.herorst:hover{border-color:var(--must)}
+.herorst.armed{background:var(--must);color:#fff;border-color:var(--must)}
+#dash .herorst{font-size:.85em;padding:.45em .9em}
+/* 전체화면: 입력 칸은 내용만큼 늘어나고 칸 전체가 스크롤 (패널끼리 겹치지 않게) */
+.d-col.inputs .d-panel{flex:none}
+.d-col.inputs{overflow-y:auto;overscroll-behavior:contain;padding-bottom:6px}
+/* 전체화면의 좁은 칸에서는 검토 표를 카드처럼 */
+#dash .review thead{display:none}
+#dash .review table{min-width:0 !important;display:block}
+#dash .review tbody{display:block}
+#dash .review tr{display:grid;grid-template-columns:auto 1fr;gap:6px 8px;padding:8px 10px;border-top:1px solid var(--line);align-items:center}
+#dash .review tr:first-child{border-top:0}
+#dash .review td{padding:0 !important;white-space:normal;text-align:left !important;border:0 !important}
+#dash .review td:first-child{grid-column:1/-1;font-weight:700}
+#dash .review td:nth-child(3){display:flex;flex-wrap:wrap;gap:6px}
+#dash .review td:last-child{grid-column:1/-1}
+#dash .review td input{width:7.5em !important}
+#dash .review .shotbar{position:sticky;bottom:0;background:var(--surface);padding:8px 0 2px;margin-top:4px}
+/* 전체화면 표: 분해량 비율·가치 비중 */
+.d-amt{white-space:nowrap;font-size:.92em}
+.d-table th,.d-table td{padding:.3em .4em !important}
+.d-table .profit .chip{display:none}
+.d-table .profit{white-space:nowrap}
+.d-lv{font-size:.78em;color:var(--muted);white-space:nowrap}
+@media (max-width:1500px){ .d-lv{display:none} }
+.d-amt .d-sep{color:var(--muted);margin:0 .25em}
+.d-mix{min-width:5.5em}
+.d-mix .bar{height:.55em}
+.d-mixt{display:flex;justify-content:space-between;font-size:.72em;margin-top:2px;font-variant-numeric:tabular-nums}
+.d-legend-mix{display:flex;gap:12px;font-size:.8em;color:var(--muted);margin:-.2em 0 .4em}
+.d-legend-mix i{display:inline-block;width:.8em;height:.8em;border-radius:2px;margin-right:4px;vertical-align:-1px}
+@media (max-width:1500px){ .d-amt{font-size:.85em} }
+/* 전체화면 표 부위 탭 */
+.d-tabs{display:inline-flex;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px}
+.d-tabs button{display:inline-flex;align-items:center;gap:5px;font:inherit;font-size:.62em;font-family:"Noto Sans KR",system-ui,sans-serif;font-weight:700;border:0;background:transparent;color:var(--muted);padding:.35em .9em .35em .45em;border-radius:999px;cursor:pointer}
+.d-tabs button[aria-pressed="true"]{background:var(--accent);color:var(--bg)}
+.d-tabs .slotico{--s:20px !important;border-radius:5px}
+.d-tabn{display:inline-grid;place-items:center;min-width:1.5em;height:1.5em;border-radius:999px;background:var(--rec);color:#fff;font-size:.85em}
+.d-table tbody tr{height:2.6em}
+.al-push{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,color-mix(in srgb,var(--soul) 14%,var(--surface)),var(--surface));border:1.5px solid var(--soul);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.al-push-t{flex:1;display:flex;flex-direction:column;gap:2px}
+.al-push-t b{font-size:16px}
+.al-push .btn2{min-width:72px}
+.al-snd{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.al-snd select{font:inherit;font-size:14px;font-weight:700;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:6px 8px}
+.al-snd input[type=range]{width:110px;accent-color:var(--soul)}
+/* ===== 파티 ===== */
+.pt-me{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:12px}
+.pt-me>summary{cursor:pointer;display:flex;align-items:center;gap:10px;flex-wrap:wrap;list-style:none}
+.pt-me>summary::-webkit-details-marker{display:none}
+.pt-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 14px;margin-top:12px;align-items:end}
+.pt-form label,.pt-fl{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);font-weight:700}
+.pt-form input,.pt-form select,.pt-bar input,.pt-bar select{font:inherit;font-size:15px;color:var(--ink);border:1.5px solid var(--line);border-radius:10px;background:var(--surface);padding:7px 9px;min-width:0}
+.pt-form .al-swrow,.pt-form .pt-chk{flex-direction:row;align-items:center;color:var(--ink)}
+.pt-unit{display:flex;align-items:center;gap:6px}.pt-unit input{flex:1;width:100%}.pt-unit em{font-style:normal;color:var(--ink)}
+.pt-seg{display:inline-flex}
+.pt-when{display:flex;gap:12px;align-items:center;flex-wrap:wrap;color:var(--ink);font-weight:500}
+.pt-when label{flex-direction:row;align-items:center;gap:5px;color:var(--ink)}
+.pt-wide{grid-column:1/-1}
+.pt-chk{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--ink)}
+.pt-chk input{width:17px;height:17px;accent-color:var(--soul)}
+.pt-bar{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-bottom:12px}
+.pt-bar label{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700}
+.pt-bar #ptFServer{width:8em}
+.pt-new{background:var(--soul-soft);border:1.5px solid var(--soul);border-radius:14px;padding:4px 14px 14px;margin-bottom:12px}
+.pt-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(43,35,80,.06)}
+.pt-card.mine{border:2px solid var(--gold)}
+.pt-card.full{opacity:.75}
+.pt-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pt-title{font-size:17px}
+.pt-stage{font-family:"Do Hyeon",sans-serif;font-size:19px;color:var(--soul)}
+.pt-goal{font-size:13px;font-weight:700;border-radius:999px;padding:1px 8px;background:color-mix(in srgb,var(--gold) 18%,transparent);color:var(--gold)}
+.pt-st{font-size:12.5px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--rec);color:#fff;white-space:nowrap}
+.pt-st.done{background:var(--muted)}
+.pt-meta{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:6px;font-size:14px}
+.pt-slots{display:inline-flex;align-items:center;gap:3px}
+.pt-slot{width:20px;height:20px;border-radius:6px;border:1.5px dashed var(--line);display:inline-grid;place-items:center;font-size:11px}
+.pt-slot.on{background:var(--rec);border:0;color:#fff}.pt-slot.lead{border:0;background:color-mix(in srgb,var(--gold) 18%,transparent)}
+.pt-slots b{margin-left:4px}
+.pt-conds{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.pt-conds span{font-size:12.5px;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:2px 9px;background:var(--bg)}
+.pt-mem{margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.pt-row,.pt-app{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:4px 0;font-size:14px}
+.pt-nick{font-weight:700;min-width:5.5em}
+.pt-spec{display:inline-flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.pt-ty{font-size:12px;font-weight:700;border-radius:6px;padding:0 6px}
+.pt-ty.jg{background:#dcecff;color:#1f5fa8}.pt-ty.jm{background:#ffe2e2;color:#b3261e}
+.pt-tag{font-size:12px;font-weight:700;border-radius:6px;padding:0 6px;background:color-mix(in srgb,var(--gold) 18%,transparent);color:var(--gold)}
+.pt-tag.db{background:var(--soul-soft);color:var(--soul)}
+.pt-memo{margin-top:6px;font-size:14px;color:var(--ink)}
+.pt-own{margin-top:10px;background:var(--bg);border-radius:10px;padding:8px 10px}
+.pt-h{font-size:13px;font-weight:700;color:var(--muted)}
+.pt-acts{margin-left:auto;display:flex;gap:6px}
+.pt-btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px}
+.pt-btns .btn2,.pt-acts .btn2{padding:6px 14px;font-size:14px}
+.pt-kick{margin-left:auto;padding:3px 10px !important;font-size:12.5px !important}
+.pt-danger{border-color:var(--must);color:var(--must)}
+.pt-lack{font-size:13px;color:var(--must);font-weight:700;margin-right:auto}
+.pt-ok{color:var(--rec);font-weight:700;margin-right:auto}.pt-wait{color:var(--soul);font-weight:700;margin-right:auto}
+.pt-empty{text-align:center;color:var(--muted);padding:30px 10px;border:1.5px dashed var(--line);border-radius:14px}
+.pt-ref{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+.pt-ref summary{cursor:pointer;font-weight:700}
+.pt-skills{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
+.pt-skills span{font-size:13.5px;border:1px solid var(--line);border-radius:10px;padding:4px 9px;background:var(--bg)}
+.pt-skills b{color:var(--soul)}.pt-skills i{font-style:normal;color:var(--muted)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pt-ty.jg{background:#1d3550;color:#9cc8ff} :root:not([data-theme="light"]) .pt-ty.jm{background:#4a1f22;color:#ffaaa5} }
+.pt-notice{background:var(--soul-soft);border:1px solid color-mix(in srgb,var(--soul) 40%,transparent);border-radius:12px;padding:8px 12px;margin-bottom:12px;font-size:14px;line-height:1.7}
+.pt-notice p{margin:0}
+.pt-servers{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.pt-servers button{font:inherit;font-size:14px;font-weight:700;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+.pt-servers button[aria-pressed="true"]{background:linear-gradient(135deg,#3b2a7a,#5b3fb0);border-color:transparent;color:#fff}
+.pt-servers button em{font-style:normal;font-size:12px;opacity:.8;margin-left:4px}
+.pt-sv-h{font-family:"Do Hyeon",sans-serif;font-size:19px;margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.pt-sv-h span{font-family:inherit;font-size:13px;color:var(--muted)}
+.pt-sk{font-size:12px;font-weight:700;border-radius:6px;padding:0 6px}
+.pt-sk.s0{background:var(--bg);color:var(--muted);border:1px solid var(--line)}.pt-sk.s1{background:#dff3e8;color:#1e7a46}.pt-sk.s2{background:#fff0c8;color:#9a6a00}
+.pt-skillhelp{margin:0}
+.pt-ready{color:var(--rec);font-weight:700;margin-right:auto}
+.pt-go{background:linear-gradient(135deg,#d4351c,#f0a020) !important;border-color:transparent !important;color:#fff !important}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pt-sk.s1{background:#1d3d2b;color:#8fe0b0} :root:not([data-theme="light"]) .pt-sk.s2{background:#4a3a10;color:#ffd77a} }
+/* ===== 파티 카드: 한 줄에 여러 개, 인원별 색 ===== */
+#ptList{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;align-items:start}
+#ptList .pt-sv-h,#ptList .pt-empty{grid-column:1/-1;margin-bottom:0}
+#ptList .pt-card{margin-bottom:0;display:flex;flex-direction:column;border-width:2px}
+.pt-card.full{opacity:1}
+.pt-card.n2{background:color-mix(in srgb,#22a55b 14%,var(--surface));border-color:#22a55b}
+.pt-card.n3{background:color-mix(in srgb,#e8b10a 20%,var(--surface));border-color:#d9a400}
+.pt-card.n4{background:color-mix(in srgb,#e0443a 16%,var(--surface));border-color:#e0443a}
+.pt-card.mine{box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 70%,transparent)}
+.pt-card .pt-own{background:color-mix(in srgb,var(--surface) 70%,transparent)}
+.pt-cnt{font-family:"Do Hyeon",sans-serif;font-size:20px;font-weight:400}
+.pt-card.n2 .pt-cnt{color:#1a8a4a}.pt-card.n3 .pt-cnt{color:#a77d00}.pt-card.n4 .pt-cnt{color:#c3352c}
+.pt-mine-badge{font-size:12.5px;font-weight:700;color:var(--gold);margin-left:4px}
+/* 글씨 키우기 */
+.pt-title{font-size:18px}.pt-stage{font-size:21px}.pt-goal{font-size:14px}
+.pt-meta{font-size:15px}.pt-conds span{font-size:14px;padding:3px 10px}
+.pt-row,.pt-app{font-size:15.5px}.pt-nick{font-size:15.5px}
+.pt-ty,.pt-sk,.pt-tag{font-size:13.5px;padding:1px 7px}
+.pt-memo{font-size:15.5px}.pt-h{font-size:14px}.pt-lack{font-size:14px}
+.pt-notice{font-size:15px}.pt-bar label,.pt-chk{font-size:15px}
+.al-tt .small,.al-next,.td-reset,.al-warn{font-size:14.5px}
+.al-chip,.al-day{font-size:14.5px}
+.td-item{font-size:17px}
+#tab-alarm>p.small,#tab-todo>p.small,#tab-party>p.small{font-size:15px}
+/* ===== 탭별 전체화면 ===== */
+.tabfs-bar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;padding:10px 4px;margin-bottom:6px;background:var(--bg)}
+.tabfs-bar b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:24px}
+.tabfs-bar[hidden]{display:none}
+body.tabfs .head,body.tabfs #guide,body.tabfs .appver,body.tabfs .savebar,body.tabfs #installBar{display:none !important}
+body.tabfs .wrap{max-width:none;padding-left:24px;padding-right:24px}
+body.tabfs .tabbar{top:52px}
+body.tabfs #alarmList{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:12px;align-items:start}
+body.tabfs #alarmList .al-h{grid-column:1/-1;margin:8px 0 0}
+body.tabfs #alarmList .al-card{margin-bottom:0}
+body.tabfs #todoBox{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px;align-items:start}
+body.tabfs #todoBox .td-group{margin-bottom:0}
+body.tabfs #ptList{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+body.tabfs .pt-me,body.tabfs .pt-new{max-width:1100px}
+@media (max-width:720px){ body.tabfs .wrap{padding-left:10px;padding-right:10px} body.tabfs .tabbar{top:50px} }
+.pt-hint{font-size:12.5px;font-weight:700;color:var(--must)}
+.pt-hint b{text-decoration:underline}
+.pt-auto{color:var(--muted)}
+.pt-ord{display:inline-grid;place-items:center;min-width:1.6em;height:1.6em;border-radius:50%;background:var(--accent);color:var(--bg);font-size:12.5px;font-weight:700}
+/* 등급컷·단계 정보 */
+.pt-info-box summary{font-size:16px}
+.pi-sec{margin-top:12px}
+.pi-h{font-weight:700;font-size:15.5px;margin-bottom:8px;display:flex;align-items:baseline;gap:8px}
+.pi-bar{display:flex;height:34px;border-radius:10px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.pi-seg{display:grid;place-items:center;color:#fff;font-family:"Do Hyeon",sans-serif;font-size:19px;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.pi-fail{flex:0 0 13%;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--line) 0 6px,transparent 6px 12px);color:var(--muted);font-size:13px;font-weight:700}
+.pi-ticks{position:relative;height:20px;margin-right:13%;font-size:12.5px;color:var(--muted)}
+.pi-ticks span{position:absolute;top:3px;transform:translateX(-50%);white-space:nowrap}
+.pi-ticks span:first-child{transform:none}
+.pi-grades{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.pi-g{display:flex;gap:10px;align-items:center;border:1.5px solid var(--c);border-radius:12px;padding:8px 10px;background:color-mix(in srgb,var(--c) 10%,var(--surface))}
+.pi-g>b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:30px;color:var(--c);line-height:1}
+.pi-g p{margin:0;font-size:14px;line-height:1.5}
+.pi-g strong{font-weight:700}
+.pi-note{margin:8px 0 0}
+.pi-stages{display:grid;gap:8px}
+.pi-st{display:grid;grid-template-columns:4.2em 1fr 1.6fr 1.2fr;gap:6px 12px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.pi-stn{font-family:"Do Hyeon",sans-serif;font-size:19px;color:var(--soul)}
+.pi-st em{display:block;font-style:normal;font-size:12px;color:var(--muted)}
+.pi-st b{font-size:16px}
+.pi-hp i{display:block;height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:4px}
+.pi-hp u{display:block;height:100%;background:linear-gradient(90deg,#e0443a,#f0a020)}
+.pi-dps b{color:var(--must)}
+.pi-notes{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pi-notes span{font-size:13.5px;border:1px dashed var(--line);border-radius:999px;padding:4px 10px;background:var(--surface)}
+.pt-hint2{font-size:12.5px;color:var(--soul);font-weight:700}
+@media (max-width:640px){ .pi-st{grid-template-columns:4.2em 1fr} .pi-hp,.pi-dps{grid-column:2} .pi-ticks{font-size:11px} .pi-seg{font-size:15px} }
+.gc-input{width:100%;font:inherit;font-size:18px;font-weight:700;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:10px 12px;margin:6px 0 4px}
+.pt-lock{line-height:1.9}
+.pt-lock .btn2{margin-top:8px}
+/* ===== 마스코트 깨비 ===== */
+.kk{display:inline-block;flex:none;line-height:0}
+.kk svg{width:100%;height:100%;display:block;overflow:visible}
+.kk-head{position:absolute;right:14px;bottom:8px;display:flex;align-items:center;gap:8px;pointer-events:none}
+.head .headbtns{padding-right:300px}
+.kk-head .kk{width:62px;height:62px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25))}
+.kk-head .kk-bub{max-width:220px;background:#fff;color:#2b2350;font-size:13px;font-weight:700;border-radius:14px;padding:7px 11px;position:relative;box-shadow:0 4px 12px rgba(0,0,0,.18);line-height:1.4}
+.kk-head .kk-bub::after{content:"";position:absolute;right:-6px;top:50%;margin-top:-6px;border:6px solid transparent;border-left-color:#fff;border-right:0}
+.head{position:relative}
+@media (prefers-reduced-motion:no-preference){ .kk-head .kk{animation:kkbob 2.6s ease-in-out infinite} @keyframes kkbob{50%{transform:translateY(-4px) rotate(-3deg)}} }
+@media (max-width:900px){ .head .headbtns{padding-right:70px} .kk-head .kk-bub{display:none} }
+@media (max-width:720px){ .kk-head{top:8px;bottom:auto;right:8px} .kk-head .kk{width:44px;height:44px} .head .headbtns{padding-right:0} }
+.kk-say{display:flex;align-items:center;gap:10px;margin:0 0 12px}
+.kk-say .kk{width:52px;height:52px}
+.kk-say p{margin:0;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:8px 12px;font-size:15px;font-weight:700;position:relative}
+.kk-say p::before{content:"";position:absolute;left:-7px;top:50%;margin-top:-6px;border:6px solid transparent;border-right-color:var(--line);border-left:0}
+.pt-empty .kk-say{justify-content:center;margin:0}
+.kk-mini{width:26px;height:26px}
+/* ===== 타임어택 타이머 ===== */
+.tt-box{display:block}
+.tt-top{display:flex;align-items:center;gap:14px}
+.tt-kk{width:68px;height:68px}
+.tt-time{font-family:"Do Hyeon",sans-serif;font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+.tt-time.warn{animation:ttwarn .5s steps(2) infinite}
+@keyframes ttwarn{50%{opacity:.35}}
+.tt-grade{font-size:15px;margin-top:4px}
+.tt-grade b{font-size:17px}
+.tt-line{margin:8px 0;font-weight:700;font-size:15px}
+.tt-bar{position:relative;margin:6px 0 12px}
+.tt-segs{display:flex;height:16px;border-radius:8px;overflow:hidden}
+.tt-segs span{display:grid;place-items:center;color:#fff;font-size:11px;font-weight:800}
+.tt-mark{position:absolute;top:-5px;width:4px;height:26px;margin-left:-2px;background:var(--ink);border-radius:2px;box-shadow:0 0 0 2px var(--surface)}
+.tt-ctrl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.tt-stage{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:15px}
+.tt-stage select{font:inherit;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:5px 8px}
+.tt-death{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
+.tt-death .btn2{padding:3px 12px;font-size:17px}
+.tt-death b{font-family:"Do Hyeon",sans-serif;font-size:24px;min-width:1.4em;text-align:center}
+.tt-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tt-btns .btn2{padding:9px 18px;font-size:15px}
+.tt-go{background:linear-gradient(135deg,#3b2a7a,#5b3fb0) !important;color:#fff !important;border-color:transparent !important;font-size:17px !important;padding:10px 28px !important}
+.tt-best{margin:10px 0 0}
+.tt-wrap summary{font-size:16px}
+.tt-mini .tt-time{font-size:46px}
+.tt-mini .tt-kk{width:54px;height:54px}
+.mini.fill .tt-mini .tt-time{font-size:64px}
+/* ===== 깨비 미니: 둥글고 귀엽게 ===== */
+.mini{--mk-bg1:#fffaf6;--mk-bg2:#f6f0ff;--mk-line:#ece2ff;--mk-card:#ffffff;--mk-head:#5b3fb0;--mk-sub:#8a72c9;--mk-pill:#ffffff;--mk-hot1:#ff8a7a;--mk-hot2:#ef5b4c;
+  font-family:"Jua","Do Hyeon",system-ui,sans-serif;border-radius:26px;border:2.5px solid var(--mk-line);background:linear-gradient(160deg,var(--mk-bg1),var(--mk-bg2));box-shadow:0 16px 44px rgba(91,63,176,.28);overflow:hidden}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .mini{--mk-bg1:#2b2440;--mk-bg2:#1f1a33;--mk-line:#463a72;--mk-card:#2f2849;--mk-head:#d9ccff;--mk-sub:#a998e0;--mk-pill:#2a2342} }
+.mini.in-pip,.mini.fill{border-radius:0;border:0;box-shadow:none}
+.mini *{font-family:inherit}
+.mini .mini-bar{border-bottom:0;padding:10px 12px 4px;gap:8px}
+.mini-kk{width:32px;height:32px}
+.mini .mini-bar>b{font-size:18px;font-weight:400;color:var(--mk-head);letter-spacing:.3px}
+.mini .mini-bar .mini-mods{background:var(--mk-pill);border:2px solid var(--mk-line);padding:3px;border-radius:999px;gap:2px}
+.mini .mini-bar .mini-mods button{font-size:13.5px;font-weight:400;padding:5px 11px;color:var(--mk-sub);transition:transform .12s}
+.mini .mini-bar .mini-mods button:active{transform:scale(.94)}
+.mini .mini-bar .mini-mods button[aria-pressed="true"],.mini .mini-bar .mini-mods button[aria-pressed="true"]:hover{background:linear-gradient(135deg,var(--mk-hot1),var(--mk-hot2));color:#fff;box-shadow:0 3px 8px rgba(239,91,76,.35)}
+.mini #miniClose{border-radius:999px;min-width:32px;height:32px;background:var(--mk-pill);border:2px solid var(--mk-line);color:var(--mk-sub);font-size:15px;padding:0 10px}
+.mini.fill #miniClose{color:var(--mk-hot2);border-color:#ffc4bb;font-size:.82em}
+.mini .mini-body{gap:10px;padding:6px 12px 14px}
+.mini .mini-col{background:var(--mk-card);border:2px solid var(--mk-line);border-radius:20px;padding:10px 13px;box-shadow:0 4px 0 var(--mk-line)}
+.mini .mm-price{gap:10px}
+.mini .mini-h{font-size:14px;color:var(--mk-sub);margin-bottom:6px}
+.mini .mini-alarm{border-radius:18px;background:#fff1e6;border:2px dashed #ffbf99;color:#7a3a1a;font-size:14.5px;padding:7px 12px}
+.mini .mini-alarm b{font-weight:400;color:#d0452f}
+.mini .mini-alarm.off{background:var(--mk-card);border-color:var(--mk-line);color:var(--mk-sub)}
+.mini .mini-alarm.live{background:linear-gradient(135deg,#ff8a7a,#ef5b4c);border:0;color:#fff}
+.mini .mini-alarm.live b{color:#fff}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .mini .mini-alarm:not(.live):not(.off){background:#3d2a26;border-color:#7a4a33;color:#ffd7c4} }
+.mini .mini-kpi b,.mini .mini-res b,.mini .mbar b,.mini .mini-top b,.mini .tt-time,.mini .mm-al .left{font-family:"Jua","Do Hyeon",sans-serif;font-weight:400}
+.mini .mini-kpi b{font-size:22px;color:var(--mk-head)}
+.mini .chip{border-radius:999px;font-weight:400}
+.mini .mini-row select,.mini .mini-row input,.mini .mini-hrow select,.mini .tt-stage select{border-radius:14px;border:2px solid var(--mk-line);background:var(--mk-pill);color:var(--ink)}
+.mini .btn2{border-radius:999px;font-weight:400;border-width:2px}
+.mini .btn2.solid{background:linear-gradient(135deg,#6b4fd0,#5b3fb0);border-color:transparent;box-shadow:0 3px 0 #3b2a7a}
+.mini .btn2.solid:active{transform:translateY(2px);box-shadow:0 1px 0 #3b2a7a}
+.mini .mbar{border-radius:10px;font-size:13.5px}
+.mini .mbar.on{background:color-mix(in srgb,var(--mk-hot1) 16%,transparent)}
+.mini .mbar-t{height:10px;border-radius:999px}
+.mini .mbar-f{border-radius:999px}
+.mini .mbar-best{background:linear-gradient(135deg,#3ec27f,#1f9d5c);border-radius:999px}
+.mini .mm-al{border-top:2px dotted var(--mk-line)}
+.mini .mm-al:first-child{border-top:0}
+.mini .mm-td{border-radius:12px;padding:5px 6px}
+.mini .mm-td:hover{background:color-mix(in srgb,var(--mk-sub) 10%,transparent)}
+.mini .mm-td input{width:19px;height:19px;accent-color:#ef5b4c}
+.mini .mmp-row{border-top:2px dotted var(--mk-line)}
+.mini .mmp-mine,.mini .mmp-j{border-radius:16px}
+.mini .tt-segs{height:18px;border-radius:999px}
+.mini .tt-mark{border-radius:999px;width:6px;margin-left:-3px}
+.mini .tt-death .btn2{width:34px;height:34px;padding:0;font-size:18px}
+.mini .slotico{border-radius:9px}
+.mini-shot{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;border:2.5px dashed #ffbfae;border-radius:20px;background:linear-gradient(135deg,#fff4ef,#fff9f6);padding:8px 10px;transition:.15s}
+.mini-shot.over{border-color:#ef5b4c;background:#ffe9e3;transform:scale(1.01)}
+.mini-shot.busy .mini-shot-state{animation:mshpulse 1s ease-in-out infinite}
+@keyframes mshpulse{50%{opacity:.5}}
+.mini-shot .btn2{padding:6px 14px;font-size:14px}
+.mini-shot .btn2.solid{background:linear-gradient(135deg,#ff8a7a,#ef5b4c);box-shadow:0 3px 0 #b8392c}
+.mini-shot-state{flex:1;min-width:160px;font-size:13.5px;color:#7a3a1a}
+.mini-shot-state b{color:#d0452f;font-weight:400}
+.mini-shot-fill{background:linear-gradient(135deg,#3ec27f,#1f9d5c) !important;color:#fff !important;border-color:transparent !important;box-shadow:0 3px 0 #13703f}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .mini-shot{background:#3a2a28;border-color:#7a4a3a} :root:not([data-theme="light"]) .mini-shot-state{color:#ffd7c4} }
+.mini .mbar-best{white-space:nowrap}
+@media (max-width:460px){ .mini.fill .mini-bar .mini-mods button span{display:none} .mini.fill .mini-bar .mini-mods button{font-size:16px !important;padding:5px 9px !important} .mini.fill #miniClose{font-size:.78em} }
+body.mini-fill .al-toasts{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);right:10px;left:10px;max-width:none}
+/* ===== 영웅장비 거래 불가: 관련 칸 숨김 ===== */
+.no-hero .hero-only{display:none !important}
+body.no-hero .d-body{grid-template-columns:minmax(340px,30%) minmax(260px,26%) 1fr !important}
+.mini.no-hero .mm-price{grid-template-columns:1fr 1.3fr}
+@media (max-width:1100px){ body.no-hero .d-body{grid-template-columns:1fr !important} }
+@media (max-width:640px){ .mini.no-hero .mm-price{grid-template-columns:1fr} }
+.tabbar button{position:relative}
+.tab-new{position:absolute;top:4px;right:8px;background:#ef5b4c;color:#fff;font-size:10.5px;border-radius:999px;padding:1px 5px;line-height:1.3}
+@media (max-width:720px){ .tabbar button{font-size:13.5px;gap:3px} .tabbar button span{font-size:15px} }
+/* 공지 */
+.nt-card{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px;box-shadow:0 2px 10px rgba(43,35,80,.06)}
+.nt-card.pin{border-color:#ef5b4c;background:color-mix(in srgb,#ef5b4c 6%,var(--surface))}
+.nt-card.new{box-shadow:0 0 0 3px color-mix(in srgb,#ef5b4c 30%,transparent)}
+.nt-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nt-top b{font-size:17px}
+.nt-tag{font-size:12px;font-weight:700;border-radius:999px;padding:1px 8px;background:#ef5b4c;color:#fff}
+.nt-tag.n{background:var(--soul)}
+.nt-date{margin-left:auto;font-size:13px;color:var(--muted)}
+.nt-body{margin:8px 0 0;font-size:15px;line-height:1.7;white-space:pre-line}
+/* ===== 탭 ===== */
+.tabbar{display:flex;gap:6px;margin:14px 0 4px;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:16px;position:sticky;top:6px;z-index:30;box-shadow:0 4px 14px rgba(43,35,80,.08)}
+.tabbar button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-weight:700;font-size:16px;border:0;border-radius:12px;padding:10px 6px;background:transparent;color:var(--muted);cursor:pointer}
+.tabbar button[aria-selected="true"]{background:linear-gradient(135deg,#3b2a7a,#5b3fb0);color:#fff}
+.tabpane[hidden]{display:none !important}
+/* 알리미 */
+.al-settings{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-bottom:10px}
+.al-settings .btn2{padding:7px 12px;font-size:14px}
+.al-warn{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 50%,transparent);border-radius:12px;padding:10px 12px;margin-bottom:14px;line-height:1.6;color:var(--ink)}
+.al-h{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:20px;margin:16px 0 8px}
+.al-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(43,35,80,.06)}
+.al-card.off{opacity:.62}
+.al-top{display:flex;align-items:center;gap:12px}
+.al-ic{font-size:26px}
+.al-tt{flex:1;display:flex;flex-direction:column}
+.al-tt b{font-size:17px}
+.al-sw{position:relative;display:inline-block;width:46px;height:26px;flex:none}
+.al-sw input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1}
+.al-sw span{position:absolute;inset:0;border-radius:999px;background:var(--line);transition:.2s}
+.al-sw span::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:.2s}
+.al-sw input:checked+span{background:var(--rec)}
+.al-sw input:checked+span::after{transform:translateX(20px)}
+.al-sw input:focus-visible+span{outline:2px solid var(--soul);outline-offset:2px}
+.al-swrow{display:inline-flex;align-items:center;gap:8px;font-weight:700}
+.al-offs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
+.al-chip,.al-day{font:inherit;font-size:13.5px;font-weight:700;border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:999px;padding:5px 12px;cursor:pointer}
+.al-chip.on,.al-day.on{background:var(--soul-soft);border-color:var(--soul);color:var(--soul)}
+.al-next{margin-left:auto}
+.al-guild{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:10px}
+.al-guild label{display:inline-flex;align-items:center;gap:8px;font-size:15px}
+.al-guild input[type=time],.td-remind input[type=time]{font:inherit;font-size:16px;font-weight:700;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:5px 8px}
+.al-days{display:flex;gap:4px;flex-wrap:wrap}
+.al-day{padding:5px 9px}
+.al-every{margin-right:4px}
+.alarm-live{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:14px;padding:10px 20px;border-radius:999px;background:linear-gradient(135deg,#3b2a7a,#c2365a);color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35);font-weight:700}
+.alarm-live b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:30px;font-variant-numeric:tabular-nums}
+.alarm-live{max-width:calc(100vw - 24px);white-space:nowrap}
+.alarm-live span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+body.mini-fill .alarm-live{display:none !important}
+@media (max-width:720px){ .alarm-live{padding:8px 16px;gap:10px;font-size:14px} .alarm-live b{font-size:26px} }
+.alarm-live.go{background:linear-gradient(135deg,#d4351c,#f0a020)}
+.alarm-live[hidden]{display:none !important}
+.alarm-live.run{background:linear-gradient(135deg,#2b2350,#5b3fb0);animation:none !important;padding:8px 10px 8px 18px}
+.alarm-live small{font-size:12px;opacity:.85;white-space:nowrap}
+.alarm-live .al-x{border:0;background:rgba(255,255,255,.18);color:#fff;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;flex:none}
+.mini-alarm.live.run{background:linear-gradient(135deg,#2b2350,#5b3fb0)}
+@media (prefers-reduced-motion:no-preference){ .alarm-live{animation:alpulse 1s ease-in-out infinite} @keyframes alpulse{50%{transform:translateX(-50%) scale(1.04)}} }
+.al-toasts{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 70px);z-index:95;display:flex;flex-direction:column;gap:8px;max-width:min(360px,calc(100vw - 28px))}
+.al-toast{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:12px 14px;border-radius:14px;background:var(--surface);color:var(--ink);border:1px solid var(--soul);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.al-toast b{font-size:16px}
+.al-toast span{grid-column:1;font-size:14px;color:var(--muted)}
+.al-toast button{grid-row:1/3;grid-column:2;border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer}
+.al-toast.start{border-color:var(--must);background:var(--must-soft)}
+/* 숙제 */
+.td-group{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px;box-shadow:0 2px 10px rgba(43,35,80,.06)}
+.td-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.td-h b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:20px}
+.td-prog{font-weight:700;color:var(--soul);background:var(--soul-soft);border-radius:999px;padding:1px 10px;font-size:14px}
+.td-prog.full{color:#fff;background:var(--rec)}
+.td-reset{margin-left:auto}
+.td-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:8px 0 6px}
+.td-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--soul),var(--rec));border-radius:3px;transition:width .3s}
+.td-item{display:flex;align-items:center;gap:12px;padding:10px 4px;border-top:1px solid var(--line);cursor:pointer;font-size:16px}
+.td-item:first-of-type{border-top:0}
+.td-item input{position:absolute;opacity:0;width:1px;height:1px}
+.td-box{width:24px;height:24px;border-radius:7px;border:2px solid color-mix(in srgb,var(--muted) 60%,var(--line));flex:none;display:grid;place-items:center;transition:.15s}
+.td-item input:checked+.td-box{background:var(--rec);border-color:var(--rec)}
+.td-item input:checked+.td-box::after{content:"✓";color:#fff;font-weight:900;font-size:15px}
+.td-item input:focus-visible+.td-box{outline:2px solid var(--soul);outline-offset:2px}
+.td-item.done .td-name{color:var(--muted);text-decoration:line-through}
+.td-notice{background:var(--warn-soft);border:1px solid var(--warn);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-weight:700;color:var(--ink)}
+.td-remind{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;font-size:15px}
+.td-remind .btn2{margin-left:auto;padding:6px 12px;font-size:14px}
+/* 미니 창 구성 고르기 */
+.mini-mods{display:flex;gap:3px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px}
+.mini-bar .mini-mods button{font:inherit;font-size:12px;font-weight:700;border:0;background:transparent;color:var(--muted);border-radius:999px;padding:3px 9px;cursor:pointer;white-space:nowrap}
+.mini-bar .mini-mods button[aria-pressed="true"],.mini-bar .mini-mods button[aria-pressed="true"]:hover{background:var(--accent);color:var(--bg)}
+.mini-bar .mini-mods button:hover{background:transparent}
+.mini.fill .mini-bar>b{display:none}
+.mini-alarm[hidden]{display:none !important}
+.mini.fill .mini-bar .mini-mods button{font-size:.8em;padding:6px 11px}
+.mini.fill #miniClose{white-space:nowrap}
+@media (max-width:440px){ .mini.fill .mini-bar{gap:6px;padding:6px 8px} .mini.fill .mini-bar .mini-mods button{font-size:.72em;padding:5px 7px} .mini.fill #miniClose{font-size:.75em;padding:4px 9px} }
+.mm-al{display:grid;grid-template-columns:auto 1fr auto;gap:2px 8px;align-items:center;padding:5px 2px;border-top:1px solid var(--line);font-size:13.5px}
+.mm-al:first-child{border-top:0}
+.mm-al .ic{font-size:18px}
+.mm-al .when{color:var(--muted);font-size:12px}
+.mm-al .left{font-family:"Do Hyeon",sans-serif;font-size:16px;color:var(--soul);white-space:nowrap}
+.mm-al.soon .left{color:var(--must)}
+.mm-td-h{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--muted);margin:6px 0 2px}
+.mm-td-h:first-child{margin-top:0}
+.mm-td{display:flex;align-items:center;gap:8px;padding:4px 2px;font-size:13.5px;cursor:pointer}
+.mm-td input{width:17px;height:17px;accent-color:var(--rec);margin:0}
+.mm-td.done span{color:var(--muted);text-decoration:line-through}
+.mini.fill .mm-al,.mini.fill .mm-td{font-size:1em} .mini.fill .mm-td input{width:20px;height:20px}
+@media (min-width:700px){ .mini.in-pip .mm-todo-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px} }
+.mmp-mine{background:color-mix(in srgb,var(--gold) 12%,transparent);border:1px solid color-mix(in srgb,var(--gold) 50%,transparent);border-radius:10px;padding:6px 8px;margin-bottom:6px}
+.mmp-t{font-size:13.5px;margin-bottom:2px}
+.mmp-row{display:flex;flex-wrap:wrap;align-items:center;gap:3px 8px;padding:5px 2px;border-top:1px solid var(--line);font-size:13px}
+.mmp-row .when{font-size:12px;color:var(--muted)}
+.mmp-row .pt-acts .btn2,.mmp-mine .pt-btns .btn2{padding:3px 10px;font-size:12.5px}
+.mmp-mine .pt-btns{margin-top:4px}
+.mmp-j{background:var(--soul-soft);border-radius:8px;border-top:0;padding:5px 8px;margin-bottom:4px}
+.mini.fill .mmp-row,.mini.fill .mmp-t{font-size:1em}
+/* 미니 창 알람 줄 */
+.mini-alarm{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;padding:6px 10px;border-radius:10px;background:var(--soul-soft);font-size:13.5px}
+.mini-alarm.off{background:var(--bg);color:var(--muted)}
+.mini-alarm b{font-weight:700}
+.mini-alarm.live{background:linear-gradient(135deg,#3b2a7a,#c2365a);color:#fff;font-size:15px}
+.mini-alarm.live b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:22px}
+@media (max-width:720px){ .tabbar{top:4px} .tabbar button{font-size:15px;padding:9px 4px} .al-next{margin-left:0;width:100%} .td-reset{margin-left:0;width:100%} .td-remind .btn2{margin-left:0} }
+/* 미니 창 */
+.mini-hrow{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.mini-hrow select{font:inherit;font-size:11.5px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);padding:1px 6px;max-width:62%}
+.mini-src{display:grid;gap:3px}
+.mbar{display:grid;grid-template-columns:6.4em 1fr auto auto;gap:6px;align-items:center;font-size:12.5px;padding:1px 4px;border-radius:6px}
+.mbar.on{background:color-mix(in srgb,var(--soul) 14%,transparent);font-weight:700}
+.mbar.na{color:var(--muted)}
+.mbar-nm{display:flex;align-items:center;gap:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mbar-nm i{width:7px;height:7px;border-radius:50%;flex:none}
+.mbar-t{height:7px;background:var(--line);border-radius:4px;overflow:hidden}
+.mbar-f{display:block;height:100%;border-radius:4px}
+.mbar b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:14px;min-width:3em;text-align:right}
+.mbar-best{font-size:10.5px;font-weight:700;color:var(--surface);background:var(--best);border-radius:999px;padding:0 6px}
+.mini.fill .mbar{font-size:.9em} .mini.fill .mbar b{font-size:1.1em} .mini.fill .mini-hrow select{font-size:.8em;padding:3px 8px}
+.mini.fill{position:fixed;inset:0;width:auto;max-width:none;border:0;border-radius:0;box-shadow:none;display:flex;flex-direction:column;z-index:75;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);font-size:clamp(14px,3.8vmin,20px)}
+.mini.fill{left:0 !important;top:0 !important;right:0 !important;bottom:0 !important}
+.mini.fill .mini-bar{cursor:default;padding:8px 10px 8px 14px;font-size:1em;touch-action:auto;user-select:auto}
+.mini.fill .mini-drag{display:none}
+.mini.fill #miniClose{font-size:.85em;font-weight:700;color:var(--soul);border:1px solid var(--soul);border-radius:999px;padding:4px 12px}
+.mini.fill .mini-body{flex:1;overflow:auto;gap:12px;padding:12px 14px 16px}
+.mini.fill .mm-price{grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+.mini.fill .mini-col{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.mini.fill .mini-h{font-size:.8em}
+.mini.fill .mini-kpi b{font-size:1.5em}
+.mini.fill .mini-sig .chip{font-size:.78em}
+.mini.fill .mini-row select,.mini.fill .mini-row input{font-size:1em;padding:8px}
+.mini.fill .mini-row input{font-size:1.15em}
+.mini.fill .mini-res{font-size:1em} .mini.fill .mini-res b{font-size:1.35em}
+.mini.fill .mini-top{font-size:1em} .mini.fill .mini-top b{font-size:1.2em}
+body.mini-fill{overflow:hidden}
+body.mini-fill .savebar{display:none}
+.minibtn{border-color:var(--accent)}
+.mini{position:fixed;right:16px;bottom:16px;z-index:70;width:min(900px,calc(100vw - 16px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.35);font-size:14px;line-height:1.45}
+.mini[hidden]{display:none}
+.mini-bar{display:flex;align-items:center;gap:10px;padding:6px 10px 6px 14px;border-bottom:1px solid var(--line);cursor:move;touch-action:none;user-select:none;font-size:13.5px}
+.mini-bar button{border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer;padding:4px 8px;border-radius:8px}
+.mini-bar button:hover{background:var(--bg);color:var(--ink)}
+.mini-hint{padding:6px 14px 0}
+.mini-body{display:flex;flex-direction:column;gap:10px;padding:8px 14px 12px}
+.mm-price{display:grid;grid-template-columns:1fr 1fr 1.2fr 0.9fr;gap:12px}
+.mm-pane[hidden]{display:none !important}
+.mini-h{font-size:12px;color:var(--muted);margin-bottom:4px}
+.mini-kpi{display:flex;flex-wrap:wrap;gap:4px 14px}
+.mini-kpi b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:19px}
+.mini-sig{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.mini-sig .chip{margin:0;font-size:11.5px}
+.mini-row{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:6px}
+.mini-row select,.mini-row input{font:inherit;font-size:14px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);padding:4px 6px;min-width:0}
+.mini-row input{width:100%;box-sizing:border-box;text-align:right;font-family:"Do Hyeon",sans-serif;font-size:17px}
+.mini-res{margin-top:6px;font-size:14px}
+.mini-res b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:18px}
+.mini-res .chip{margin-left:2px}
+.mini-top{display:flex;justify-content:space-between;gap:8px;padding:2px 0;font-size:13.5px}
+.mini-top b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:16px}
+.mini.in-pip{position:static;width:auto;min-height:100vh;border:0;border-radius:0;box-shadow:none}
+.mini.in-pip .mini-bar{cursor:default}
+.mini.in-pip .mini-drag{display:none}
+@media (max-width:640px){ .mm-price{grid-template-columns:1fr;gap:8px} .mini{right:8px;bottom:84px} }
+.mini.in-pip .mm-price{grid-template-columns:1fr 1fr 1.2fr 0.9fr}
+@media (max-width:820px){ .mini.in-pip .mm-price{grid-template-columns:1fr 1fr} }
+@media (max-width:560px){ .mini.in-pip .mm-price{grid-template-columns:1fr} }
+/* ===== 디자인 다듬기 ===== */
+body{background:radial-gradient(1200px 500px at 10% -10%, color-mix(in srgb,var(--soul) 12%,transparent), transparent 60%), radial-gradient(900px 400px at 100% 0%, color-mix(in srgb,var(--gold) 10%,transparent), transparent 60%), var(--bg);background-attachment:fixed}
+.head{padding:14px 16px;border-radius:18px;background:linear-gradient(135deg,#241c47 0%,#3b2a7a 55%,#5b3fb0 100%);color:#f3eeff;box-shadow:0 10px 30px rgba(20,14,45,.35);border:1px solid rgba(255,255,255,.08)}
+.head h1{display:flex;align-items:center;gap:12px;color:#fff}
+.head .sub{color:rgba(243,238,255,.85)}
+.head .logo{width:48px;height:48px;border-radius:12px;box-shadow:0 0 0 2px rgba(255,255,255,.25)}
+.head .logo-txt{display:inline-grid;place-items:center;font-size:30px;background:rgba(255,255,255,.12)}
+.head .btn2{border-color:rgba(255,255,255,.55);color:#fff;background:rgba(255,255,255,.08)}
+.head .btn2.solid{background:#fff;color:#2b2350;border-color:#fff}
+.head .resetbtn{border-color:#ff9c8a;color:#ffe3dc;background:rgba(212,53,28,.3)}
+.head .resetbtn:hover{background:var(--must);color:#fff}
+h2{position:relative;padding-left:14px}
+h2::before{content:"";position:absolute;left:0;top:.18em;bottom:.18em;width:5px;border-radius:3px;background:linear-gradient(var(--gold),var(--soul))}
+.card,.panel,.compare,.tablebox,.hero-col,.shot,.sig{box-shadow:0 2px 10px rgba(43,35,80,.06)}
+.slotico{position:relative;display:inline-block;width:var(--s,36px);height:var(--s,36px);border-radius:7px;overflow:hidden;flex:none;vertical-align:middle;box-shadow:0 0 0 1px rgba(170,90,230,.65)}
+.slotico img{width:100%;height:100%;display:block;object-fit:cover}
+.slotico .ov{position:absolute;right:2px;bottom:-1px;font-family:"Do Hyeon",sans-serif;font-size:calc(var(--s,36px)*0.38);line-height:1;color:#fff;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,0 0 3px #000;white-space:nowrap}
+.slotico .ov .st{color:#cfe8ff;font-size:.85em;margin-right:1px}
+.eqcell{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.hero-col h3{display:flex;align-items:center;gap:10px}
+.hero-row label{display:flex;align-items:center;gap:6px}
+.hero-subs .hero-row label .lvl{min-width:0}
+.hero-row label .lvl{display:none} .hero-row label{min-width:0}
+.fbbtn{white-space:nowrap}
+.shot-ex{margin-top:14px;border:1px dashed var(--line);border-radius:12px;padding:8px 12px;background:var(--bg)}
+.shot-ex summary{cursor:pointer;font-weight:700;font-size:15px}
+.shot-ex-body{display:flex;gap:16px;align-items:flex-start;margin-top:10px;flex-wrap:wrap}
+.shot-ex-body img{width:180px;max-width:45%;border-radius:10px;border:1px solid var(--line)}
+.shot-ex-body ul{flex:1;min-width:200px;margin:0;padding-left:18px;line-height:1.7}
+.fb-row{display:flex;gap:8px;align-items:center;font-size:15px;margin-bottom:8px}
+.fb-row select{font:inherit;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);padding:4px 8px}
+#fbText{width:100%;font:inherit;font-size:15px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:10px;resize:vertical}
+.guide-lv{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:4px 0 2px}
+.guide-lv span{display:inline-flex;align-items:center;gap:6px}
+@media (max-width:720px){
+  .head{padding:12px}
+  .head h1{font-size:24px}
+  .head .logo{width:38px;height:38px}
+  .hero-subs .slotico{--s:30px !important}
+  #tbody .slotico{--s:28px !important}
+}
+/* 사용법(접이식) */
+.guide-lead{margin:10px 0 12px;font-size:15.5px;line-height:1.65}
+.gq{display:grid;gap:8px}
+.gi{border:1px solid var(--line);border-radius:12px;background:var(--bg);overflow:hidden}
+.gi>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;font-size:16px;font-weight:500}
+.gi>summary::-webkit-details-marker{display:none}
+.gi-ic{font-size:18px;width:24px;text-align:center}
+.gi-more{margin-left:auto;font-size:13px;color:var(--soul);font-weight:700;white-space:nowrap}
+.gi[open]>summary .gi-more{color:var(--muted)}
+.gi[open]>summary .gi-more::before{content:"접기 "}
+.gi[open]>summary .gi-more{font-size:0}
+.gi[open]>summary .gi-more::before{font-size:13px}
+.gi[open]>summary{border-bottom:1px dashed var(--line)}
+.gi-body{padding:10px 16px 14px;font-size:15px;line-height:1.7}
+.gi-body ul{margin:0;padding-left:18px}
+.gi-body p{margin:8px 0 0}
+/* 사용법 끝 */
+/* 초기화 */
+.headbtns{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.resetbtn{border:2px solid var(--must);color:var(--must);background:var(--must-soft);font-weight:700}
+.resetbtn:hover{background:var(--must);color:var(--surface)}
+.modal{position:fixed;inset:0;z-index:80;background:rgba(12,10,24,.55);display:grid;place-items:center;padding:20px}
+.modal[hidden]{display:none}
+.modal-card{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:22px 22px 18px;width:100%;max-width:430px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-card h3{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:26px;margin:0 0 8px}
+.modal-card p{margin:0 0 14px;color:var(--muted);line-height:1.6}
+.modal-card p b{color:var(--must)}
+.rm-opt{display:flex;gap:8px;align-items:flex-start;font-size:15px;margin-bottom:18px;cursor:pointer}
+.rm-opt input{margin-top:5px}
+.modal-btns{display:flex;justify-content:flex-end;gap:8px}
+.btn2.danger{background:var(--must);border-color:var(--must);color:var(--surface)}
+/* 사용법 */
+details.guide{margin-top:20px;border-color:var(--soul);background:var(--surface)}
+details.guide>summary{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:21px;list-style:none;display:flex;align-items:center;gap:8px}
+details.guide>summary::-webkit-details-marker{display:none}
+details.guide>summary::before{content:"?";display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--soul);color:var(--surface);font-size:16px;font-family:"Noto Sans KR",sans-serif;font-weight:700}
+details.guide>summary::after{content:"펼치기";margin-left:auto;font-family:"Noto Sans KR",sans-serif;font-size:13.5px;color:var(--muted)}
+details.guide[open]>summary::after{content:"접기"}
+.guide-steps{counter-reset:st;list-style:none;margin:14px 0 0;padding:0;display:grid;gap:12px}
+.guide-steps>li{counter-increment:st;display:grid;grid-template-columns:34px 1fr;gap:4px 12px}
+.guide-steps>li::before{content:counter(st);grid-row:1/3;width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--bg);display:grid;place-items:center;font-weight:700;font-size:15px}
+.guide-steps b.t{font-size:16.5px}
+.guide-steps p{margin:0;color:var(--muted);font-size:15px;line-height:1.6}
+.guide-box{margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--bg);font-size:15px;line-height:1.7}
+.guide-box h4{margin:0 0 6px;font-size:16px}
+.guide-box ul{margin:0;padding-left:18px}
+.gchip{display:inline-block;font-size:12.5px;font-weight:700;padding:0 8px;border-radius:999px;vertical-align:1px}
+.gchip.must{background:var(--must);color:var(--surface)} .gchip.rec{background:var(--rec);color:var(--surface)} .gchip.high{background:var(--high-soft);color:var(--high)}
+
+/* 전체화면 대시보드 */
+#dash{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;flex-direction:column;
+  padding:calc(env(safe-area-inset-top,0px) + 14px) 18px calc(env(safe-area-inset-bottom,0px) + 14px);
+  font-size:clamp(13px,0.95vw,19px);overflow:auto}
+#dash.open{display:flex}
+body.dash-open{overflow:hidden}
+.d-head{display:flex;align-items:center;gap:12px 22px;flex-wrap:wrap;margin-bottom:12px}
+.d-head h2{font-size:2em;margin:0;line-height:1}
+.d-kpi{display:flex;gap:6px 20px;flex-wrap:wrap;color:var(--muted)}
+.d-kpi b{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:1.5em;color:var(--ink);margin-left:4px}
+.d-close{margin-left:auto}
+.d-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(340px,24%) minmax(200px,15%) minmax(420px,1fr) minmax(260px,22%);gap:14px}
+@media (max-width:1500px){
+  .d-body{grid-template-columns:minmax(330px,30%) minmax(380px,1fr) minmax(250px,26%)}
+  .d-col.mid-left{grid-column:3;grid-row:1}
+  .d-col.right{grid-column:3;grid-row:2}
+  .d-col.inputs{grid-column:1;grid-row:1/3}
+  .d-col.table{grid-column:2;grid-row:1/3}
+  .d-body{grid-template-rows:auto minmax(0,1fr)}
+}
+.d-col{display:flex;flex-direction:column;gap:14px;min-height:0}
+.d-panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:.8em 1em;min-height:0;display:flex;flex-direction:column}
+.d-panel h3{font-family:"Do Hyeon",sans-serif;font-weight:400;font-size:1.3em;margin:0 0 .4em}
+.d-grow{flex:1}
+.d-sig{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;padding:.35em .5em;border-radius:8px;margin-bottom:.25em}
+.d-sig .n{font-size:.95em}
+.d-sig .l{font-weight:700;font-size:.9em}
+.d-sig .w{grid-column:1/-1;font-size:.8em;color:var(--muted)}
+.d-sig.must{background:var(--must);color:var(--surface)} .d-sig.must .w{color:var(--surface);opacity:.9}
+.d-sig.rec{background:var(--rec-soft)} .d-sig.rec .l{color:var(--rec)}
+.d-sig.high{background:var(--high-soft)} .d-sig.high .l{color:var(--high)}
+.d-sig.norm .l,.d-sig.wait .l{color:var(--muted)}
+.d-sig.check{background:var(--warn-soft);border:1px dashed var(--warn)} .d-sig.check .l{color:var(--warn)}
+.d-bar{display:grid;grid-template-columns:7.5em 1fr auto;gap:.5em;align-items:center;padding:.3em 0;font-size:.92em}
+.d-bar .t{height:.7em;background:var(--bg);border-radius:4px;overflow:hidden}
+.d-bar .f{height:100%;border-radius:4px}
+.d-bar.best{font-weight:700}
+.d-table{overflow:auto;flex:1;min-height:0}
+.d-table table{min-width:0;font-size:.95em}
+.d-table th,.d-table td{padding:.32em .6em}
+.d-table th{font-size:.82em;position:sticky;top:0;background:var(--surface)}
+.d-table .value{font-size:1.25em}
+.d-table tr.group td{font-size:1.05em;padding:.3em .6em}
+.d-top{display:grid;gap:.5em}
+.d-topc{border-radius:12px;padding:.6em .8em;border:1px solid var(--line)}
+.d-topc .n{font-size:.9em;color:var(--muted)}
+.d-topc .v{font-family:"Do Hyeon",sans-serif;font-size:1.8em;line-height:1.1}
+.d-topc .w{font-size:.82em;color:var(--muted)}
+.d-topc.must{background:var(--must);border-color:var(--must);color:var(--surface)} .d-topc.must .n,.d-topc.must .w{color:var(--surface);opacity:.9}
+.d-topc.rec{background:var(--rec-soft);border-color:var(--rec)} .d-topc.rec .v{color:var(--rec)}
+.d-chart{flex:1;min-height:180px}
+.d-empty{color:var(--muted);font-size:.9em}
+.d-scroll{overflow:auto;min-height:0}
+.d-col.inputs{overflow:auto}
+#dash .shot{margin:0;padding:0;border:0;background:none}
+#dash .drop{padding:.9em .6em;font-size:.88em}
+#dash .thumbs img{height:3.6em}
+#dash .review table{min-width:0;font-size:.85em}
+#dash .review select{font-size:.9em;max-width:9em}
+#dash .applysum{font-size:.85em}
+#dash .btn2{padding:.45em .9em;font-size:.9em}
+#dash .shotbar{gap:.5em}
+.d-hero{width:100%;border-collapse:collapse;font-size:.9em}
+.d-hero th{font-size:.8em;color:var(--muted);font-weight:500;padding:.2em .3em;text-align:center}
+.d-hero td{padding:.18em .25em}
+.d-hero td:first-child{white-space:nowrap;color:var(--gold);font-size:.85em;width:2.6em;padding-right:.4em}
+.d-hero{table-layout:fixed;min-width:0;width:100%}
+.d-hero th:first-child{width:3em}
+.d-col.inputs{overflow-x:hidden}
+.d-hero input::-webkit-outer-spin-button,.d-hero input::-webkit-inner-spin-button,.hero-row input::-webkit-outer-spin-button,.hero-row input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.d-hero input,.hero-row input{-moz-appearance:textfield;appearance:textfield}
+.d-hero input{width:100%;min-width:0;font:inherit;font-family:"Do Hyeon",sans-serif;font-size:1em;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);padding:.2em .3em;text-align:right;letter-spacing:-.01em}
+.d-hero input.lv-must{border-color:var(--must);background:var(--must-soft)}
+.d-hero input.lv-rec{border-color:var(--rec);background:var(--rec-soft)}
+.shotmode{margin-top:10px}
+.shotmode .seg button{font-size:14px;padding:5px 12px}
+#dash .shotmode .seg button{font-size:.85em;padding:.3em .7em}
+@media (max-width:1100px),(max-height:620px){
+  .d-body{grid-template-columns:1fr;grid-template-rows:none;flex:none}
+  .d-col.mid-left,.d-col.right,.d-col.inputs,.d-col.table{grid-column:auto;grid-row:auto}
+  .d-table{max-height:none}
+  .d-chart{min-height:260px}
+}
+
+@media (max-width:720px){
+  html,body{overflow-x:hidden}
+  .wrap{padding:18px 12px 48px}
+  h1{font-size:28px}
+  h2{font-size:22px}
+  .head{flex-direction:column;align-items:stretch}
+  .headbtns{display:grid;grid-template-columns:1fr 1fr}
+  .headbtns .btn2{padding:10px 8px;justify-content:center}
+  .controls{gap:8px}
+  .controls .seg{width:100%;display:flex}
+  .controls .seg button{flex:1;padding:8px 4px;font-size:14px}
+  .basis{width:100%;flex-wrap:wrap} .basis select{flex:1;min-width:0}
+  .card input{font-size:28px}
+  .hero-grid{grid-template-columns:1fr}
+  .hero-row input{font-size:20px}
+  .signals{grid-template-columns:1fr 1fr}
+  .sig{padding:10px 11px} .sig .lv{font-size:21px} .sig .why{font-size:12.5px}
+  .compare{padding:12px}
+  .crow .vv{font-size:14.5px}
+  .edit-grid{grid-template-columns:1fr}
+  .edit-grid span{min-width:0!important;flex:1}
+  .savebar{gap:8px 12px} .save{width:100%}
+  .panel{padding:12px}
+  .log{font-size:14px}
+  details.guide>summary{font-size:19px}
+  .guide-steps>li{grid-template-columns:28px 1fr;gap:4px 10px}
+  .guide-steps>li::before{width:26px;height:26px;font-size:14px}
+  .guide-box{padding:10px 12px;font-size:14px}
+  /* 스크린샷 검토 표는 카드처럼 세로로 */
+  #review .tablebox{overflow:visible;border:0;background:none}
+  #review table,#review tbody,#review tr,#review td{display:block;min-width:0!important;width:auto}
+  #review thead{display:none}
+  #review tr{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin-bottom:8px}
+  #review tbody tr+tr td{border-top:0}
+  #review td{padding:3px 0;text-align:left;white-space:normal}
+  #review td:first-child{font-weight:700}
+  #review select{max-width:100%}
+  .shotmode .seg{display:flex;width:100%} .shotmode .seg button{flex:1}
+  .drop{padding:16px 10px}
+  /* 전체화면(모바일) */
+  #dash{padding-left:10px;padding-right:10px;font-size:14px}
+  .d-head h2{font-size:1.6em}
+  .d-close{margin-left:0;width:100%}
+  .d-table td,.d-table th{white-space:normal}
+  .d-table .chip{display:block;width:max-content;margin:2px 0 0}
+  .d-hero input{font-size:1em;padding:.25em .3em}
+  .modal-card{padding:18px}
+  .modal-btns .btn2{flex:1}
+  .crow{grid-template-columns:120px 1fr}
+  .crow .vv{grid-column:1/-1;text-align:left}
+  .tablebox table:has(#tbody){min-width:0}
+  #valHead th:nth-child(2),#valHead th:nth-child(3),#valHead th:nth-child(4),#valHead th:nth-child(6),
+  #tbody td:nth-child(2),#tbody td:nth-child(3),#tbody td:nth-child(4),#tbody td:nth-child(6){display:none}
+  #valHead th,#tbody td{padding:9px 7px;font-size:14.5px}
+  #tbody td:first-child{white-space:normal}
+  #tbody td:first-child .stars{display:block;font-size:12px;letter-spacing:0}
+  #tbody .value{font-size:19px}
+  #tbody td.profit{white-space:normal;line-height:1.3}
+  #tbody td.profit .cat{display:block;font-size:12.5px}
+  #tbody td.profit .chip{margin:3px 0 0}
+  #tbody td{word-break:keep-all}
+  #tbody .lvl{font-size:12px;padding:1px 7px}
+  #valHead th:last-child{white-space:normal}
+}
+@media (prefers-reduced-motion:no-preference){ .flash{animation:fl .9s ease} @keyframes fl{from{background:var(--soul-soft)}to{background:transparent}} }
+
+/* ===== 모바일 최적화 ===== */
+body{overflow-x:clip}
+.mo-only{display:none}
+.hero-subs{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px}
+.hero-subs .hero-row{grid-template-columns:auto minmax(0,1fr)}
+.hero-subs .hero-row input{min-width:0}
+@media (pointer:coarse){ .pc-only{display:none} .mo-only{display:inline} }
+@media (max-width:720px){
+  body{font-size:16px}
+  .wrap{padding:16px 12px 100px}
+  h1{font-size:28px}
+  h2{font-size:22px}
+  .sub{font-size:14.5px}
+  section{margin-top:24px}
+  .head{gap:10px}
+  .headbtns{width:100%}
+  .headbtns .btn2{flex:1;padding:11px 10px}
+  /* iOS 확대 방지: 입력칸 글자 16px 이상 */
+  input,select,textarea{font-size:16px !important}
+  .card input{font-size:28px !important}
+  .hero-row input{font-size:20px !important;padding:6px 8px}
+  .hero-row label .lvl{min-width:0;font-size:12.5px;padding:1px 6px}
+  .hero-col{padding:10px 10px}
+  .g5{grid-template-columns:1fr 1fr}
+  .g5 .card{padding:10px}
+  .g5 .card input{font-size:24px !important}
+  .card .formula{font-size:12px}
+  .signals{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sig{padding:10px}
+  .sig .lv{font-size:21px}
+  .controls{gap:8px}
+  .seg{max-width:100%;overflow-x:auto}
+  .seg button{padding:8px 12px;white-space:nowrap}
+  .basis{width:100%;justify-content:space-between}
+  .btn2,.save{min-height:44px}
+  .vbtn{padding:6px 12px;font-size:13px}
+  .linkbtn{padding:8px 12px}
+  /* 시세 기록 버튼은 화면 아래에 따라다님 */
+  .savebar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bg);margin:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);box-shadow:0 -6px 16px rgba(0,0,0,.08)}
+  .wrap{padding-bottom:100px}
+  .savebar .save{flex:1}
+  .savebar .meta label,.savebar label.meta{display:none}
+  /* 스크린샷 */
+  .drop{padding:20px 12px}
+  .shotbar #readBtn{flex:1}
+  .shotmode .seg{display:flex;width:100%}
+  .shotmode .seg button{flex:1}
+  .thumbs img{height:70px}
+  /* 검토 표 → 카드 */
+  .review thead{display:none}
+  .review table{min-width:0 !important;display:block}
+  .review tbody{display:block}
+  .review tr{display:grid;grid-template-columns:auto 1fr;gap:6px 8px;padding:10px 12px;border-top:1px solid var(--line);align-items:center}
+  .review tr:first-child{border-top:0}
+  .review td{padding:0 !important;white-space:normal;text-align:left !important;border:0 !important}
+  .review td:first-child{grid-column:1/-1;font-weight:700;word-break:keep-all}
+  .review td:nth-child(3){display:flex;flex-wrap:wrap;gap:6px}
+  .review td:last-child{grid-column:1/-1}
+  .review td input{width:7.5em !important}
+  .review .shotbar .btn2{flex:1}
+  .applysum{font-size:14px}
+  /* 비교 막대 */
+  .compare{padding:12px}
+  .crow .nm{font-size:15px}
+  /* 기록·그래프 */
+  .panel{padding:12px}
+  .log{font-size:14px}
+  details{padding:12px}
+  .edit-grid{grid-template-columns:1fr}
+  .guide-steps>li{grid-template-columns:28px 1fr;gap:4px 10px}
+  .guide-steps>li::before{width:26px;height:26px;font-size:13px}
+  .modal-card{padding:18px}
+  .modal-btns .btn2{flex:1}
+  /* 전체화면 */
+  #dash{padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 10px);font-size:15px}
+  .d-head h2{font-size:1.6em}
+  .d-kpi{width:100%;order:3}
+}
+/* ===== 가독성 보강 (최종) ===== */
+/* 밝은 화면: 회색 글씨를 더 진하게, 배경은 덜 보라색으로 */
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){ --muted:#544d70; --line:#d3cde6; --bg:#f5f4f9; } }
+:root[data-theme="light"]{ --muted:#544d70; --line:#d3cde6; --bg:#f5f4f9; }
+/* 시세 입력칸: 또렷한 기본 글꼴 + 흰 바탕 + 진한 테두리 */
+.card input,.hero-row input,.d-hero input,.mini-row input,.review td input{font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif !important;font-weight:700;letter-spacing:0;color:var(--ink)}
+.hero-row input,.d-hero input,.mini-row input,.review td input{background:var(--surface) !important;border:1.5px solid color-mix(in srgb,var(--muted) 45%,var(--line)) !important}
+.card input::placeholder{font-size:15px}
+.card input::placeholder,.hero-row input::placeholder,.d-hero input::placeholder{color:color-mix(in srgb,var(--muted) 70%,transparent);font-weight:500}
+.card label{color:var(--ink);font-weight:700}
+.card .formula,.card .delta,.age{color:var(--muted)}
+.hero-col h3 span{font-weight:400}
+@media (max-width:720px){
+  body{background:var(--bg);background-image:none}
+  .small,.sub{font-size:15px}
+  .card input{font-size:26px !important}
+  .g5 .card input{font-size:22px !important}
+  .hero-row input{font-size:19px !important;padding:7px 9px}
+  .card label{font-size:15.5px}
+  .card .formula{font-size:13px}
+  .crow .nm,.crow .vv{color:var(--ink)}
+  th{color:var(--ink)}
+  .gi>summary{font-size:15.5px;padding:12px}
+  .gi-body{font-size:15px}
+}
+</style>
+</head>
+<body>
+<div id="updBar" class="updbar" hidden role="status"><span id="updMsg">새 버전이 나왔어요.</span><button class="btn2 solid" id="updBtn">지금 업데이트</button><button class="btn2" id="updLater">나중에</button></div>
+<div class="wrap">
+  <div class="head">
+    <div>
+      <div class="kk-head" id="kkHead"></div>
+      <h1><img class="logo" src="icons/icon-192.png" alt=""><span>깨비알람</span></h1>
+      <p class="sub"><b>도깨비의 세계 길드 도우미</b> — 보스·컨텐츠 알림, 숙제 체크, 레이드 파티, 요혼석 시세까지 깨비가 챙겨줘요. 기록은 지금 쓰는 브라우저에 저장돼요.</p>
+    </div>
+    <div class="headbtns"><button class="btn2 fbbtn" id="fbOpen">💬 건의하기</button><button class="btn2 minibtn fsbtn" id="miniOpen" title="게임 화면 위에 작게 띄우기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><rect x="12" y="11" width="7" height="5" rx="1" fill="currentColor"/></svg>미니 창</button><button class="btn2 installbtn" id="installBtn" hidden>📲 앱 설치</button><button class="btn2 resetbtn" id="resetOpen">전체 초기화</button>
+    <button class="btn2 solid fsbtn" id="dashOpen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>전체화면</button></div>
+  </div>
+  <div id="tabFsBar" class="tabfs-bar" hidden><b id="tabFsTitle">전체화면</b><span style="flex:1"></span><button class="btn2" id="tabFsClose">닫기 (Esc)</button></div>
+  <nav class="tabbar" role="tablist" aria-label="메뉴">
+    <button role="tab" data-tab="alarm" aria-selected="true"><span>⏰</span>알리미</button>
+    <button role="tab" data-tab="todo" aria-selected="false"><span>✅</span>숙제</button>
+    <button role="tab" data-tab="party" aria-selected="false"><span>⚔️</span>파티</button>
+    <button role="tab" data-tab="price" aria-selected="false"><span>💎</span>요혼석</button>
+    <button role="tab" data-tab="notice" aria-selected="false"><span>📢</span>공지<b class="tab-new" id="noticeNew" hidden>N</b></button>
+  </nav>
+  <div id="tab-price" class="tabpane">
+
+  <details class="guide" id="guide">
+    <summary>처음이라면? 사용법 보기</summary>
+    <p class="guide-lead">보스·컨텐츠 <b>알림</b>, <b>숙제</b> 체크, 레이드 <b>파티</b> 모집, <b>요혼석</b>을 가장 싸게 얻는 방법까지 깨비가 챙겨줘요. 궁금한 항목을 눌러 자세히 보세요.</p>
+    <div class="gq">
+      <details class="gi"><summary><span class="gi-ic">📸</span><span>거래소 캡처를 올리고 <b>시세 읽기</b></span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>PC는 캡처 후 이 페이지에서 <b>Ctrl/⌘+V</b>(또는 끌어다 놓기), 폰은 스크린샷 칸을 눌러 <b>사진첩에서 고르기</b>.</li><li>여러 장을 한 번에 올려도 되고, 게임 전체 화면을 찍어도 돼요.</li><li>재료·희귀아이템·영웅장비가 섞여 있어도 따로 고를 필요 없이 한 번에 분류해요.</li><li>스크린샷 칸 아래 <b>예시 보기</b>에서 어떻게 찍으면 좋은지 볼 수 있어요.</li></ul><p><b>시세 읽기</b>를 누르면 무료 글자 인식이 내 기기 안에서 읽어요. 이미지는 어디에도 올라가지 않아요. 처음 한 번은 인식 도구를 받느라 조금 걸리고, 흐린 부분은 자동으로 한 번 더 읽어요.</p></div></details>
+      <details class="gi"><summary><span class="gi-ic">✅</span><span>검토 표 확인 → <b>채우고 기록</b></span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>항목마다 가장 싼 줄에 <b>최저가</b> 표시가 붙어요. 같은 아이템이 여러 개면 가장 싼 값만 칸에 들어가요.</li><li>틀린 건 검토 표에서 <b>가격·분류·영웅장비 부위/단계·가루 묶음 크기</b>를 고칠 수 있어요.</li><li><b>채우고 기록</b>은 바로 저장, <b>칸에 채우기</b>는 값만 채워요.</li><li>스크린샷 없이 칸에 직접 입력해도 돼요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">📈</span><span>기록이 쌓이면 <b>추천 표시</b></span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>시세를 볼 때마다 <b>시세 기록</b>을 누르세요. 직전보다 오른 건 ▲빨강, 내린 건 ▼파랑이에요.</li><li><b>3번 이상</b> 기록하면 평소보다 싼지 비싼지 표시가 나와요. ‘평소’는 최근 7일·10번 기록의 중간값이에요.</li><li><span class="gchip must">강력 추천</span> 평소보다 20% 이상 쌈 · <span class="gchip rec">구매 추천</span> 10% 이상 쌈 · <span class="gchip high">비쌈 · 보류</span> 15% 이상 비쌈</li><li><b>재검증 필요</b>(주황): 넣은 지 하루가 지났거나 평소와 50% 넘게 차이 나서 입력 실수가 의심될 때. 그대로면 <b>확인했어요</b>, 진짜 폭락·폭등이면 <b>진짜 시세예요</b>. 1시간 넘게 비슷한 값이 두 번 기록되면 자동으로 진짜로 인정해요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">💰</span><span>결과 보는 법</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>요혼석 수급처 비교</b>에서 ‘최저가’가 붙은 곳이 지금 요혼석을 가장 싸게 얻는 방법이에요.</li><li><b>영웅장비 분해 가치와 이득</b> 표의 ‘사서 분해하면’이 <b>플러스</b>면 사서 분해할수록 이득, <b>마이너스</b>면 갖고 있는 장비는 파는 게 나아요.</li><li>영웅장비는 수익률 20% 이상이면 강력 추천, 이득이면 이득, 손해면 판매가 유리로 표시돼요.</li><li>아래쪽 <b>요혼석 단가 흐름</b>·<b>천요석 시세 흐름</b> 그래프로 기록이 쌓일수록 오르내림을 볼 수 있어요. 천요석 그래프 밑에는 최근 최저·최고·평균도 나와요.</li><li>전체화면 표는 <b>무기·방어구·장신구 탭</b>으로 나눠서 스크롤 없이 한 부위씩 봐요. 탭 옆 초록 숫자는 지금 사서 분해하면 남는 단계 수예요.</li><li>전체화면 표에는 단계별 <b>천요석 : 요혼석 개수</b>와 <b>가치 비중</b>(금색 = 천요석 몫, 보라 = 요혼석 몫)도 보여요. 천요석이 비싸지면 돌파 장비, 요혼석이 비싸지면 개방 장비가 유리해지는 걸 한눈에 볼 수 있어요.</li><li>맨 위 <b>전체화면</b>을 누르면 입력·추천·이득표·그래프를 한 창에서 볼 수 있어요. 그래프는 요혼석·천요석 버튼으로 바꿔 볼 수 있어요.</li></ul></div></details>
+      <details class="gi hero-only"><summary><span class="gi-ic">🗡️</span><span>영웅장비 단계·부위는 이렇게 읽어요</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>아이콘 숫자는 게임과 같아요. <b>+10 ~ +50 = 1~5개방</b>, <b>✦+1 ~ ✦+5 = 1~5돌파</b>. 0개방은 분해량 정보가 없어 넣지 않아요.</li><li>부위는 게임 거래소 분류대로 판단해요. <b>무기</b>: 검·도·지팡이·부채·활 / <b>방어구</b>: 투구·갑옷·신발·각반·장갑·허리띠 / <b>장신구</b>: 목걸이·반지·팔찌·귀걸이</li><li>파란 테두리 장비는 희귀아이템, 보라 테두리이거나 ‘N돌파’ 표기가 있으면 영웅장비예요.</li><li>조각·가호·비법서·멤버십처럼 장비가 아닌 건 자동으로 제외해요. 한 번 고친 부위는 이름을 기억해요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">🪟</span><span>게임 위에 작게 띄우기 (미니 창)</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>미니 창</b>을 누르면 지금 시세·구매 신호·<b>요혼석 수급처 비교 그래프</b>·<b>빠른 이득 계산</b>·남는 장비 TOP 3만 담은 작은 창이 떠요.</li><li>미니 창 💰 시세 맨 위 <b>📷 캡처 넣기</b> 칸에 거래소 캡처를 넣으면(사진 고르기·끌어다 놓기·Ctrl+V) 깨비가 바로 읽고, <b>✅ 채우고 기록</b>을 누르면 큰 화면에도 반영돼요. 자세히 고치고 싶으면 큰 화면 검토 표에서 확인하세요.</li><li>미니 창 위쪽 <b>💰 시세 · ⏰ 알리미 · ✅ 숙제 · ⚔️ 파티</b> 버튼으로 보일 내용을 골라요. <b>PC</b>는 여러 개를 함께 켜서 한 창에 위아래로 볼 수 있고, <b>폰</b>은 하나씩 바꿔 봐요. 각 탭의 ‘미니 창’ 버튼을 누르면 그 탭 내용으로 열려요. (브라우저가 게임 위 창을 하나만 허용해서, 여러 내용을 한 창에 모아 보여줘요.)</li><li>미니 창의 ‘지금 시세’ 옆 선택칸으로 <b>요혼석 단가 기준</b>(가장 싼 곳 자동 / 수급처 지정)을 바로 바꿀 수 있어요. 큰 화면 기준도 같이 바뀌어요.</li><li><b>PC 크롬·엣지</b>: 게임 위에 항상 떠 있는 별도 창으로 열리고, 크기와 위치를 자유롭게 바꿀 수 있어요.</li><li><b>폰</b>: 안드로이드에서 앱을 <b>팝업 보기</b>나 <b>분할 화면</b>으로 열면 창이 작아지는 순간 <b>자동으로 미니 화면이 창을 꽉 채워요.</b> 창을 다시 크게 하면 원래 화면으로 돌아오고, <b>큰 화면으로</b>를 눌러도 돼요. (팝업 보기: 최근 앱 화면에서 앱 아이콘을 길게 누르기)</li><li>일반 폰 화면에서 <b>미니 창</b>을 누르면 미니 화면이 전체를 채워서 크게 보여요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">📲</span><span>앱으로 설치·업데이트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>PC(크롬·엣지)</b>: 맨 위 <b>📲 앱 설치</b> 또는 주소창 오른쪽 설치 아이콘</li><li><b>안드로이드</b>: <b>📲 앱 설치</b> 또는 ⋮ → ‘앱 설치’ · <b>아이폰</b>: 사파리 공유 버튼 → ‘홈 화면에 추가’</li><li>카톡에서 열었다면 ⋮ → <b>다른 브라우저로 열기</b>를 해야 설치할 수 있어요.</li><li>새 버전이 나오면 맨 위에 알림이 뜨고, <b>지금 업데이트</b>를 누르면 기록은 그대로 두고 최신으로 바뀌어요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">⏰</span><span>알리미 · 숙제 체크리스트</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>⏰ 알리미</b> 탭: 필드보스(매일 21시), 낙화의 전장 보스(매일 22시), 차원점령전(화요일 21시 30분)을 켜면 <b>10분·5분·1분 전</b>에 알려주고, 1분 전부터 화면 위에 초 단위 타이머가 떠요. 시작 후 <b>10분 동안은 ‘진행 중’</b>으로 보이다가 자동으로 꺼지고 다음 일정으로 넘어가요(✕로 먼저 닫을 수도 있어요). 시간마다 따로 켜고 끌 수 있어요.</li><li>문파 컨텐츠(요신 토벌령·결계지 방어·미혹의 정원·신기 쟁탈전)는 우리 문파 시간과 요일을 직접 넣으면 같은 방식으로 알려줘요. 처음엔 <b>매일</b>로 되어 있고, 요일을 누르면 <b>그 요일만</b> 남아요. 다른 요일을 더 누르면 추가되고, 다시 매일로 하려면 <b>매일</b>을 누르세요.</li><li><b>📱 앱이 꺼져 있어도 알림 받기</b>를 켜면 앱을 닫아도 알림이 와요. 안드로이드는 크롬에서, 아이폰은 사파리 → 홈 화면에 추가한 앱을 홈 화면 아이콘으로 열어서 켜야 해요(iOS 16.4 이상).</li><li>앱을 열어두면 <b>미니 창</b>이나 <b>팝업 보기</b>에서 다음 일정과 1분 타이머도 볼 수 있어요.</li><li>알림 소리는 <b>띠링 · 징 · 절 종소리 · 북 둥둥 · 방울 · 전자 알람 · 경보</b> 중에 고르고 크기도 조절할 수 있어요(▶ 미리 듣기). 앱이 꺼져 있을 때 오는 알림은 폰에 설정된 기본 알림음으로 울려요.</li><li>처음 한 번 <b>시스템 알림 허용</b>을 누르면 다른 창을 보고 있어도 알림이 떠요.</li><li><b>✅ 숙제</b> 탭: 일일(일일 퀘스트·단상점 교환·일일 비경 1시간, 매일 오전 5시 초기화)·주간(주간 퀘스트·주간 비경 5시간·승천의 탑·천요석 제작·상점 구매, 수요일 오전 5시 초기화) 숙제를 체크해요. 화요일 정한 시간에 안 한 주간 숙제를 알려줘요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">⚔️</span><span>레이드 파티 모집</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>⚔️ 파티</b> 탭에서 먼저 <b>내 캐릭터</b>(닉네임·서버·공격력·저격/절명·도술 강화·용맹 장착·디버프 세팅)를 저장해요. 게임에서 찾아 초대할 수 있게 <b>닉네임은 정확히</b> 입력해 주세요.</li><li><b>+ 파티 만들기</b>: 레이드(악몽의 요람)·단계(1~5)·목표 등급(상관없음·D~S)·출발 시간·최소 조건을 정하면 목록에 올라가요. 파티는 <b>4인 고정</b>이에요.</li><li>내 캐릭터에 <b>레이드 패턴 숙련도</b>(미숙·숙지·빡숙)도 넣어요. 파티장은 ‘숙지 이상’처럼 조건을 걸 수 있어요.</li><li>서버는 게임 서버 15개 이름 × 1·2·3 = <b>45개</b> 중에 골라요(몽련·해월·괴량·아산·공월아·홍미희·강이태·소운·무이·묘롱·해일·백운·비영·복분·유희). 목록에 없는 새 서버는 ‘직접 입력’을 고르세요.</li><li>목록은 <b>서버별</b>로 나뉘어 보여요. 위쪽 서버 버튼으로 골라 보세요.</li><li>파티 카드는 인원에 따라 색이 바뀌어요. <b>2명 초록 · 3명 노랑 · 4명(마감) 빨강</b>. 맨 위 <b>전체화면</b>을 누르면 알리미·숙제·파티도 넓은 화면으로 볼 수 있어요(시세 탭은 기존 전체화면).</li><li>출발은 <b>모이면 바로 출발</b> 또는 <b>시간 정하기</b> 중에 골라요. 출발할 때 파티장이 <b>🚀 출발</b>을 누르면 파티원에게 알림이 가고 목록에서 사라져요.</li><li>구인할 땐 파티장으로 직접 파티를 만들고, 구직할 땐 지원하기 전에 게임에서 기존 파티를 미리 탈퇴해 주세요.</li><li>올라온 파티에서 <b>지원하기</b>를 누르면 내 스펙이 그대로 전달되고, 파티장이 <b>수락/거절</b>해요. 조건이 모자라면 ‘공격력 0.3만 부족’처럼 알려줘요.</li><li>여러 명이 한꺼번에 지원해도 모두 지원자 목록에 <b>먼저 지원한 순서</b>대로 쌓이고, 파티장이 고르면 돼요. 4명이 다 차면 남은 지원자에게는 ‘모집이 마감됐어요’ 알림이 가고 목록이 정리돼요. 동시에 수락을 눌러도 4명을 넘지 않아요.</li><li>파티장은 파티원 옆 <b>🚫 추방</b>을 두 번 눌러 내보낼 수 있어요. 추방된 사람은 그 파티에 다시 지원할 수 없고, 추방됐다는 알림이 가요. 미니 창에서도 추방할 수 있어요.</li><li><b>⏱ 레이드 타임어택 타이머</b>: 레이드에 들어가면 시작, 쓰러지면 사망 +. 지금 끝내면 받을 등급과 다음 컷까지 남은 시간이 보이고, 컷 30초·10초 전에 소리·진동으로 알려줘요. 클리어를 누르면 단계별 최고 기록이 남아요. 미니 창 ⏱ 타이머로 게임 위에 띄울 수 있어요.</li><li>파티 탭 아래 <b>📊 등급컷과 단계 정보</b>에서 클리어 시간별 등급(S 4분·A 6분·B 9분·C 12분·D 15분), 단계별 입장 전투력과 보스 체력, S등급을 위한 파티 초당 피해를 볼 수 있어요.</li><li>꺼진 상태 알림을 켜 두면 지원이 오거나 수락됐을 때 앱이 꺼져 있어도 알려줘요.</li><li>목록은 파티 탭이나 미니 창(파티)을 볼 때만 10~30초마다 새로 고쳐지고, 3분간 손대지 않으면(내 파티·지원 중이면 10분) 자동으로 멈춰요. 화면을 누르면 다시 켜져요. 무료 서버를 아끼려고 기기당 하루 새로 고침 횟수에 여유 있는 한도가 있어요.</li><li>파티 모집과 꺼진 상태 알림은 <b>길드원 전용</b>일 수 있어요. ‘길드 코드를 입력해 주세요’가 뜨면 단톡방에 공유된 코드를 넣으세요. 코드가 바뀌면 다시 물어봐요(🔑 길드 코드 버튼으로 언제든 바꿀 수 있어요).</li><li>파티는 출발 2시간 뒤 자동으로 사라지고, 한 기기에서 한 번에 하나의 파티만 만들 수 있어요. 아래 <b>디버프 세팅 도술 순서</b>도 참고하세요.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">💬</span><span>건의·오류 알려주기</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>맨 위 <b>💬 건의하기</b>에서 종류를 고르고 내용을 적어 <b>보내기</b> → 열린 페이지에서 <b>Create</b>.</li><li>잘 안 읽힌 스크린샷은 그 페이지에 끌어다 놓으면 같이 보낼 수 있어요.</li><li>GitHub 계정이 없다면 <b>내용 복사</b>로 단톡방에 보내 주세요.</li></ul></div></details>
+      <details class="gi hero-only"><summary><span class="gi-ic">📦</span><span>분해량·환산 기준</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li><b>개방</b>(요혼석만): 무기 135·335·635·1,035·1,535 / 방어구 55·95·155·235·335 / 장신구 65·115·195·294·425</li><li><b>돌파</b>(천요석/요혼석): 무기 18/1,595 ~ 270/1,835 · 방어구 7/359 ~ 105/455 · 장신구 10/457 ~ 137/585</li><li>모든 분해량은 여러 번 분해했을 때의 <b>평균값(중간값)</b>이라 실제와 조금 다를 수 있어요.</li><li>요혼석 환산: 희귀아이템 1~3개(평균 2개), 만귀령패 4인 품앗이 쉬움 600개·보통 1,200개, 가루 100개 = 요혼석 1개.</li></ul></div></details>
+      <details class="gi"><summary><span class="gi-ic">ℹ️</span><span>알아두면 좋은 것</span><span class="gi-more">더보기</span></summary><div class="gi-body"><ul><li>패치로 분해량·환산 기준이 바뀌면 관리자가 업데이트로 반영해요.</li><li>거래소 수수료는 계산에 들어가 있지 않아요.</li><li>잘못 넣은 기록은 ‘기록’ 목록에서 ×로 지울 수 있어요. 영웅장비 시세 칸만 다시 채우고 싶으면 <b>영웅장비 시세만 비우기</b>(두 번 누르기), 처음부터 다시 하려면 <b>전체 초기화</b>를 누르세요.</li><li>기록은 이 기기의 앱(브라우저) 안에 저장돼요. 다른 기기에서는 빈 시세표로 시작하고, 사이트 데이터를 지우면 기록도 지워져요.</li></ul></div></details>
+    </div>
+  </details>
+
+  <section aria-labelledby="h-shot" id="shotHome">
+    <h2 id="h-shot">거래소 스크린샷으로 시세 넣기</h2>
+    <p class="small" style="margin:0">거래소 캡처를 올리면 무료 글자 인식으로 재료·희귀아이템·영웅장비를 따로 고를 필요 없이 한 번에 분류해서, 항목마다 가장 싼 값으로 아래 칸을 채워요. 이미지는 내 브라우저 안에서만 처리되고 어디에도 올라가지 않아요. 가끔 틀릴 수 있으니 채우기 전에 검토 표를 확인해 주세요.</p>
+    <div class="shot" id="shotBox">
+      <div class="drop" id="drop" tabindex="0" role="button" aria-label="스크린샷 올리기">
+        <span class="pc-only"><b>여기를 눌러 스크린샷 선택</b><br>또는 끌어다 놓거나, 캡처 후 이 페이지에서 붙여넣기(Ctrl/⌘+V)</span><span class="mo-only"><b>📷 눌러서 스크린샷 고르기</b><br>사진첩에서 거래소 캡처를 여러 장 골라도 돼요</span>
+      </div>
+      <input type="file" id="shotFile" accept="image/*" multiple hidden>
+      <div class="thumbs" id="thumbs"></div>
+      <div class="shotbar">
+        <button class="btn2 solid" id="readBtn" disabled>시세 읽기</button>
+        <span id="shotStatus" role="status"></span>
+        <span class="small shot-hint">잘 안 보이는 부분은 자동으로 한 번 더 읽어요. 그래도 빠진 항목이 있으면 시세 읽기를 한 번 더 눌러 주세요.</span>
+      </div>
+      <div id="review"></div>
+      <details class="shot-ex"><summary>📸 이렇게 찍으면 잘 읽혀요 (예시 보기)</summary>
+        <div class="shot-ex-body"><img src="img/example-capture.jpg" alt="거래소 즐겨찾기 목록 캡처 예시" loading="lazy">
+          <ul class="small">
+            <li>거래소 <b>즐겨찾기</b>나 아이템 목록을 찍어요. 게임 화면 전체를 찍어도 돼요.</li>
+            <li>아이템 <b>이름</b>과 <b>현재 최저가 숫자</b>가 잘리지 않게 해 주세요. 위아래 끝에 반쯤 잘린 줄은 읽지 않아요.</li>
+            <li>재료·희귀아이템·영웅장비가 섞여 있어도 한 번에 분류돼요.</li>
+          </ul></div>
+      </details>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-sig">
+    <h2 id="h-sig">구매 신호</h2>
+    <p class="small" style="margin:0" id="sigNote"></p>
+    <div class="signals" id="signals"></div>
+  </section>
+
+  <section class="hero-only" aria-labelledby="h-chun">
+    <h2 id="h-chun">천요석</h2>
+    <div class="grid g1" style="margin-top:8px">
+      <div class="card gold" id="card-chun">
+        <label for="in-chun">천요석 1개 거래소 시세</label>
+        <input id="in-chun" class="num" type="number" inputmode="decimal" min="0" step="any" placeholder="0">
+        <div class="delta num" id="dl-chun"></div>
+        <div class="age" id="age-chun"></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-soul">
+    <h2 id="h-soul">요혼석 수급처별 거래소 시세</h2>
+    <p class="small" style="margin:0">요혼석은 거래소에서 직접 살 수 없어서, 재료 가격을 요혼석 1개를 얻는 데 드는 값(단가)으로 바꿔 비교해요. 비어 있는 칸은 비교에서 빠집니다.</p>
+    <div class="grid g5" id="srcCards" style="margin-top:14px"></div>
+    <div class="compare" id="compare" aria-label="요혼석 단가 비교"></div>
+    <div class="savebar2"><button class="save" id="saveBtn2">시세 기록</button><span class="meta" id="status2" role="status">천요석·수급처 시세만 넣었다면 여기서 바로 기록하세요</span></div>
+  </section>
+
+  <section class="hero-only" aria-labelledby="h-hero">
+    <h2 id="h-hero">영웅장비 거래소 시세</h2>
+    <p class="small" style="margin:0">지금 거래소에 올라온 영웅장비 최저가를 1~5개방, 1~5돌파 단계별로 넣으면, 사서 분해했을 때 얼마나 남는지 아래 표에 계산돼요. 분해량은 평균값(중간값) 기준이에요. 모르는 칸은 비워 두세요. <b>주황 점선 칸</b>은 하루 이상 지난 시세라 다시 확인이 필요해요.</p>
+    <div class="hero-tools"><button class="btn2 herorst" id="heroClear">영웅장비 시세만 비우기</button><span class="small" id="heroClearMsg" role="status"></span></div>
+    <div class="guide-lv small">아이콘의 숫자는 게임과 같아요 · <span><b>+10 ~ +50</b> = 1~5개방</span><span><b>✦+1 ~ ✦+5</b> = 1~5돌파</span></div>
+    <div class="age" id="heroAge" style="margin-top:6px"></div>
+    <div class="hero-grid" id="heroGrid"></div>
+  </section>
+
+  <div class="savebar">
+    <button class="save" id="saveBtn">시세 기록</button>
+    <span class="meta" id="lastSaved"></span>
+    <span id="status" role="status"></span>
+  </div>
+
+  <section class="hero-only" aria-labelledby="h-table">
+    <h2 id="h-table">영웅장비 분해 가치와 이득 <span class="small" style="font-family:system-ui,sans-serif">· 분해량은 평균값(중간값) 기준</span></h2>
+    <div class="controls" style="margin-top:8px">
+      <label class="basis">요혼석 단가 기준 <select id="basis"></select></label>
+      <div class="seg" role="group" aria-label="보기 방식">
+        <button data-view="group" aria-pressed="true">부위별</button>
+        <button data-view="rank" aria-pressed="false">분해 가치순</button>
+        <button data-view="profit" aria-pressed="false">이득순</button>
+      </div>
+      <div class="seg" role="group" aria-label="부위 필터">
+        <button data-cat="all" aria-pressed="true">전체</button>
+        <button data-cat="무기" aria-pressed="false">무기</button>
+        <button data-cat="방어구" aria-pressed="false">방어구</button>
+        <button data-cat="장신구" aria-pressed="false">장신구</button>
+      </div>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead id="valHead"><tr>
+          <th scope="col">장비</th><th scope="col">천요석</th><th scope="col">요혼석</th><th scope="col">비중</th>
+          <th scope="col">분해 가치</th><th scope="col">직전 대비</th><th scope="col">거래소 시세</th><th scope="col">사서 분해하면</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <p class="small" id="basisNote"></p>
+  </section>
+
+  <section class="history" aria-label="기록">
+    <div class="panel">
+      <h2>요혼석 단가 흐름</h2>
+      <div class="legend" id="legend"></div>
+      <div id="chart"></div>
+    </div>
+    <div class="panel hero-only">
+      <h2>천요석 시세 흐름</h2>
+      <div class="legend"><span><span class="dot" style="background:var(--gold)"></span>천요석 1개 거래소 시세</span></div>
+      <div id="chunChart"></div>
+    </div>
+    <div class="panel">
+      <h2>기록</h2>
+      <ul class="log" id="log"></ul>
+    </div>
+  </section>
+
+  
+  
+  
+  </div><!-- /tab-price -->
+
+  <section id="tab-alarm" class="tabpane" hidden aria-labelledby="h-alarm">
+    <h2 id="h-alarm">보스·컨텐츠 알리미</h2>
+    <p class="small" style="margin:0 0 12px">켜 둔 일정은 <b>10분 전·5분 전·1분 전</b>에 알려주고, <b>1분 전부터는 화면 위에 초 단위 타이머</b>가 떠요. 시간마다 따로 켜고 끌 수 있어요.</p>
+    <div class="al-settings">
+      <label class="al-swrow"><span class="al-sw"><input type="checkbox" id="alSound" aria-label="알림 소리"><span></span></span>소리</label>
+      <span class="al-snd"><select id="alSoundType" aria-label="알림 소리 종류"></select><button class="btn2" id="alSoundTest" title="미리 듣기">▶ 미리 듣기</button><input type="range" id="alVol" min="0" max="100" step="5" aria-label="알림 소리 크기" title="소리 크기"></span>
+      <span class="small" id="alNotifyState"></span>
+      <button class="btn2" id="alNotifyBtn">시스템 알림 허용</button>
+      <button class="btn2" id="alTest">테스트 알림</button>
+      <button class="btn2" id="alMini">미니 창으로 띄우기</button>
+      <button class="btn2" id="alIcs">📅 휴대폰 캘린더에 추가</button>
+    </div>
+    <div class="al-push" id="alPushBox">
+      <div class="al-push-t"><b>📱 앱이 꺼져 있어도 알림 받기</b><span class="small" id="alPushState"></span></div>
+      <button class="btn2" data-gc-open title="길드 코드 입력·변경">🔑 길드 코드</button>
+      <button class="btn2 solid" id="alPushBtn">켜기</button>
+    </div>
+    <div class="al-warn small">💡 위 <b>📱 앱이 꺼져 있어도 알림 받기</b>를 켜면 앱을 닫아도 알림이 와요(안드로이드 크롬, 아이폰은 홈 화면에 추가한 앱). 켜지 않으면 깨비알람가 열려 있을 때만 울려요. 휴대폰 캘린더에 넣어 두고 싶으면 <b>📅 휴대폰 캘린더에 추가</b>를 쓰세요.</div>
+    <div id="alarmList"></div>
+  </section>
+
+  <section id="tab-todo" class="tabpane" hidden aria-labelledby="h-todo">
+    <h2 id="h-todo">숙제 체크리스트</h2>
+    <p class="small" style="margin:0 0 12px">체크는 이 기기에 저장돼요. <b>일일</b>은 매일 오전 5시, <b>주간</b>은 수요일 오전 5시에 자동으로 초기화돼요.</p>
+    <div class="td-notice" id="tdNotice" hidden></div>
+    <div id="todoBox"></div>
+    <div class="td-remind"><label class="al-swrow"><span class="al-sw"><input type="checkbox" id="tdRemindOn" aria-label="주간 숙제 알림"><span></span></span>화요일</label>
+      <input type="time" id="tdRemindTime" value="10:00" aria-label="알림 시간"><span>에 주간 숙제 남은 것 알려주기</span>
+      <button class="btn2" id="tdMini">미니 창으로 띄우기</button><button class="btn2" id="tdClear">체크 모두 해제</button></div>
+  </section>
+
+  <section id="tab-party" class="tabpane" hidden aria-labelledby="h-party">
+    <h2 id="h-party">레이드 파티 모집</h2>
+    <p class="small" style="margin:0 0 12px">파티를 만들거나 올라온 파티에 내 스펙으로 지원해요. 목록은 몇 초마다 자동으로 새로 고쳐지고, 파티는 출발 2시간 뒤 자동으로 사라져요.</p>
+    <div class="al-warn small" id="ptOff" hidden>관리자가 서버를 연결하면 쓸 수 있어요.</div>
+    <div id="ptMain">
+      <details class="pt-me" id="ptMeBox">
+        <summary><b>👤 내 캐릭터</b><span id="ptMeSum"></span></summary>
+        <div class="pt-form">
+          <label>닉네임<input id="ptNick" maxlength="12" autocomplete="off" placeholder="게임 닉네임 그대로"><span class="pt-hint">⚠️ 게임 닉네임을 <b>정확히</b> 입력해 주세요</span></label>
+          <label>서버<select id="ptServerSel"></select><input id="ptServer" maxlength="16" autocomplete="off" placeholder="서버 이름 직접 입력" hidden></label>
+          <label>공격력<span class="pt-unit"><input id="ptAtk" type="number" inputmode="decimal" step="0.1" min="0" placeholder="4.5"><em>만</em></span></label>
+          <label>도술 강화<select id="ptEnh"></select></label>
+          <div class="pt-fl"><span>저격 / 절명</span><span class="seg pt-seg"><button type="button" data-pt-type="저격" aria-pressed="true">저격</button><button type="button" data-pt-type="절명" aria-pressed="false">절명</button></span></div>
+          <div class="pt-fl"><span>레이드 패턴 숙련도</span><span class="seg pt-seg"><button type="button" data-pt-skill="미숙" aria-pressed="false">미숙</button><button type="button" data-pt-skill="숙지" aria-pressed="true">숙지</button><button type="button" data-pt-skill="빡숙" aria-pressed="false">빡숙</button></span></div>
+          <p class="small pt-wide pt-skillhelp"><b>미숙</b> 패턴을 배우는 중이에요 · <b>숙지</b> 패턴을 알고 맞춰 움직일 수 있어요 · <b>빡숙</b> 패턴을 완벽히 알고 공략을 이끌 수 있어요</p>
+          <label class="al-swrow"><span class="al-sw"><input type="checkbox" id="ptBrave"><span></span></span>용맹 장착</label>
+          <label class="al-swrow"><span class="al-sw"><input type="checkbox" id="ptDebuff"><span></span></span>디버프 세팅</label>
+          <button class="btn2 solid" id="ptSaveMe">저장</button>
+        </div>
+      </details>
+      <div class="pt-notice">
+        <p>📢 <b>구인할 때</b>는 파티장으로 직접 <b>파티를 만들어</b> 주세요.</p>
+        <p>📢 <b>구직할 때</b>는 지원하기 전에 게임에서 <b>기존 파티를 미리 탈퇴</b>해 주세요.</p>
+        <p>✏️ 게임에서 찾아 초대할 수 있게 <b>닉네임을 정확히</b> 입력해 주세요.</p>
+        <p>🚀 파티가 출발하면 파티장이 <b>출발</b>을 눌러 목록에서 내려 주세요.</p>
+      </div>
+      <div class="pt-servers" id="ptServers" role="group" aria-label="서버"></div>
+      <div class="pt-bar">
+        <select id="ptFStage" aria-label="단계"></select>
+        <label class="pt-chk"><input type="checkbox" id="ptFit">내 스펙으로 지원 가능한 것만</label>
+        <button class="btn2" id="ptRefresh" title="새로 고침">↻</button>
+        <button class="btn2" id="ptMini">미니 창</button>
+        <button class="btn2" data-gc-open title="길드 코드 입력·변경">🔑 길드 코드</button>
+        <button class="btn2 solid" id="ptNewBtn">+ 파티 만들기</button>
+        <span class="small" id="ptState" role="status"></span>
+        <span class="small pt-auto" id="ptAuto"></span>
+      </div>
+      <div class="pt-new" id="ptNew" hidden>
+        <div class="pt-form">
+          <label>레이드<select id="ptRaid"></select></label>
+          <label>단계<select id="ptStage"></select><span class="pt-hint2" id="ptStageHint"></span></label>
+          <label>목표 등급<select id="ptGoal"></select></label>
+          <div class="pt-fl"><span>인원</span><b style="color:var(--ink);font-size:15px;padding:8px 0">4명 고정 (나 포함)</b></div>
+          <div class="pt-fl pt-wide"><span>출발</span><span class="pt-when"><label><input type="radio" name="ptWhen" value="now" checked>모이면 바로 출발</label><label><input type="radio" name="ptWhen" value="time">시간 정하기 <input type="time" id="ptTime" disabled></label></span></div>
+          <label>최소 공격력<span class="pt-unit"><input id="ptMinAtk" type="number" inputmode="decimal" step="0.1" min="0" placeholder="상관없음"><em>만</em></span></label>
+          <label>최소 도술 강화<select id="ptMinEnh"></select></label>
+          <label>패턴 숙련도<select id="ptMinSkill"><option value="">상관없음</option><option value="숙지">숙지 이상</option><option value="빡숙">빡숙만</option></select></label>
+          <label class="pt-chk"><input type="checkbox" id="ptNeedBrave">용맹 장착 필수</label>
+          <label class="pt-chk"><input type="checkbox" id="ptNeedDebuff">디버프 세팅 필요</label>
+          <label class="pt-wide">한 줄 메모<input id="ptMemo" maxlength="60" placeholder="예: 디버프 1명 구해요, 디코 없음"></label>
+          <div class="pt-btns pt-wide"><button class="btn2" id="ptCancel">취소</button><button class="btn2 solid" id="ptCreate">파티 만들기</button></div>
+        </div>
+      </div>
+      <div id="ptList"></div>
+    </div>
+    <details class="pt-ref tt-wrap" open>
+      <summary>⏱ 레이드 타임어택 타이머</summary>
+      <div class="tt-box" id="ttMain"></div>
+      <p class="small">레이드에 들어가면 <b>시작</b>, 누가 쓰러지면 <b>사망 +</b>. 지금 끝내면 받을 등급과 다음 컷까지 남은 시간을 보여주고, 컷 30초·10초 전에 소리·진동으로 알려줘요. <b>미니 창 ⏱ 타이머</b>로 게임 위에 띄울 수 있어요.</p>
+    </details>
+    <details class="pt-ref pt-info-box" open>
+      <summary>📊 악몽의 요람 · 등급컷과 단계 정보</summary>
+      <div id="ptInfo"></div>
+    </details>
+    <details class="pt-ref">
+      <summary>📖 디버프 세팅 도술 순서 (참고)</summary>
+      <div class="pt-skills">
+        <span>신내림 <b>+13</b></span><i>›</i><span>크게 베기 <b>+12</b></span><i>›</i><span>살 날리기 <b>+13</b></span><i>›</i><span>연쇄 타격 <b>+5</b></span><i>›</i><span>휘둘러 내려치기 <b>+5</b></span><i>›</i><span>요혼격 <b>+34</b></span><i>›</i><span>영혼 소용돌이 <b>+13</b></span><i>›</i><span>연쇄 번개 <b>+34</b></span><i>›</i><span>부적 던지기 <b>+13</b></span>
+      </div>
+      <p class="small">게임의 ‘사용 순서 설정’ 예시예요. 숫자는 도술 강화 수치예요.</p>
+    </details>
+  </section>
+
+  <section id="tab-notice" class="tabpane" hidden aria-labelledby="h-notice">
+    <h2 id="h-notice">공지사항</h2>
+    <div id="noticeList"></div>
+  </section>
+
+  <p class="appver">버전 <span id="appVer"></span> · <button id="checkUpd">업데이트 확인</button> <span id="updState"></span></p>
+  <p class="appver credit">제작: <b id="makerName">참치</b> · 비공식 팬 제작 도구예요. 게임 명칭과 화면의 권리는 각 권리자(카카오게임즈·슈퍼캣)에게 있어요.</p>
+</div>
+
+<div id="alarmLive" class="alarm-live" hidden role="timer" aria-live="polite"></div>
+<div id="alToast" class="al-toasts" aria-live="assertive"></div>
+
+<div id="gcModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="gcTitle" hidden>
+  <div class="modal-card">
+    <h3 id="gcTitle">🔑 길드 코드</h3>
+    <p>파티 모집과 꺼진 상태 알림은 <b>길드원 전용</b>이에요. 단톡방에 공유된 길드 코드를 입력해 주세요. 한 번 넣으면 이 기기에 기억돼요.</p>
+    <input id="gcInput" class="gc-input" maxlength="40" autocomplete="off" placeholder="길드 코드">
+    <p class="small" id="gcMsg" role="status" style="color:var(--must);min-height:1.4em"></p>
+    <div class="modal-btns"><button class="btn2" id="gcCancel">닫기</button><button class="btn2 solid" id="gcSave">확인</button></div>
+  </div>
+</div>
+
+<div id="fbModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="fbTitle" hidden>
+  <div class="modal-card">
+    <h3 id="fbTitle">💬 건의·오류 알려주기</h3>
+    <p>불편한 점이나 바라는 기능, 스크린샷이 잘 안 읽힌 경우를 알려 주세요. 개인 정보는 적지 말아 주세요.</p>
+    <label class="fb-row">종류 <select id="fbType"><option>건의</option><option>오류</option><option>스크린샷 인식 문제</option><option>기타</option></select></label>
+    <textarea id="fbText" rows="5" maxlength="1500" placeholder="예) 만귀령패 보통이 가끔 안 읽혀요 / 이런 기능이 있으면 좋겠어요"></textarea>
+    <p class="small" style="margin:6px 0 12px">보내기를 누르면 접수 페이지(GitHub)가 열려요. GitHub 계정이 없으면 ‘내용 복사’로 길드 단톡방 등에 보내 주세요.</p>
+    <p class="small" id="fbMsg" role="status" style="color:var(--soul)"></p>
+    <div class="modal-btns"><button class="btn2" id="fbCancel">닫기</button><button class="btn2" id="fbCopy">내용 복사</button><button class="btn2 solid" id="fbSend">보내기</button></div>
+  </div>
+</div>
+
+<div id="resetModal" class="modal" role="alertdialog" aria-modal="true" aria-labelledby="rmTitle" aria-describedby="rmDesc" hidden>
+  <div class="modal-card">
+    <h3 id="rmTitle">정말 초기화하시겠습니까?</h3>
+    <p id="rmDesc">입력한 시세와 지금까지 쌓인 기록이 모두 지워져요. <b>되돌릴 수 없어요.</b></p>
+    <div class="modal-btns"><button class="btn2" id="rmCancel">취소</button><button class="btn2 danger" id="rmOk">초기화</button></div>
+  </div>
+</div>
+
+<div id="mini" class="mini" hidden role="dialog" aria-label="미니 시세 창">
+  <div class="mini-bar" id="miniBar"><span class="kk mini-kk" id="miniKk"></span><b>깨비 미니</b><div class="mini-mods" id="miniMods" role="group" aria-label="미니 창에 보일 것"><button data-mm="price" title="시세">💰<span> 시세</span></button><button data-mm="alarm" title="알리미">⏰<span> 알리미</span></button><button data-mm="todo" title="숙제">✅<span> 숙제</span></button><button data-mm="party" title="파티">⚔️<span> 파티</span></button><button data-mm="timer" title="타이머">⏱<span> 타이머</span></button></div><span class="small mini-drag">여기를 잡고 옮기세요</span><span style="flex:1"></span><button id="miniClose" aria-label="미니 창 닫기">✕</button></div>
+  <div class="mini-hint small" id="miniHint" hidden>이 브라우저에서는 페이지 안에만 띄워져요. 게임 위에 띄우려면 PC는 <b>크롬·엣지</b>에서 열고, 안드로이드는 앱을 <b>팝업 보기·분할 화면</b>으로 여세요.</div>
+  <div class="mini-body">
+    <div class="mini-alarm" id="miniAlarm"></div>
+    <div class="mm-pane mm-price" data-pane="price">
+    <div class="mini-shot" id="miniShot"><button class="btn2 solid" id="miniShotBtn">📷 캡처 넣기</button><input type="file" id="miniShotFile" accept="image/*" multiple hidden>
+      <span class="mini-shot-state" id="miniShotState">여기에 끌어다 놓거나 <b>Ctrl+V</b>로 붙여넣으면 깨비가 바로 읽어요</span><button class="btn2 mini-shot-fill" id="miniShotFill" hidden>✅ 채우고 기록</button></div>
+    <div class="mini-col"><div class="mini-h mini-hrow">지금 시세 <select id="miniBasis" aria-label="요혼석 단가 기준" title="요혼석 단가 기준"></select></div><div class="mini-kpi" id="miniKpi"></div><div class="mini-sig" id="miniSig"></div></div>
+    <div class="mini-col"><div class="mini-h">요혼석 1개당 · 수급처 비교</div><div class="mini-src" id="miniSrc"></div></div>
+    <div class="mini-col hero-only"><div class="mini-h">빠른 이득 계산</div>
+      <div class="mini-row"><select id="miniSlot" aria-label="부위"></select><select id="miniLv" aria-label="단계"></select><input id="miniPrice" class="num" type="number" inputmode="numeric" min="0" placeholder="거래소 가격" aria-label="거래소 가격"></div>
+      <div class="mini-res" id="miniRes"></div></div>
+    <div class="mini-col hero-only"><div class="mini-h">사서 분해하면 남는 장비</div><div id="miniTop"></div></div>
+    </div>
+    <div class="mm-pane" data-pane="alarm" hidden><div class="mini-col"><div class="mini-h">다가오는 일정 (켜 둔 알람)</div><div id="miniAlarmList"></div></div></div>
+    <div class="mm-pane" data-pane="todo" hidden><div class="mini-col"><div id="miniTodo"></div></div></div>
+    <div class="mm-pane" data-pane="timer" hidden><div class="mini-col tt-box tt-mini" id="ttMini"></div></div>
+    <div class="mm-pane" data-pane="party" hidden><div class="mini-col"><div class="mini-h">⚔️ 레이드 파티 <span id="mmPtSv"></span></div><div id="miniParty"></div></div></div>
+  </div>
+</div>
+
+<div id="dash" role="dialog" aria-modal="true" aria-labelledby="d-title">
+  <div class="d-head">
+    <h2 id="d-title">깨비알람 · 요혼석 시세</h2>
+    <div class="d-kpi num" id="dKpi"></div>
+    <button class="btn2 d-close" id="dashClose">닫기 (Esc)</button>
+  </div>
+  <div class="d-body">
+    <div class="d-col inputs">
+      <div class="d-panel"><h3>스크린샷으로 시세 넣기</h3><div id="dShotSlot"></div></div>
+      <div class="d-panel hero-only"><h3>영웅장비 거래소 시세</h3>
+        <table class="d-hero"><thead><tr><th></th><th>무기</th><th>방어구</th><th>장신구</th></tr></thead><tbody id="dHero"></tbody></table>
+        <div class="shotbar"><button class="btn2 solid" id="dSave">시세 기록</button><button class="btn2 herorst" id="dHeroClear">영웅장비만 비우기</button><span class="d-empty" id="dSaveMsg"></span></div>
+      </div>
+    </div>
+    <div class="d-col mid-left">
+      <div class="d-panel"><h3>구매 신호</h3><div id="dSig"></div></div>
+      <div class="d-panel"><h3>요혼석 1개당 단가</h3><div id="dSrc"></div></div>
+    </div>
+    <div class="d-col table hero-only">
+      <div class="d-panel d-grow"><h3 class="d-chart-h">분해 가치와 이득 <span class="d-tabs" id="dTabs" role="group" aria-label="부위"></span></h3><div class="d-legend-mix"><span><i style="background:var(--gold)"></i>천요석</span><span><i style="background:var(--soul)"></i>요혼석</span><span>가치 비중 = 분해 가치 중 각각의 몫</span></div><div class="d-table" id="dTable"></div></div>
+    </div>
+    <div class="d-col right">
+      <div class="d-panel hero-only"><h3>사서 분해하면 남는 장비</h3><div class="d-top" id="dTop"></div></div>
+      <div class="d-panel d-grow"><h3 class="d-chart-h">시세 흐름 <span class="seg dseg" role="group" aria-label="그래프 종류"><button data-dc="soul" aria-pressed="true">요혼석</button><button data-dc="chun" aria-pressed="false" class="hero-only">천요석</button></span></h3><div class="legend" id="dLegend"></div><div class="d-chart" id="dChart"></div></div>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
